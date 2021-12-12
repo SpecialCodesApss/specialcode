@@ -1,0 +1,148 @@
+@charset "utf-8";
+/* CSS Document */
+
+@media only screen and ( max-width : 768px ) and ( min-width : 0px) {
+
+
+.website_containner {
+    margin-right: 0;
+}
+
+.col_side_nav{ display:block; width:0}
+
+.table-responsive {
+    border: 0;
+}
+
+.top-navbar {
+    display: block;
+}
+
+.top-navbar a{
+	display:block;
+}
+
+.top-navbar a i{
+    font-size: 30px;
+}
+
+.top_block {
+    padding: 50px 0 12px;
+    text-align: center;
+}
+.topblo > div {
+    float: none;
+    margin: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.col_page_content {
+    padding: 20px 20px;
+}
+
+.logo {
+    margin-bottom: 10px;
+}
+
+.blog_tablesearch {
+    margin-top: 10px;
+}
+
+
+
+
+
+}
+
+@media only screen and ( max-width : 992px ) and ( min-width : 757px) {
+
+
+.website_containner {
+    margin-right: 0;
+}
+
+.col_side_nav{ display:block; width:0}
+
+.table-responsive {
+    border: 0;
+}
+
+.top-navbar {
+    display: block;
+}
+
+.top-navbar a{
+	display:block;
+}
+
+.top-navbar a i{
+    font-size: 30px;
+}
+
+.top_block {
+    padding: 50px 0 12px;
+    text-align: center;
+}
+.topblo > div {
+    float: none;
+    margin: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.col_page_content {
+    padding: 20px 20px;
+}
+
+.logo {
+    margin-bottom: 10px;
+}
+
+
+.blog_tablesearch {
+    margin-top: 10px;
+}
+
+
+
+
+
+}
+
+
+@media only screen and ( max-width : 1169px ) and ( min-width : 992px) {
+
+.account {
+    margin-right: 0px;
+}
+.search_block {
+    width: 215px;
+}
+.notifications > div {
+    margin: 0 1px;
+}
+.search_block form .in_form_search > button {
+    padding: 0 13px;
+}
+
+
+
+
+}
+
+
+
+@media only screen and ( max-width : 1199px ) and ( min-width : 1170px) {
+
+
+
+
+
+}
+
+
+
+
+
+
+
+

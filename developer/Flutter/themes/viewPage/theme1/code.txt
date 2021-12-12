@@ -1,0 +1,95 @@
+﻿return Scaffold(
+      appBar: AppBar(
+        title:Text(
+        language =="en" ? messages_en.getTranslation("##Capital_table_name##") : messages_ar.getTranslation
+                                      ("##Capital_table_name##"),
+          style: Theme.of(context).textTheme.title,
+        ),
+        centerTitle: true,
+        leading: IconButton(icon:Icon(Icons.arrow_back),
+        onPressed:() => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ##Capital_table_name##Index())
+        ),
+        ),
+      ),
+      
+        body: Container(
+            child: data != null ? ListView(
+              padding: EdgeInsets.all(5.0),
+                children: <Widget>[
+                  ViewImage==true ? CarouselSlider(
+                    options:  CarouselOptions(
+                      viewportFraction: 1.0,
+                      enlargeCenterPage: false,
+                      autoPlay: ViewedImageType=="slider" ? false : false,
+                      autoPlayInterval: Duration(seconds: 3),
+                    ),
+                    items: imgList.map((item) => Container(
+                      child: Center(
+                          child: Image.network(item, fit: BoxFit.cover, width: 1000)
+                      ),
+                    )).toList(),
+                  ) : SizedBox(),
+                  Text(
+                    "اسم المنتج",
+                    style: Theme.of(context).textTheme.body1,
+                    textAlign: TextAlign.center,
+                  ),
+
+                  Padding(
+                  padding: EdgeInsets.only(top:20.0,right: 0.0),
+                  child:Directionality(
+                    textDirection: Language  =="ar" ? TextDirection.rtl : TextDirection.ltr,
+                    child: Text(
+                      "وصف المنتج",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textDirection: Language  =="ar" ? TextDirection.rtl : TextDirection.ltr,
+                    ),
+                  )
+                  ),
+                  Text(
+                    "وصف المنتج هنا ، وصف المنتج هنا ، وصف المنتج هناوصف المنتج هنا ، وصف المنتج هنا ، وصف المنتج هناوصف المنتج هنا ، وصف المنتج هنا ، وصف المنتج هنا"
+                  ),
+
+                  Table(
+                      children:[
+                        TableRow(
+                            children: [
+                              Text(
+                                "اسم العنصر",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                  "قيمة العنصر"
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              Text(
+                                "اسم العنصر",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                  "قيمة العنصر"
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              Text(
+                                "اسم العنصر",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                  "قيمة العنصر"
+                              ),
+                            ]
+                        ),
+                      ]
+                  ),
+                  '.$orderBtnCode.'
+                ],
+              ): null ,
+            )
+    );

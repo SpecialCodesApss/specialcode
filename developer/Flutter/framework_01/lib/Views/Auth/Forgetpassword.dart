@@ -1,0 +1,181 @@
+import '../../packages/hexcolor/hexcolor.dart';
+import '../../Controllers/ForgotPasswordController.dart';
+import '../../helpers/LoaderDialog.dart';
+import '../../helpers/ToastHelper.dart';
+import '../../helpers/LanguageHelper.dart' as LanguageHelper;
+import '../../lang/ar/app.dart' as messages_ar;
+import '../../lang/en/app.dart' as messages_en;
+import '../../helpers/SizeConfig.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'VerificationCode.dart';
+
+class Forgetpassword extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ForgetpasswordState();
+  }
+}
+
+class _ForgetpasswordState extends State<Forgetpassword> {
+  /***Start of Declare API functions ****/
+  /***********-**************/
+
+  ForgotPasswordController forgetpasswordController = new ForgotPasswordController();
+  final TextEditingController _verificationcodeController = new TextEditingController();
+  var language = LanguageHelper.Language;
+
+  _SendResetCode() {
+    setState(() {
+      if (_verificationcodeController.text.trim().isNotEmpty) {
+        var verifyCode_method = 'mobile'; // get this from settings
+        showLoaderDialogFunction(context);
+        if (verifyCode_method == 'mobile') {
+          forgetpasswordController.SendMobileResetCode(_verificationcodeController.text.trim(), context)
+              .whenComplete(() {
+            if (forgetpasswordController.status == true) {
+              hideLoaderDialogFunction(context);
+              ShowToast('success', forgetpasswordController.message);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Verificationcode(_verificationcodeController.text.trim())));
+            } else {
+              hideLoaderDialogFunction(context);
+              ShowToast('warning', forgetpasswordController.message);
+            }
+          });
+        } else {
+          forgetpasswordController.SendEmailResetCode(_verificationcodeController.text.trim(), context)
+              .whenComplete(() {
+            if (forgetpasswordController.status == true) {
+              hideLoaderDialogFunction(context);
+              ShowToast('success', forgetpasswordController.message);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Verificationcode(_verificationcodeController.text.trim())));
+            } else {
+              hideLoaderDialogFunction(context);
+              ShowToast('warning', forgetpasswordController.message);
+            }
+          });
+        }
+      } else {
+        ShowToast(
+            'error',
+            language == "en"
+                ? messages_en.getTranslation("pleasefillallfields")
+                : messages_ar.getTranslation("Notificationspleasefillallfields"));
+      }
+    });
+  }
+
+  /***End of Declare API functions ****/
+  /***********-**************/
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    // TODO: implement build
+    SizeConfig().init(context); // for media query
+    var screenWidthRatio = 10;
+    var screenHightRatio = 35;
+    var contenttopalignmentratio = 20;
+    if (SizeConfig.orientation == Orientation.landscape) {
+      screenWidthRatio = 20;
+      screenHightRatio = 55;
+
+      contenttopalignmentratio = 10;
+    } else {
+      screenWidthRatio = 10;
+      screenHightRatio = 35;
+
+      contenttopalignmentratio = 3;
+    }
+
+    return Scaffold(
+      backgroundColor: Hexcolor('f0f0f0'),
+      appBar: AppBar(
+        title: Text(
+          language == "en"
+              ? messages_en.getTranslation("forgetpassword")
+              : messages_ar.getTranslation("forgetpassword"),
+          style: Theme.of(context).textTheme.title,
+        ),
+        centerTitle: true,
+      ),
+      body: Container(
+          decoration: BoxDecoration(
+              /*image: DecorationImage(
+            image: AssetImage("assets/images/bg.png"),
+            fit: BoxFit.cover,
+          ),*/
+              ),
+          child: ListView(
+            padding: EdgeInsets.all(30.0),
+            children: <Widget>[
+              Image(
+                image: AssetImage('assets/images/white_logo.png'),
+                height: 150.0,
+              ),
+              Container(
+                child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: SizeConfig.screenHeight / screenHightRatio),
+                            child: Text(
+                              language == "en"
+                                  ? messages_en.getTranslation("forgetpasswordbymobiletext")
+                                  : messages_ar.getTranslation("forgetpasswordbymobiletext"),
+                            ),
+                          ),
+                          TextField(
+                            controller: _verificationcodeController,
+                            style: Theme.of(context).textTheme.body1,
+                            autofocus: true,
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              hintText: language == "en"
+                                  ? messages_en.getTranslation("forgetpassmobhinttext")
+                                  : messages_ar.getTranslation("forgetpassmobhinttext"),
+                              icon: Icon(Icons.mobile_screen_share),
+                            ),
+                          ),
+                          SizedBox(
+                            height: SizeConfig.screenHeight / screenHightRatio,
+                          ),
+                          ButtonTheme(
+                            minWidth: double.infinity,
+                            child: RaisedButton(
+                                child: Text(
+                                  language == "en"
+                                      ? messages_en.getTranslation("sendcode")
+                                      : messages_ar.getTranslation("sendcode"),
+                                  style: Theme.of(context).textTheme.button,
+                                ),
+                                onPressed: _SendResetCode),
+                            buttonColor: Hexcolor('232323'),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+            ],
+          )),
+    );
+  }
+}
