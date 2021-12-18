@@ -63,8 +63,6 @@
                     $("#pathes").val(paths);
                 }, false);
             </script>
-
-
     @endsection
 
 {{--            <div class="content">--}}

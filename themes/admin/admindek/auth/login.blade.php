@@ -5,7 +5,7 @@
 <!-- Mirrored from demo.dashboardpack.com/admindek-html/default/auth-sign-in-social.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 12 Dec 2021 18:01:34 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
-    <title>Admindek | Admin Template</title>
+    <title>Admin Login</title>
     <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 10]>
@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/icon/font-awesome/css/font-awesome.min.css')}}">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}"><link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/pages.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom.css')}}"><link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/pages.css')}}">
 </head>
 
 <body themebg-pattern="theme1">
@@ -99,7 +100,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <!-- Authentication card start -->
-                <form class="md-float-material form-material">
+                <form class="md-float-material form-material"  method="POST" action="{{ route('login') }}">
+
+                    {{csrf_field()}}
                     <div class="text-center">
                         <img src="{{url('themes/admin/admindek/assets/images/logo.png')}}" alt="logo.png')}}">
                     </div>
@@ -110,24 +113,34 @@
                                     <h3 class="text-center txt-primary">Sign In</h3>
                                 </div>
                             </div>
-                            <div class="row m-b-20">
-                                <div class="col-md-6">
-                                    <button class="btn btn-facebook m-b-20 btn-block"><i class="icofont icofont-social-facebook"></i>facebook</button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-twitter m-b-20 btn-block"><i class="icofont icofont-social-twitter"></i>twitter</button>
-                                </div>
-                            </div>
-                            <p class="text-muted text-center p-b-5">Sign in with your regular account</p>
+{{--                            <div class="row m-b-20">--}}
+{{--                                <div class="col-md-6">--}}
+{{--                                    <button class="btn btn-facebook m-b-20 btn-block"><i class="icofont icofont-social-facebook"></i>facebook</button>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-6">--}}
+{{--                                    <button class="btn btn-twitter m-b-20 btn-block"><i class="icofont icofont-social-twitter"></i>twitter</button>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <p class="text-muted text-center p-b-5">Sign in with your regular account</p>--}}
                             <div class="form-group form-primary">
-                                <input type="text" name="user-name" class="form-control" required="">
+                                <input type="text" name="email" placeholder="Username" class="form-control" required="">
                                 <span class="form-bar"></span>
-                                <label class="float-label">Username</label>
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+{{--                                <label class="float-label">Username</label>--}}
                             </div>
                             <div class="form-group form-primary">
-                                <input type="password" name="password" class="form-control" required="">
+                                <input type="password" name="password" placeholder="password" class="form-control" required="">
                                 <span class="form-bar"></span>
-                                <label class="float-label">Password</label>
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+{{--                                <label class="float-label">Password</label>--}}
                             </div>
                             <div class="row m-t-25 text-left">
                                 <div class="col-12">
@@ -138,18 +151,18 @@
                                             <span class="text-inverse">Remember me</span>
                                         </label>
                                     </div>
-                                    <div class="forgot-phone text-right float-right">
-                                        <a href="auth-reset-password.html" class="text-right f-w-600"> Forgot Password?</a>
-                                    </div>
+{{--                                    <div class="forgot-phone text-right float-right">--}}
+{{--                                        <a href="auth-reset-password.html" class="text-right f-w-600"> Forgot Password?</a>--}}
+{{--                                    </div>--}}
                                 </div>
                             </div>
                             <div class="row m-t-30">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
+                                    <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
 
                                 </div>
                             </div>
-                            <p class="text-inverse text-left">Don't have an account?<a href="auth-sign-up-social.html"> <b>Register here </b></a>for free!</p>
+{{--                            <p class="text-inverse text-left">Don't have an account?<a href="auth-sign-up-social.html"> <b>Register here </b></a>for free!</p>--}}
                         </div>
                     </div>
                 </form>

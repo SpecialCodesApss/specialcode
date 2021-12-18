@@ -28,7 +28,7 @@ class DeveloperController extends Controller
     }
 
     public function create_extension_table(){
-        $hostname = env("DB_DATABASE","framework");
+        $hostname = env("DB_DATABASE","framework1.7");
         $db = "Tables_in_".$hostname;
         $tables = DB::select('SHOW TABLES');// returns an array of stdObjects
         $table_fields= DB::getSchemaBuilder()->getColumnListing('users');
@@ -36,7 +36,7 @@ class DeveloperController extends Controller
     }
 
     public function create_module(){
-        $hostname = env("DB_DATABASE","framework");
+        $hostname = env("DB_DATABASE","framework1.7");
         $db = "Tables_in_".$hostname;
         $tables = DB::select('SHOW TABLES');// returns an array of stdObjects
         $table_fields= DB::getSchemaBuilder()->getColumnListing('users');
@@ -46,7 +46,7 @@ class DeveloperController extends Controller
 
     public function send_table_fields(Request $request){
         //get database table to use it inside join functions between tables
-        $hostname = env("DB_DATABASE","framework");
+        $hostname = env("DB_DATABASE","framework1.7");
         $db = "Tables_in_".$hostname;
         $tables = DB::select('SHOW TABLES'); // returns an array of stdObjects
         //get tables selector
@@ -355,7 +355,7 @@ class DeveloperController extends Controller
 
 
             $table_fields_table='<tr >'.$table_fields_table.'
-     
+
             <td> <input class="form-control col-md-12" type="text" name="'.$table_field.'_en" value="'.$trans_en.'"></td>
             <td> <input class="form-control col-md-12" type="text" name="'.$table_field.'_ar"  value="'.$trans_ar.'"></td>
 
@@ -366,7 +366,7 @@ class DeveloperController extends Controller
             </td>
 
             <td> <input type="text" class="form-control  col-md-12"" name="'.$table_field.'_selector_items"  value="'.$selector_items.'"></td>
-            
+
             <td> <input type="checkbox" class="form-control col-md-12" name="'.$table_field.'_is_Unique"   '.$ischecked_is_Unique.'></td>
             <td> <input type="checkbox" class="form-control col-md-12" name="'.$table_field.'_adminTabelview"   '.$ischecked_adminTabelview.'></td>
             <td> <input type="checkbox" class="form-control col-md-12" name="'.$table_field.'_moduleProtected"  ></td>
@@ -417,7 +417,7 @@ class DeveloperController extends Controller
 
 //    public function get_table_fields(Request $request){
 //        //get database table to use it inside join functions between tables
-//        $hostname = env("DB_DATABASE","framework");
+//        $hostname = env("DB_DATABASE","framework1.7");
 //        $db = "Tables_in_".$hostname;
 //        $tables = DB::select('SHOW TABLES'); // returns an array of stdObjects
 //        //get tables selector

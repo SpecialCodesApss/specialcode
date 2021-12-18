@@ -25,6 +25,10 @@ Route::post('create_extension','\Developer\Controllers\DeveloperController@store
 Route::post('create_extension_table','\Developer\Controllers\DeveloperController@send_table_fields');
 
 
+Route::get('customize_theme_url','\Developer\Controllers\ThemesController@view_theme_url_customize');
+Route::post('customize_theme_url','\Developer\Controllers\ThemesController@customize_theme_url');
+
+
 /*************************/
 /*End Developer routes*/
 /****************************/

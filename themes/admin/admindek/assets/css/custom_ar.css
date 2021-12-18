@@ -1,0 +1,115 @@
+
+
+@font-face {font-family: "Droid Arabic Kufi";
+    src: url("../fonts/7712e50ecac759e968ac145c0c4a6d33.eot"); /* IE9*/
+    src: url("../fonts/7712e50ecac759e968ac145c0c4a6d33.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("../fonts/7712e50ecac759e968ac145c0c4a6d33.woff2") format("woff2"), /* chrome、firefox */
+    url("../fonts/7712e50ecac759e968ac145c0c4a6d33.woff") format("woff"), /* chrome、firefox */
+    url("../fonts/7712e50ecac759e968ac145c0c4a6d33.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url("../fonts/7712e50ecac759e968ac145c0c4a6d33.svg#Droid Arabic Kufi") format("svg"); /* iOS 4.1- */
+}
+
+.invalid-feedback{
+    display: inline-block;
+}
+
+.img-logo{
+    height: 60px;
+}
+
+.flagimg{
+    height: 35px;
+}
+
+*{
+    font-family: 'Droid Arabic Kufi' !important;
+}
+
+body{
+
+    direction: rtl;
+}
+
+.pcoded .pcoded-navbar .pcoded-item{
+    float: right;
+}
+
+.header-navbar .navbar-wrapper .navbar-logo{
+    float: right;
+}
+
+.pcoded .pcoded-navbar .pcoded-navigation-label{
+    text-align: center;
+}
+
+.pcoded[theme-layout="vertical"][vertical-placement="left"][vertical-nav-type="expanded"][vertical-effect="shrink"] .pcoded-content{
+    margin-right: 250px;
+    margin-left : 0px;
+    direction: rtl;
+}
+
+.row{
+    direction: rtl;
+}
+
+.page-header.card .page-header-title i{
+    float: right;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+
+.page-header-title{
+    text-align: start;
+
+}
+
+.page-header.card .breadcrumb{
+    float: left;
+    direction: ltr;
+}
+
+.card .card-header{
+    text-align: start;
+}
+
+.card .card-block{
+    text-align: start;
+}
+
+.card .card-header h5:after{
+    right: 0;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .nav-left, .header-navbar .navbar-wrapper .navbar-container .nav-right{
+    float: right;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .nav-left li, .header-navbar .navbar-wrapper .navbar-container .nav-right li{
+    float: right;
+}
+
+.nav-right{
+    float: left !important;
+    direction: ltr;
+}
+
+.header-navbar .navbar-wrapper .navbar-container .header-notification .profile-notification{
+    left: 50px;
+}
+
+
+
+.header-notification .show.profile-notification:before{
+    /*left: 15px;*/
+    top: -10px;
+    right: 240px !important;
+}
+
+.pcoded[theme-layout="vertical"] .pcoded-navbar .pcoded-item>li>a .pcoded-mtext{
+    width: 190px;
+    text-align: initial;
+}
+
+.header-navbar .navbar-wrapper .navbar-logo{
+    direction: ltr;
+}
