@@ -18,6 +18,51 @@ use Spatie\Permission\Models\Role;
 |
 */
 
+Route::get('/test', function () {
+
+    //create role
+//    $role = Role::create(['name' => "super_admin"]);
+//    $role = Role::create(['name' => "admin"]);
+//    $role = Role::create(['name' => "section_manager"]);
+//    $role = Role::create(['name' => "supervisor"]);
+//    $role = Role::create(['name' => "employee"]);
+//    $role = Role::create(['name' => "user"]);
+
+
+    $module_name = "Dashboard";
+    $permissions = [];
+//    array_push($permissions,''.$module_name.'-Create');
+    array_push($permissions,''.$module_name.'-Read');
+//    array_push($permissions,''.$module_name.'-Update');
+//    array_push($permissions,''.$module_name.'-Delete');
+
+
+    //create premissions
+//    foreach ($permissions as $permission) {
+//        Permission::create(['name' => $permission]);
+//    }
+
+    //give premission to this role
+//    foreach ($permissions as $permission) {
+//        $role = Role::where(['name' => "super_admin"])->first();
+//        $role->givePermissionTo($permission);
+//        $role = Role::where(['name' => "admin"])->first();
+//        $role->givePermissionTo($permission);
+//    }
+
+    //give role for user
+//    $user = \App\Models\User::find(1);
+//    $user->assignRole('super_admin');
+
+
+
+//    $role = Role::where(['name' => "super_admin"])->first();
+//    $role->syncPermissions($request->input('permission'));
+//    $user = \App\Models\User::find(1);
+//    $user->assignRole('admin');
+});
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -46,11 +91,7 @@ Route::get('/changeLang', function () {
     return trans('messages.admin');
 });
 
-Route::get('/test', function () {
-    $lang = session()->get('locale');
-    return $lang;
 
-});
 
 
 Route::get('/add_permission', function () {
@@ -89,7 +130,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::get('admin/login','App\Http\Controllers\admin\LoginController@index');
-Route::middleware("role:Admin")->prefix('admin')->group(function () {
+Route::middleware("admin")->prefix('admin')->group(function () {
 
 //    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
 //    Route::resource('users', App\Http\Controllers\Admin\UserController::class);

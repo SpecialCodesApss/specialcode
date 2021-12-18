@@ -1,122 +1,73 @@
 @extends('backend.layouts.app')
 
-@section('title','لوحة تحكم الإدارة')
-
-
+@section('title','Admin - Dashboard')
 @section('header')
 
 @endsection
 
 
 @section('content')
-    <div class="wrapper_cols">
-        <div class="col_page_content">
-            <h3>
-                {{trans('admin.welcomeMessage')}}
-            </h3>
-
-            <?php
-
-            use Illuminate\Support\Facades\Session;
-
-            $colorArr=['colorblue','colorred','coloryellow','colortrequaz','color4'];
-                $i=0;
-                $lang = Session::get('applocale');
-            ?>
-            <div class="row">
-            @foreach($admin_sections as $admin_section)
-                    @if( $admin_section['active']==1)
-                    @if($admin_section->is_drop_menu == 0)
-                    <div class="col-md-3 cp_labels">
-                        <div class="box_sales {{$colorArr[$i]}}">
-                            <a href="{{url('admin/'.$admin_section['section_flag'])}}">
-                                <p class="text-center">
-                                    <i class="fas fa-{{$admin_section['section_icon']}}"></i>
-                                </p>
-                                <p class="text-center">
-<!--                                    {{$admin_section['section_name_ar']}}-->
-<!--                                    {{ __('message.admin') }}-->
-
-<!--                                    {{__('messages.admin')}}-->
-<!--                                    {{trans('messages.'.$admin_section['section_flag'])}}-->
-                                    @if($lang == "en")
-                                    {{$admin_section['section_name_en']}}
-                                    @else
-                                    {{$admin_section['section_name_ar']}}
-                                    @endif
-                                </p>
-                            </a>
-                        </div><!--box_sales-->
-                    </div><!--col-md-3-->
-                        <?php $i++; if($i==5) { $i=0;} ?>
-
-                    @else
-                        @foreach($admin_section['sub_sections'] as $sub_section)
-                            <div class="col-md-3 cp_labels">
-                                <div class="box_sales {{$colorArr[$i]}}">
-                                    <a href="{{url('admin/'.$sub_section['section_flag'])}}">
-                                        <p class="text-center">
-                                            <i class="fas fa-{{$sub_section['section_icon']}}"></i>
-                                        </p>
-                                        <p class="text-center">
-
-                                            @if($lang == "en")
-                                            {{$sub_section['section_name_en']}}
-                                            @else
-                                            {{$sub_section['section_name_ar']}}
-                                            @endif
-
-
-                                        </p>
-                                    </a>
-                                </div><!--box_sales-->
-                            </div><!--col-md-3-->
-                            <?php $i++; if($i==5) { $i=0;} ?>
-                        @endforeach
-
-                    @endif
-                    @endif
-
-            @endforeach
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <i class="feather icon-watch bg-c-blue"></i>
+                    <div class="d-inline">
+                        <h5>{{trans('admin_messages.Admin - Dashboard')}}</h5>
+                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                             </span>
+                    </div>
+                </div>
             </div>
-
-{{--            <div class="row">--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <div class="box_sales colorblue">--}}
-{{--                        <a href="#">--}}
-{{--                            <h3>إجمالي المستخدمين</h3>--}}
-{{--                            <p>1000 مستخدم</p>--}}
-{{--                        </a>--}}
-{{--                    </div><!--box_sales-->--}}
-{{--                </div><!--col-md-3-->--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <div class="box_sales colorred">--}}
-{{--                        <a href="#">--}}
-{{--                            <h3>إجمالي المستخدمين</h3>--}}
-{{--                            <p>1000 مستخدم</p>--}}
-{{--                        </a>--}}
-{{--                    </div><!--box_sales-->--}}
-{{--                </div><!--col-md-3-->--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <div class="box_sales coloryellow">--}}
-{{--                        <a href="#">--}}
-{{--                            <h3>إجمالي المستخدمين</h3>--}}
-{{--                            <p>1000 مستخدم</p>--}}
-{{--                        </a>--}}
-{{--                    </div><!--box_sales-->--}}
-{{--                </div><!--col-md-3-->--}}
-{{--                <div class="col-md-3">--}}
-{{--                    <div class="box_sales colortrequaz">--}}
-{{--                        <a href="#">--}}
-{{--                            <h3>إجمالي المستخدمين</h3>--}}
-{{--                            <p>1000 مستخدم</p>--}}
-{{--                        </a>--}}
-{{--                    </div><!--box_sales-->--}}
-{{--                </div><!--col-md-3-->--}}
-{{--            </div><!--row-->--}}
-
-        </div><!--col_page_content-->
-    </div><!--wrapper_cols-->
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{trans('admin_messages.Dashboard')}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <!-- [ page content ] start -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>{{trans('admin_messages.Admin - Dashboard')}}</h5>
+                                    <div class="card-header-right">
+                                        <ul class="list-unstyled card-option">
+                                            <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                            <li><i class="feather icon-minus minimize-card"></i></li>
+                                            <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                                            <li><i class="feather icon-trash close-card"></i></li>                                                                 <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <p>
+                                        {{trans('admin_messages.Welcome to Admin Dashboard')}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ page content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
