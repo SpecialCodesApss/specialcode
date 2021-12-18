@@ -6,6 +6,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use Auth;
 
+
 class LoginController
 {
 
@@ -19,7 +20,7 @@ class LoginController
         if(Auth::user()){
             $user_id=Auth::user()->id;
             $user_role=Role::find($user_id);
-            if ($user_role->name =='admin') {
+            if ($user_role->name == 'super_admin') {
                 return redirect('admin/dashboard');
             }
             else{

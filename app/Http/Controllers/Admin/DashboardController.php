@@ -20,7 +20,7 @@ class DashboardController extends Controller
     function __construct()
     {
 
-        $this->middleware('permission:dashboard-show')->only('index');
+        $this->middleware('permission:Dashboard-Read')->only('index');
 //        $this->middleware('permission:dashboard-list')->only('index');
 //        $this->middleware('permission:dashboard-create')->only('create','store');
 //        $this->middleware('permission:dashboard-edit')->only('edit','update');

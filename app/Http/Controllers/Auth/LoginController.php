@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -31,11 +32,16 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         $user_id=auth()->user()->id;
-        $user=User::find($user_id);
-        if ($user->hasRole('Admin')) {
+        $user=Auth::user();
+        if ($user->hasRole(['super_admin','admin','moderator'])) {
             return 'admin/dashboard';
         }
         return '/home';
+//
+//        if ($user->hasRole('Admin')) {
+//            return 'admin/dashboard';
+//        }
+//        return '/home';
     }
 
     /**
