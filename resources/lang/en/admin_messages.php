@@ -8,7 +8,7 @@
         'Arabic'    =>   'العربية' ,
         'English'    =>   'English' ,
         'Enter Keyword'    =>   'Enter Keyword' ,
-		'aaaaa'    =>   'aaaaa' ,
+		'deleteConfirm'    =>   'Are you sure , you want to delete this information , it may be cant restore it ?' ,
 		'aaaaa'    =>   'aaaaa' ,
 		'aaaaa'    =>   'aaaaa' ,
 		'aaaaa'    =>   'aaaaa' ,

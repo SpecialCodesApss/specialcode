@@ -36,7 +36,7 @@ class UsersController extends Controller
     {
 
 
-        $users=User::paginate(50);
+        $users=User::all();
 
 //        if ($request->ajax()) {
 //            $data = User::query();
@@ -69,7 +69,7 @@ class UsersController extends Controller
 //                ->make(true);
 //
 //        }
-        return view('backend.users.index',compact($users));
+        return view('backend.users.index',compact('users'));
 
     }
 
