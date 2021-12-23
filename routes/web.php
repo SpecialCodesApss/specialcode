@@ -20,6 +20,22 @@ use Spatie\Permission\Models\Role;
 
 Route::get('/test', function () {
 
+   $permissions = [];
+    array_push($permissions,'User_Create');
+    array_push($permissions,'User_Read');
+    array_push($permissions,'User_Update');
+    array_push($permissions,'User_Delete');
+        foreach ($permissions as $permission) {
+        Permission::create(['name' => $permission]);
+    }
+
+    foreach ($permissions as $permission) {
+        $role = Role::where(['name' => "super_admin"])->first();
+        $role->givePermissionTo($permission);
+        $role = Role::where(['name' => "admin"])->first();
+        $role->givePermissionTo($permission);
+    }
+
     //create role
 //    $role = Role::create(['name' => "super_admin"]);
 //    $role = Role::create(['name' => "admin"]);
@@ -28,11 +44,11 @@ Route::get('/test', function () {
 //    $role = Role::create(['name' => "employee"]);
 //    $role = Role::create(['name' => "user"]);
 
-
-    $module_name = "Dashboard";
-    $permissions = [];
+//
+//    $module_name = "Dashboard";
+//    $permissions = [];
 //    array_push($permissions,''.$module_name.'-Create');
-    array_push($permissions,''.$module_name.'-Read');
+//    array_push($permissions,''.$module_name.'-Read');
 //    array_push($permissions,''.$module_name.'-Update');
 //    array_push($permissions,''.$module_name.'-Delete');
 

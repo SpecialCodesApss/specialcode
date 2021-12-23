@@ -1,166 +1,252 @@
 @extends('backend.layouts.app')
 
+@section('title',trans('users.Admin - Users'))
+@section('header')
+
+@endsection
+
 
 @section('content')
-    <div class="wrapper_cols">
-        <div class="col_page_content">
-            <div class="row">
-
-                <div class="col-lg-12 margin-tb">
-                    <div class="pull-right">
-                        <h5>المستخدمين</h5>
-                    </div>
-
-                    <div class="pull-left">
-                        <a class="btn btn-success" href="{{ route('users.create') }}"> إضافة جديد </a>
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <i class="feather icon-watch bg-c-blue"></i>
+                    <div class="d-inline">
+                        <h5>{{trans('users.Admin - Users')}}</h5>
+                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                             </span>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{trans('users.Users')}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <!-- [ page content ] start -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>{{trans('users.Users')}}</h5>
+                                    <div class="card-header-right">
+                                        <ul class="list-unstyled card-option">
+                                            <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                            <li><i class="feather icon-minus minimize-card"></i></li>
+                                            <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                                            <li><i class="feather icon-trash close-card"></i></li>                                                                 <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <p>
+{{--                                        {{trans('admin_messages.Welcome to Admin Dashboard')}}--}}
+                                    </p>
 
-                <div class="col-md-12" >
+
+                                    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+                                    <div class="container">
+                                        <div class="row">
+
+                                            @
 
 
-                    <div class="col-md-12">
-                        <div class="blog_tablesearch">
-                            <div class="table-responsive">
-                                <table  id="example" class="table table-striped table-bordered display nowrap dataTable " style="width:100%">
-                                    <thead>
-                                    <tr>
-                                        <th class="is_filter">كود</th>
-                                        <th  class="is_filter">الاسم</th>
-                                        <th  class="is_filter">البريد</th>
-                                        <th  class="is_filter">النوع</th>
-                                        <th width="100px">تحكم</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>كود</th>
-                                        <th>الاسم</th>
-                                        <th>البريد</th>
-                                        <th>النوع</th>
-                                        <th width="100px">تحكم</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
+
+                                            <div class="col-md-4">
+                                                <div class="card user-card">
+                                                    <div class="card-header">
+                                                        <h5>Code : #123</h5>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="user-image">
+                                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="img-radius" alt="User-Profile-Image">
+                                                        </div>
+                                                        <h6 class="f-w-600 m-t-25 m-b-10">Alessa Robert</h6>
+                                                        <p class="text-muted">User |
+                                                            <span class="Malegender"> Male </span>
+                                                            |
+                                                            <span class="verified">Verified</span></p>
+                                                        <hr>
+                                                        <p class="text-muted m-t-15">abdullah@gmail.com</p>
+                                                        <p class="text-muted m-t-15">0123456789</p>
+                                                        <ul class="list-unstyled activity-leval">
+                                                            <li class="active"></li>
+                                                            <li class="active"></li>
+                                                            <li class="active"></li>
+                                                            <li class="active"></li>
+                                                            <li class="active"></li>
+                                                        </ul>
+                                                        <div class="bg-c-blue counter-block m-t-10 p-20">
+                                                            <div class="row">
+                                                                <div class="col-md-12" style="text-align: center">
+                                                                    Registered at
+                                                                    <br>
+                                                                    01/01/2020 - 12:00 AM
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row justify-content-center user-social-link">
+                                                            <div class="col-auto"><a href="#!">
+                                                                    <i class="fa fa-eye text-view"></i>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="col-auto"><a href="#!">
+                                                                    <i class="fa fa-pencil text-edit"></i>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="col-auto"><a href="#!">
+                                                                    <i class="fa fa-trash text-delete"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                            <div class="card user-card">
+                                                <div class="card-header">
+                                                    <h5>Code : #123</h5>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="user-image">
+                                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-radius" alt="User-Profile-Image">
+                                                    </div>
+                                                    <h6 class="f-w-600 m-t-25 m-b-10">Alessa Robert</h6>
+                                                    <p class="text-muted">User |
+                                                        <span class="Femalegender"> Female </span>
+                                                        |
+                                                        <span class="verified">Verified</span></p>
+                                                    <hr>
+                                                    <p class="text-muted m-t-15">abdullah@gmail.com</p>
+                                                    <p class="text-muted m-t-15">0123456789</p>
+                                                    <ul class="list-unstyled activity-leval">
+                                                        <li class="active"></li>
+                                                        <li class="active"></li>
+                                                        <li class="active"></li>
+                                                        <li class="active"></li>
+                                                        <li class="active"></li>
+                                                    </ul>
+                                                    <div class="bg-c-green counter-block m-t-10 p-20">
+                                                        <div class="row">
+                                                            <div class="col-md-12" style="text-align: center">
+                                                                Registered at
+                                                                <br>
+                                                                01/01/2020 - 12:00 AM
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row justify-content-center user-social-link">
+                                                        <div class="col-auto"><a href="#!">
+                                                                <i class="fa fa-eye text-view"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="col-auto"><a href="#!">
+                                                                <i class="fa fa-pencil text-edit"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="col-auto"><a href="#!">
+                                                                <i class="fa fa-trash text-delete"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                        <div class="card user-card">
+                                            <div class="card-header">
+                                                <h5>Code : #123</h5>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="user-image">
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-radius" alt="User-Profile-Image">
+                                                </div>
+                                                <h6 class="f-w-600 m-t-25 m-b-10">Alessa Robert</h6>
+                                                <p class="text-muted">User |
+                                                    <span class="Malegender"> Male </span>
+                                                    |
+                                                    <span class="verified">Verified</span></p>
+                                                <hr>
+                                                <p class="text-muted m-t-15">abdullah@gmail.com</p>
+                                                <p class="text-muted m-t-15">0123456789</p>
+                                                <ul class="list-unstyled activity-leval">
+                                                    <li class="active"></li>
+                                                    <li class="active"></li>
+                                                    <li class="active"></li>
+                                                    <li class="active"></li>
+                                                    <li class="active"></li>
+                                                </ul>
+                                                <div class="bg-c-yellow counter-block m-t-10 p-20">
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="text-align: center">
+                                                            Registered at
+                                                            <br>
+                                                            01/01/2020 - 12:00 AM
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row justify-content-center user-social-link">
+                                                    <div class="col-auto"><a href="#!">
+                                                            <i class="fa fa-eye text-view"></i>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="col-auto"><a href="#!">
+                                                            <i class="fa fa-pencil text-edit"></i>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="col-auto"><a href="#!">
+                                                            <i class="fa fa-trash text-delete"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <script type="text/javascript">
-                        $(document).ready(function() {
-                            window.pdfMake.fonts = {
-                                AEfont: {
-                                        normal: 'AEfont-Regular.ttf',
-                                        bold: 'AEfont-Regular.ttf',
-                                        italics: 'AEfont-Regular.ttf',
-                                        bolditalics: 'AEfont-Regular.ttf'
-                                    }
-                                };
-                            var table = $('.dataTable').DataTable({
-                                "order": [[ 0, "desc" ]],
-                                dom: 'Bfrtip',
-                                buttons: [
-                                    {extend:'copyHtml5',text:'نسخ',
-                                        exportOptions: {
-                                            columns: ':not(:last-child)',
-                                        },
-                                    },
-                                    {extend:'excelHtml5',text:'تصدير Excel',
-                                        exportOptions: {
-                                            columns: ':not(:last-child)',
-                                        },
-                                    },
-                                    {extend:'csvHtml5',text:'تصدير CSV',
-                                        exportOptions: {
-                                            columns: ':not(:last-child)',
-                                        },
-                                    },
-                                    {extend:'pdfHtml5',text:'تصدير PDF' ,
-                                        customize: function (doc) {
-                                            doc.defaultStyle =
-                                                {
-                                                    font: 'AEfont',
-                                                    alignment: 'center',
-                                                    fontSize: 16,
-                                                }
-                                        },
-                                        exportOptions: {
-                                            columns: [2,1,0],
-                                        },
-
-                                    } ,
-                                    {extend:'print',text:'طباعة' ,
-                                        exportOptions: {
-                                            columns: ':not(:last-child)',
-                                        },
-                                    },
-                                ],
-                                processing: true,
-                                serverSide: true,
-                                responsive: true,
-                                "language": {
-                                    "sProcessing":   "جارٍ التحميل...",
-                                    "sLengthMenu":   "أظهر _MENU_ مدخلات",
-                                    "sZeroRecords":  "لم يعثر على أية سجلات",
-                                    "sInfo":         "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
-                                    "sInfoEmpty":    "يعرض 0 إلى 0 من أصل 0 سجل",
-                                    "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
-                                    "sInfoPostFix":  "",
-                                    "sSearch":       "ابحث:",
-                                    "sUrl":          "",
-                                    "oPaginate": {
-                                        "sFirst":    "الأول",
-                                        "sPrevious": "السابق",
-                                        "sNext":     "التالي",
-                                        "sLast":     "الأخير"
-                                    }
-                                },
-                                ajax: "{{ route('users.index') }}",
-                                aoColumns: [
-                                    {data: 'id', name: 'id'},
-                                    {data: 'fullname', name: 'fullname'},
-                                    {data: 'email', name: 'email'},
-                                    {data: 'type', name: 'type'},
-                                    {data: 'action', name: 'action', orderable: false,
-                                        paging:false,
-                                        searchable: false,
-                                        bSearchable:false,
-                                    },
-                                ],
-                                initComplete: function () {
-                                    this.api().columns('.is_filter').every(function () {
-                                        var column = this;
-                                        var input = document.createElement("input");
-                                        $(input).addClass("form-control")
-                                        $(input).appendTo($(column.footer()).empty())
-                                            .on('change', function () {
-                                                column.search($(this).val(), false, false, true).draw();
-                                            });
-                                    });
-                                }
-                            });
-
-
-
-
-                        });
-
-
-
-                    </script>
-
-
+                    <!-- [ page content ] end -->
                 </div>
-                <!--col-md-12-->
-
             </div>
-            <!--row-->
-
         </div>
-        <!--col_page_content-->
     </div>
-    <!--wrapper_cols-->
+
+@endsection
+
+@section('footer')
 
 @endsection

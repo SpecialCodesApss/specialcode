@@ -14,6 +14,14 @@
                 </li>
 
 
+                <li class="">
+                    <a href="{{url('admin/users')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                        <span class="pcoded-mtext">{{trans('users.Users')}}</span>
+                    </a>
+                </li>
+
+
         </div>
     </div>
 </nav>
