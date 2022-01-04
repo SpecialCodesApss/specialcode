@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Traits\Admin_sections_traits;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        //make bootstrape pagination is default
+        Paginator::useBootstrap();
 
         $admin_sections=$this->getAdminSections();
         view()->share('admin_sections', $admin_sections);

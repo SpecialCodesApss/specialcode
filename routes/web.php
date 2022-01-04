@@ -142,6 +142,21 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //});
 
 
+////////////////****** Frontend Routes *****************//////////////
+/////////////////////////////////////////////////////////////////////
+
+Route::get('users/verify_account','App\Http\Controllers\frontend\UsersController@verify_account');
+Route::get('users/my_account',
+    'App\Http\Controllers\frontend\UsersController@view');
+Route::get('users/my_account/edit',
+    'App\Http\Controllers\frontend\UsersController@edit');
+Route::post('users/my_account/edit','App\Http\Controllers\frontend\UsersController@update')->name('users_account.update');
+Route::post('users/my_account/update_password','App\Http\Controllers\frontend\UsersController@updatepassword');
+Route::post('users/my_account/update_profile_image','App\Http\Controllers\frontend\UsersController@updateProfileImage');
+
+////////////////****** End Frontend Routes *****************//////////////
+/////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -156,6 +171,13 @@ Route::middleware("admin")->prefix('admin')->group(function () {
     foreach ($admin_sections as $admin_section){
         Route::resource($admin_section['section_flag'], 'App\Http\Controllers\Admin\\'.$admin_section['controller_name']);
     }
+
+
+
+Route::post('/updatepassword/{id}', 'App\Http\Controllers\Admin\UsersController@updatepassword');
+Route::post('/updateProfileImage/{id}', 'App\Http\Controllers\Admin\UsersController@updateProfileImage');
+Route::get('/my_profile', 'App\Http\Controllers\Admin\UsersController@my_profile');
+
 
 Route::get('/changePassword', 'PasswordController@viewChangePwd')->name('changePassword');
 Route::post('/changePassword', 'PasswordController@changePwd')->name('ChangePwd');

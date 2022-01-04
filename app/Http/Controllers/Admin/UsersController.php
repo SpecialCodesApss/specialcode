@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 use DataTables;
-
+use File;
 class UsersController extends Controller
 {
 
@@ -34,43 +35,8 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-
-
-        $users=User::all();
-
-//        if ($request->ajax()) {
-//            $data = User::query();
-//            return Datatables::eloquent($data)
-//                ->order(function ($data) {
-//                    $data->orderBy('id', 'desc');
-//                })
-//                ->editColumn('type', function(User $user) {
-//                    if($user->type=="user"){
-//                        return 'مستخدم';
-//                    }
-//                })
-//                ->addColumn('action', function($row){
-//                    $user_id=$row->id;
-//                    $form_id="delete_user_form_".$user_id;
-//                    $btn='
-//                    <div style="display:inline-block; width: 210px;">
-//                    <a class="btn btn-info" href="users/'.$user_id.'">عرض</a>
-//                            <a class="btn btn-primary" href="users/'.$user_id.'/edit">تعديل</a>
-//                            <form id="delete_user_form_'.$user_id.'" method="POST" action="users/'.$user_id.'" style="display:inline">
-//                                <input name="_method" type="hidden" value="DELETE">
-//                                <input name="_token" type="hidden" value="'.csrf_token().'">
-//                                <button type="button" onclick="return deleteItem('."'$form_id'".')" class="btn btn-danger">حذف</button>
-//                            </form>
-//                    </div>
-//                    ';
-//                    return $btn;
-//                })
-//                ->rawColumns(['action'])
-//                ->make(true);
-//
-//        }
+        $users=User::paginate(50);
         return view('backend.users.index',compact('users'));
-
     }
 
 
@@ -103,22 +69,34 @@ class UsersController extends Controller
             'c_password' => 'required|same:password',
             'gender' => 'required',
             'roles' => 'required',
-            'type' => 'required',
+//            'type_id' => 'required',
         ]);
 
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
+        $input['type_id'] = 1;
 
         //Email and mobile verification Codes
         $input['email_verify_code']='Verified';
         $input['mobile_verify_code']='Verified';
+
+
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $image_ex = $image->getClientOriginalName();
+            $imageName = date('YmdHis')."_".$image_ex;
+            $path = 'storage/images/users/profile_image/';
+            $image->move($path, $imageName);
+            $input['profile_image'] = $path.$imageName;
+        }
+
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 
 
         return redirect()->route('users.index')
-            ->with('success','تم اضافة بيانات المستخدم بنجاح');
+            ->with('success',trans('users.Account Created !'));
     }
 
 
@@ -147,12 +125,6 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        if($user->type == 'user'){
-            $user->type = "عميل";
-        }
-        if($user->type == 'doctor'){
-            $user->type = "دكتور";
-        }
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         return view('backend.users.edit',compact('user','roles','userRole'));
@@ -168,36 +140,67 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $this->validate($request, [
             'fullname' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'mobile' => 'required|unique:users,mobile,'.$id,
-            'password' => 'same:c_password',
-            'c_password' => 'same:password',
             'roles' => 'required',
             'gender' => 'required',
         ]);
 
-
-        $input = $request->all();
-        if(!empty($input['password'])){
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = array_except($input,array('password'));
-        }
-
-        //Email and mobile verification Codes
-        $input['email_verify_code']='Verified';
-        $input['mobile_verify_code']='Verified';
+        $input=[];
+        $input["fullname"] = $request->fullname;
+        $input["email"] = $request->email;
+        $input["mobile"] = $request->mobile;
+        $input["gender"] = $request->gender;
 
         $user = User::find($id);
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
         $user->assignRole($request->input('roles'));
 
+        return redirect()->back()->with('success',trans('users.Account Updated !'));
+    }
 
-        return redirect()->route('users.index')
-            ->with('success','تم تحديث بيانات المستخدم بنجاح');
+
+    public function updatepassword(Request $request,$id)
+    {
+
+        $this->validate($request, [
+            'password' => 'required|same:c_password',
+            'c_password' => 'required|same:password',
+        ]);
+
+        $input['password'] = Hash::make($request['password']);
+
+        $user = User::find($id);
+        $user->update($input);
+
+        return redirect()->back()->with('success',trans('users.Password Updated !'));
+    }
+
+
+    public function updateProfileImage(Request $request,$id)
+    {
+
+        $this->validate($request,[
+            'profile_image' => 'required',
+        ]);
+
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $image_ex = $image->getClientOriginalName();
+            $imageName = date('YmdHis')."_".$image_ex;
+            $path = 'storage/images/users/profile_image/';
+            $image->move($path, $imageName);
+            $input['profile_image'] = $path.$imageName;
+        }
+
+        $user = User::find($id);
+        $user->update($input);
+
+        return redirect()->back()->with('success',trans('users.Profile Image Updated !'));
     }
 
 
@@ -209,8 +212,19 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        //delete image
+        $old_image=User::find($id)->profile_image;
+        File::delete($old_image);
         User::find($id)->delete();
         return redirect()->route('users.index')
-            ->with('success','تم حذف بيانات المستخدم بنجاح');
+            ->with('success',trans('users.Account Deleted !'));
     }
+
+
+    public function my_profile()
+    {
+        $id=Auth::user()->id;
+        return redirect()->route('users.edit',$id);
+    }
+
 }

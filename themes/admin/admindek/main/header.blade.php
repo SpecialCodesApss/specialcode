@@ -26,19 +26,31 @@
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/bower_components/bootstrap/css/bootstrap.min.css')}}">
     <!-- waves.css -->
+    <link rel="stylesheet" href="{{url('themes/admin/admindek/assets/css/notification.css')}}" type="text/css" media="all">
+    <!-- notification.css -->
     <link rel="stylesheet" href="{{url('themes/admin/admindek/assets/pages/waves/css/waves.min.css')}}" type="text/css" media="all">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="{{url('themes/admin/admindek/assets/css/animate.css')}}" type="text/css" media="all">
     <!-- feather icon -->
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/icon/feather/css/feather.css')}}">
     <!-- Style.css -->
 
-    @if (Config::get('languages')[App::getLocale()] != "Arabic")
+
+@if (Config::get('languages')[App::getLocale()] != "Arabic")
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom.css')}}">
     @else
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom_ar.css')}}">
         @endif
+
+
     @yield('header')
+
+
+
+
+
 </head>
 
 <body>
@@ -99,9 +111,13 @@
                                     </li>
                                     <li>
                                         <div class="media">
+                                            @if(Auth::user()->profile_image != null)
+                                                <img class="img-radius" src="{{url(Auth::user()->profile_image)}}" alt="Generic placeholder image">
+                                            @else
                                             <img class="img-radius" src="{{url('themes/admin/admindek/assets/images/avatar-4.jpg')}}" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">John Doe</h5>
+                                            @endif
+                                                <div class="media-body">
+                                                <h5 class="notification-user">{{Auth::user()->fullname}}</h5>
                                                 <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
                                                 <span class="notification-time">30 minutes ago</span>
                                             </div>
@@ -142,8 +158,15 @@
                         <li class="user-profile header-notification">
                             <div class="dropdown-primary dropdown">
                                 <div class="dropdown-toggle" data-toggle="dropdown">
+                                    @if(Auth::user()->profile_image != null)
+                                    <img src="{{url(Auth::user()->profile_image)}}" class="img-radius" alt="User-Profile-Image">
+                                    @else
                                     <img src="{{url('themes/admin/admindek/assets/images/avatar-4.jpg')}}" class="img-radius" alt="User-Profile-Image">
-                                    <span>John Doe</span>
+                                    @endif
+                                        <span>{{Auth::user()->fullname}}</span>
+
+
+
                                     <i class="feather icon-chevron-down"></i>
                                 </div>
                                 <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
@@ -154,7 +177,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('admin/my_profile')}}">
                                             <i class="feather icon-user"></i> Profile
 
                                         </a>

@@ -22,8 +22,10 @@ class BaseController extends Controller
         if(!empty($result)){
             $response['data'] = $result;
         }
-
+		
+		$response=mb_convert_encoding($response, 'UTF-8', 'UTF-8');
         return response()->json($response, 200);
+		
     }
 
     /**
@@ -43,7 +45,7 @@ class BaseController extends Controller
             $response['data'] = $errorMessages;
         }
 
-
+		$response=mb_convert_encoding($response, 'UTF-8', 'UTF-8');
         return response()->json($response, $code);
     }
 }

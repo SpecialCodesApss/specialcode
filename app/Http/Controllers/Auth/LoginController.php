@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -31,17 +32,11 @@ class LoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
     protected function redirectTo()
     {
-        $user_id=auth()->user()->id;
         $user=Auth::user();
         if ($user->hasRole(['super_admin','admin','moderator'])) {
             return 'admin/dashboard';
         }
         return '/home';
-//
-//        if ($user->hasRole('Admin')) {
-//            return 'admin/dashboard';
-//        }
-//        return '/home';
     }
 
     /**
@@ -52,5 +47,35 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function login(Request $request)
+    {
+        $input = $request->all();
+
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
+        if(auth()->attempt(array($fieldType => $input['email'], 'password' => $input['password'])))
+        {
+            return redirect()->route('home');
+        }else{
+
+            return redirect()->route('login')
+                ->withErrors([
+                    "mobile" => [trans('auth.failed')],
+                ]);
+        }
+
     }
 }
