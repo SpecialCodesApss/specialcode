@@ -17,11 +17,11 @@ class PageController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:Page-show')->only('show');
-        $this->middleware('permission:Page-list')->only('index');
-        $this->middleware('permission:Page-create')->only('create','store');
-        $this->middleware('permission:Page-edit')->only('edit','update');
-        $this->middleware('permission:Page-delete')->only('destroy');
+        $this->middleware('permission:Page_Read')->only('show');
+        $this->middleware('permission:Page_Read')->only('index');
+        $this->middleware('permission:Page_Create')->only('create','store');
+        $this->middleware('permission:Page_Update')->only('edit','update');
+        $this->middleware('permission:Page_Delete')->only('destroy');
     }
 
     /**

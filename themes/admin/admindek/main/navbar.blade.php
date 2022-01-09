@@ -21,6 +21,24 @@
                     </a>
                 </li>
 
+{{--                <li class="">--}}
+{{--                    <a href="{{url('admin/pages')}}" class="waves-effect waves-dark">--}}
+{{--                        <span class="pcoded-micon"><i class="feather icon-file"></i></span>--}}
+{{--                        <span class="pcoded-mtext">{{trans('pages.Pages')}}</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+
+                @foreach($admin_sections as $section)
+                    @if($section->active == 1)
+                        <li class="">
+                            <a href="{{url('admin/'.$section->section_flag)}}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="fa {{$section->section_icon}}"></i></span>
+                                <span class="pcoded-mtext">{{trans($section->section_flag.'.'.$section->section_name_en)}}</span>
+                            </a>
+                        </li>
+                        @endif
+                    @endforeach
+
 
         </div>
     </div>

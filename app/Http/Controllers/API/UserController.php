@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController  as BaseController;
-use App\User;
-use App\Store;
+use App\Models\User;
+//use App\Store;
 use File;
 use Validator;
 use Carbon\Carbon;
@@ -63,6 +63,7 @@ class UserController extends BaseController
 
             $validator = Validator::make($request->all(), [
             'fullname' => 'required',
+            'profile_image' => 'required',
             'email' => "unique:users,email,$user_id,id",
             'mobile' => "unique:users,mobile,$user_id,id",
             ]);
@@ -88,11 +89,29 @@ class UserController extends BaseController
                 $input['email_verified_at']=null;
             }
 
+
+        if (isset($request['profile_image'])){
+            $photo = $request['profile_image'];
+            $photodest = 'storage/images/users/profile_image/';
+            $photoname = date('YmdHis')."_".rand(1000,9999).'_'.$photo->getClientOriginalName();
+            $photo->move($photodest,$photoname);
+            $photo=$photodest.$photoname;
+            $input['profile_image']=$photo;
+
+//            delete old file
+            $old_image=User::find($user_id)->profile_image;
+            File::delete($old_image);
+        }
+
+
             User::where('id',$user_id)->update($input);
             $user=User::where('id',$user_id)->first();
 
 
         return $this->sendResponse(trans('messages.profile_updated'),$user);
         }
+
+
+
 
 }

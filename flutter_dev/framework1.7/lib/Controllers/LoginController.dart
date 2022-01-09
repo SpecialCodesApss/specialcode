@@ -6,31 +6,28 @@ import '../helpers/LanguageHelper.dart';
 import '../helpers/LanguageHelper.dart' as LanguageHelper;
 
 class LoginController {
-  String serverUrl = "http://192.168.0.101/framework";
+  String serverUrl = "http://192.168.1.5/framework1.7";
   var status;
   var token;
   var message;
 
-  var language = LanguageHelper.Language;
-
 
   loginData(String email, String password, context) async {
+   var language = await LanguageHelper.Language;
     Uri request_URL = Uri.parse(serverUrl + "/oauth/token");
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
-      'language': (language)!,
+      'language': (language)!
     }, body: {
       "username": "$email",
       "password": "$password",
       "grant_type": "password",
       "client_id": "2",
-      "client_secret": "9ChtdfBwTlAZ8vdl7yI7fAxg8eliQ9n4gbtCBwmX"
+      "client_secret": "A8Z0ph2LBC79EIjFicdxySxiMNGn2FbBNFag1wOw"
     });
 
     var data = json.decode(response.body);
 
-    print("Asdasd");
-    print(data);
     status = data["success"];
     message = data["message"];
 
@@ -46,6 +43,6 @@ class LoginController {
   }
 
   read() async {
-    token = getCurrentUserToken();
+    token = getCurrentUserToken() as String?;
   }
 }

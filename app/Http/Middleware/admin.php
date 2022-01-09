@@ -29,6 +29,7 @@ class admin
         $user=Auth::user();
         if ($user->hasRole(['super_admin','admin','moderator'])) {
             return $next($request);
+//            return redirect('admin/dashboard');
         }
         else{
             return redirect('/home');
@@ -40,7 +41,6 @@ class admin
 //        elseif(Auth::user()){
 //            $user=Auth::user();
 //            if ($user->hasRole('admin')) {
-//                return redirect('admin/dashboard');
 //            }
 //            elseif ($user->hasRole('users_manager')) {
 //                return redirect('admin/dashboard');

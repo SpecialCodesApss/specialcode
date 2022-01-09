@@ -70,5 +70,6 @@ var messages = {
   "Rating_negativeComment": "نأسف لك على تقييمك هذا :(",
 
   "comment": "تعليقك",
+  "uploadPhoto": "تحميل صورة",
   "comment_placholder": "اكتب تعليقك هنا - اختياري",
 };

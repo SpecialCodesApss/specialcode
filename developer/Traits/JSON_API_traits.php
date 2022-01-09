@@ -2,7 +2,7 @@
 namespace Developer\Traits;
 use DB;
 use File;
-use App\Api_request;
+use App\Models\Api_request;
 
 trait JSON_API_traits{
 
@@ -49,10 +49,10 @@ trait JSON_API_traits{
             //first clear old json code
             $Generated_JSON_APIs_Requests = $this->get_Gnerated_JSON_API_code($table_name);
             //update this auto generated code from json file
-            $JSON_Content = file('developer/Framework_V_1.6.postman_collection.json');
+            $JSON_Content = file('developer/Framework_V_1.7.postman_collection.json');
             $JSON_Content = implode($JSON_Content);
             $JSON_Content=str_replace($Generated_JSON_APIs_Requests,'',$JSON_Content);
-            $new_file = 'Framework_V_1.6.postman_collection.json';
+            $new_file = 'Framework_V_1.7.postman_collection.json';
             $destinationPath="developer/";
             File::put($destinationPath.$new_file,$JSON_Content);
 
@@ -68,10 +68,10 @@ trait JSON_API_traits{
         ,{"message": "Comment"}
         ';
         //delete this auto generated code from json file
-        $JSON_Content = file('developer/Framework_V_1.6.postman_collection.json');
+        $JSON_Content = file('developer/Framework_V_1.7.postman_collection.json');
         $JSON_Content = implode($JSON_Content);
         $JSON_Content=str_replace(',{"message": "Comment"}',$Generated_JSON_APIs_Requests,$JSON_Content);
-        $new_file = 'Framework_V_1.6.postman_collection.json';
+        $new_file = 'Framework_V_1.7.postman_collection.json';
         $destinationPath="developer/";
         File::put($destinationPath.$new_file,$JSON_Content);
 
@@ -191,7 +191,7 @@ trait JSON_API_traits{
 								"api",
 								"'.$api_request['name'].'"
 							]
-							
+
 						}
 					},
 					"response": []
@@ -411,7 +411,7 @@ trait JSON_API_traits{
                        '.$create_code.'
                        '.$update_code.'
                        '.$view_code.'
-                       '.$delete_code.'    
+                       '.$delete_code.'
                 ],
                 "protocolProfileBehavior": {}
             }';

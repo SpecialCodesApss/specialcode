@@ -2,8 +2,8 @@
 
 namespace Developer\Controllers;
 
-use App\Admin_sections;
-use App\Api_request;
+use App\Models\Admin_sections;
+use App\Models\Api_request;
 use App\Http\Controllers\Controller;
 use DB;
 use Schema;
@@ -66,7 +66,7 @@ class ExtensionsController extends Controller
                 File::put($destinationPath.$file_name,$content);
             }
         }
-       
+
 
 
         //Copy Admin Views for extension in output module folder
@@ -976,7 +976,7 @@ class ExtensionsController extends Controller
 								"api",
 								"'.$api_request['name'].'"
 							]
-							
+
 						}
 					},
 					"response": []
@@ -1198,7 +1198,7 @@ class ExtensionsController extends Controller
                        '.$create_code.'
                        '.$update_code.'
                        '.$view_code.'
-                       '.$delete_code.'    
+                       '.$delete_code.'
                 ],
                 "protocolProfileBehavior": {}
             }
@@ -1260,14 +1260,14 @@ class ExtensionsController extends Controller
         foreach ($modules as $module_name){
             //Create premissions
             $permissions = [];
-            array_push($permissions,''.$module_name.'-list');
-            array_push($permissions,''.$module_name.'-create');
-            array_push($permissions,''.$module_name.'-edit');
-            array_push($permissions,''.$module_name.'-delete');
+            array_push($permissions,''.$module_name.'_Create');
+            array_push($permissions,''.$module_name.'_Read');
+            array_push($permissions,''.$module_name.'_Update');
+            array_push($permissions,''.$module_name.'_Delete');
 
             $role=Role::find(1);
             //cheek if its permission inserted before or not
-            $isTherePremission=Permission::where("name",$module_name.'-list')->first();
+            $isTherePremission=Permission::where("name",$module_name.'_Read')->first();
             if(isset($isTherePremission)){
                 foreach ($permissions as $permission) {
                     //revoke this premission for role admin
@@ -1395,14 +1395,14 @@ class ExtensionsController extends Controller
             $module_name = str_replace(".php","",$module_name);
             //Create premissions
             $permissions = [];
-            array_push($permissions,''.$module_name.'-list');
-            array_push($permissions,''.$module_name.'-create');
-            array_push($permissions,''.$module_name.'-edit');
-            array_push($permissions,''.$module_name.'-delete');
+            array_push($permissions,''.$module_name.'_Create');
+            array_push($permissions,''.$module_name.'_Read');
+            array_push($permissions,''.$module_name.'_Update');
+            array_push($permissions,''.$module_name.'_Delete');
 
             $role=Role::find(1);
             //cheek if its permission inserted before or not
-            $isTherePremission=Permission::where("name",$module_name.'-list')->first();
+            $isTherePremission=Permission::where("name",$module_name.'_Read')->first();
             if(! isset($isTherePremission)){
                 foreach ($permissions as $permission) {
                     //instert new premissions

@@ -4,11 +4,11 @@ import '../helpers/sharedPreferencesHelper.dart' as sharedPreferencesHelper;
 import '../helpers/LanguageHelper.dart' as LanguageHelper;
 
 class NotificationController {
-  String serverUrl = "http://192.168.0.101/framework";
+  String serverUrl = "http://192.168.1.5/framework1.7";
   var status;
   var message;
   var data;
-  List listdata = [];
+  var listdata ;
   var profileData;
 
   var token = sharedPreferencesHelper.token;
@@ -19,7 +19,7 @@ class NotificationController {
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
 
     data = json.decode(response.body);
@@ -33,7 +33,7 @@ class NotificationController {
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
 
     data = json.decode(response.body);
@@ -48,7 +48,7 @@ class NotificationController {
     final response = await http.put(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
     data = json.decode(response.body);
     status = data["success"];
@@ -61,7 +61,7 @@ class NotificationController {
     final response = await http.delete(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
     data = json.decode(response.body);
     status = data["success"];

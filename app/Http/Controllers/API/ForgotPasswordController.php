@@ -2,11 +2,11 @@
 namespace App\Http\Controllers\API;
 
 
-use App\Setting;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\User;
-use App\Password_reset;
+use App\Models\User;
+use App\Models\Password_reset;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -101,10 +101,10 @@ class ForgotPasswordController extends BaseController
             $message_subj=Setting::where('setting_key','verify_message_with_Email_subject')->first()->setting_value;
             $message=$message.' '.$token;
 
-            Mail::raw('Hi, welcome user!', function ($message) use ($input,$message_subj) {
-                $message->to($input['email'])
-                    ->subject($message_subj);
-            });
+//            Mail::raw('Hi, welcome user!', function ($message) use ($input,$message_subj) {
+//                $message->to($input['email'])
+//                    ->subject($message_subj);
+//            });
 
             return $this->sendError( trans('messages.verify_code_sent_email'));
         }

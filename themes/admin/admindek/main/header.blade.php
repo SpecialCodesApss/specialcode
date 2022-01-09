@@ -36,6 +36,42 @@
     <!-- Style.css -->
 
 
+
+    {{--    <!-- Font Awesome CDN -->--}}
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fontawesome5.css')}}">
+
+    {{--    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">--}}
+{{--        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>--}}
+{{--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">--}}
+
+
+
+
+{{--<!-- Html Editor -->--}}
+{{--    <link href="{{url('admin/assets/css/richtext.min.css')}} " rel="stylesheet">--}}
+{{--    <script src="{{url('admin/assets/js/jquery.richtext.js')}} "></script>--}}
+
+{{--    --}}{{--    <!--nice Selector for selectbox-->--}}
+{{--    <link href="{{url('themes/admin/admindek/assets/css/nice-select.css')}} " rel="stylesheet">--}}
+{{--    <script src="{{url('themes/admin/admindek/assets/js/jquery.nice-select.js')}} "></script>--}}
+{{--    <!-- chosen selector -->--}}
+{{--    <link href="{{url('themes/admin/admindek/assets/css/chosen.css')}} " rel="stylesheet">--}}
+
+{{--    <!--Multiple Select-->--}}
+{{--    <link href="{{url('themes/admin/admindek/assets/css/bootstrap-multiselect.css')}} " rel="stylesheet">--}}
+{{--    <script src="{{url('themes/admin/admindek/assets/js/bootstrap-multiselect.js')}} "></script>--}}
+
+
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>--}}
+{{--    <link href="{{url('themes/admin/admindek/assets/css/editor.css')}}" type="text/css" rel="stylesheet"/>--}}
+
+
+<!-- chosen selector -->
+    <link href="{{url('themes/admin/admindek/assets/css/chosen.css')}} " rel="stylesheet">
+
+
+
+
 @if (Config::get('languages')[App::getLocale()] != "Arabic")
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom.css')}}">
@@ -43,6 +79,31 @@
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom_ar.css')}}">
         @endif
+
+    <!--  Switchery -->
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/switchery.css')}}">
+    <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/switchery.js')}}"></script>
+
+
+
+
+    <!-- File Input -->
+    <!-- default icons used in the plugin are from Bootstrap 5.x icon library (which can be enabled by loading CSS below) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+@if (Config::get('languages')[App::getLocale()] == "Arabic")
+        <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fileinput.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fileinput-rtl.css')}}">
+    @else
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fileinput.css')}}">
+    @endif
+
+
+
+<!-- HTML Editor -->
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/richtext.min.css')}}">
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="{{url('themes/admin/admindek/assets/bower_components/jquery/js/jquery.min.js')}}"></script>
+  <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/jquery.richtext.js')}}"></script>
 
 
     @yield('header')
@@ -54,6 +115,7 @@
 </head>
 
 <body>
+
 <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
     <div class="loader-bar"></div>
@@ -195,10 +257,19 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="auth-sign-in-social.html">
-                                            <i class="feather icon-log-out"></i> Logout
 
+                                        <a href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            <i class="feather icon-log-out"></i>Logout
                                         </a>
+
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+
+
                                     </li>
                                 </ul>
                             </div>
@@ -220,8 +291,7 @@
 
                                     @endif
                                     <span>{{ trans('admin_messages.'.Config::get('languages')[App::getLocale()]) }}</span>
-{{--                                    <span>{{ Config::get('languages')[App::getLocale()] }}</span>--}}
-{{--                                    <span>English</span>--}}
+
                                     <i class="feather icon-chevron-down"></i>
                                 </div>
                                 <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
@@ -240,20 +310,6 @@
 
                                         @endif
                                     @endforeach
-
-
-{{--                                    <li>--}}
-{{--                                        <a href="#">--}}
-{{--                                            <i class="feather icon-settings"></i> Arabic--}}
-
-{{--                                        </a>--}}
-{{--                                    </li>--}}
-{{--                                    <li>--}}
-{{--                                        <a href="#">--}}
-{{--                                            <i class="feather icon-user"></i> English--}}
-
-{{--                                        </a>--}}
-{{--                                    </li>--}}
 
                                 </ul>
                             </div>
@@ -278,7 +334,6 @@
 
                     @yield('content')
 
-{{--                    @include('themes::admin.admindek.main.sample')--}}
 
                 </div>
                 <!-- [ style Customizer ] start -->

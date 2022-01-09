@@ -1,13 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\API;
-
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use Validator;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Resources\Product as ProductResource;
+use App\Product;
+
+use Validator;
+use File;
 
 class ProductController extends BaseController
 {
@@ -16,21 +14,14 @@ class ProductController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-
-        return $this->sendResponse(ProductResource::collection($products), 'Products Retrieved Successfully.');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
+        
+        $searchText=$request->searchText;
+        $products = Product:: 
+        where(function($q) use ($searchText){
+            $q->orWhere("type_selector","like","%".$searchText."%")->orWhere("user_id","like","%".$searchText."%")->orWhere("is_checkbox","like","%".$searchText."%")->orWhere("week_check","like","%".$searchText."%")->orWhere("week_select","like","%".$searchText."%")->orWhere("name_ar","like","%".$searchText."%")->orWhere("name_en","like","%".$searchText."%")->orWhere("product_file","like","%".$searchText."%")->orWhere("description_ar","like","%".$searchText."%")->orWhere("description_en","like","%".$searchText."%")->orWhere("html_text_ar","like","%".$searchText."%")->orWhere("html_text_en","like","%".$searchText."%");})->paginate(20);
+        return $this->sendResponse(trans("products.Product_read"),$products->toArray());
     }
 
     /**
@@ -42,20 +33,52 @@ class ProductController extends BaseController
     public function store(Request $request)
     {
         $input = $request->all();
+       $user_id=$request->user()->id;
+             $input['user_id']=$user_id;
+            
 
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
+        $validator=
+            Validator::make($input, [
+            'type_selector'=>'required',
+                'user_id'=>'required',
+                'is_checkbox'=>'required',
+                'week_check'=>'required',
+                'week_select'=>'required',
+                'name_ar'=>'required',
+                'name_en'=>'required',
+                'product_file'=>'required',
+                'description_ar'=>'required',
+                'description_en'=>'required',
+                'html_text_ar'=>'required',
+                'html_text_en'=>'required',
+                'active'=>'required',
+                
         ]);
+        
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError($validator->errors()->first());
         }
 
-        $product = Product::create($input);
+        
+                if ($request->hasFile('product_file')) {
+                    $document = $request->file('product_file');
+                    $ext = $document->getClientOriginalExtension();
+                        $imageName = date('YmdHis') . ".$ext";
+                        $path = 'storage/images/products/product_file/';
+                        $request->file('product_file')->move($path, $imageName);
+                        $input['product_file'] = $path.$imageName;
+                }
+                
 
-        return $this->sendResponse(new ProductResource($product), 'Product Created Successfully.');
+        $Product = Product::create($input);
+
+        
+        
+
+        return $this->sendResponse(trans("products.Product_create"),$Product->toArray());
     }
+
 
     /**
      * Display the specified resource.
@@ -63,26 +86,22 @@ class ProductController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
-        $product = Product::find($id);
 
-        if (is_null($product)) {
+         
+        $Product = Product::where('id', $id)->first();
+
+        if(isset($Product)){
+        
+        
+        }
+
+        if (is_null($Product)) {
             return $this->sendError('Product not found.');
         }
 
-        return $this->sendResponse(new ProductResource($product), 'Product Retrieved Successfully.');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->sendResponse(trans("products.Product_read"),$Product->toArray());
     }
 
     /**
@@ -92,24 +111,58 @@ class ProductController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$Product_id)
     {
-        $input = $request->all();
+        $input = $request->except('images','files','_method');
+        $user_id=$request->user()->id;
+             $input['user_id']=$user_id;
+            
 
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
+         $validator=
+            Validator::make($input, [
+            'type_selector'=>'required',
+                'user_id'=>'required',
+                'is_checkbox'=>'required',
+                'week_check'=>'required',
+                'week_select'=>'required',
+                'name_ar'=>'required',
+                'name_en'=>'required',
+                'description_ar'=>'required',
+                'description_en'=>'required',
+                'html_text_ar'=>'required',
+                'html_text_en'=>'required',
+                'active'=>'required',
+                
         ]);
-
+        
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError($validator->errors()->first());
         }
-        $product = Product::find($id);
-        $product->name = $input['name'];
-        $product->detail = $input['detail'];
-        $product->save();
 
-        return $this->sendResponse(new ProductResource($product), 'Product Updated Successfully.');
+        
+                $old_product_file=Product::find($Product_id)->product_file;
+                if ($request->hasFile('product_file')) {
+                    $document = $request->file('product_file');
+                    $ext = $document->getClientOriginalExtension();
+                        $imageName = date('YmdHis') . ".$ext";
+                        $path = 'storage/images/products/product_file/';
+                        $request->file('product_file')->move($path, $imageName);
+                        $input['product_file'] = $path.$imageName;
+                        File::delete($old_product_file);
+                    }
+                    else{
+                    $input['product_file'] =$old_product_file;
+                }
+                
+
+        $Product=Product::where(['id'=>$Product_id ])->where(['user_id' => $user_id ])->update($input);
+
+        
+        
+
+        $Product = Product::where(['id'=>$Product_id , 'user_id' => $user_id ])->get();
+        return $this->sendResponse(trans("products.Product_update"),$Product->toArray());
+
     }
 
     /**
@@ -118,11 +171,28 @@ class ProductController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$Product_id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        //delete files
+         // delete files and images
+        
+                $old_product_file=Product::find($Product_id)->product_file;
+                 File::delete($old_product_file);
+                
+        $user_id=$request->user()->id;
+            
+         // delete files and images in sub tables if this module has mutiple files or images
+        
+        Product::where(['id'=>$Product_id ])->where(['user_id' => $user_id ])->delete();
 
-        return $this->sendResponse([], 'Product Deleted Successfully.');
+
+
+        return $this->sendResponse(trans("products.Product_delete"));
+
     }
+
+     //additional Functions
+            
+            
+
 }

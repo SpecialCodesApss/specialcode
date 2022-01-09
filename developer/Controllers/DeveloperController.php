@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use File;
 use DB;
-use App\Admin_sections;
+use App\Models\Admin_sections;
 use Illuminate\Support\Facades\App;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -17,10 +17,11 @@ use \Statickidz\GoogleTranslate;
 use Developer\Traits\Developer_traits;
 use Developer\Traits\JSON_API_traits;
 use Developer\Traits\Flutter_traits;
+use Developer\Traits\Web_traits;
 
 class DeveloperController extends Controller
 {
-    use Developer_traits,JSON_API_traits,Flutter_traits;
+    use Developer_traits,JSON_API_traits,Web_traits,Flutter_traits;
 
 
     public function index(){
@@ -187,7 +188,8 @@ class DeveloperController extends Controller
             }
 
             elseif(strpos($table_field, 'is_') !== false){
-                $datatype='is_checkbox';
+//                $datatype='is_checkbox';
+                $datatype='is_switch';
             }
             elseif(strpos($table_field, 'checkbox') !== false){
                 $datatype='table_to_checkbox';
@@ -268,7 +270,7 @@ class DeveloperController extends Controller
             }
 
 
-            $datatypeArray=['number','price','varchar','enum_selector','is_checkbox','image','file','url_link','select','select_niceSelector','select_with_search','date','time','datetime','textarea','HTMLtextarea','table_to_checkbox','table_to_select','table_to_table','table_to_tagInput', 'active', 'order_status', 'sort'];
+            $datatypeArray=['number','price','varchar','enum_selector','is_checkbox','is_switch','image','file','url_link','select','select_niceSelector','select_with_search','date','time','datetime','textarea','HTMLtextarea','table_to_checkbox','table_to_select','table_to_table','table_to_tagInput', 'active', 'order_status', 'sort'];
             $options='';
             foreach ($datatypeArray as $data){
                 if($datatype == $data ){
@@ -880,16 +882,26 @@ class DeveloperController extends Controller
             $this->CreateModuleFile($Capital_table_name."_file",$sub_module_fields,'[]');
         }
 
-        //Step 2 : Create Controller File
+        //Step 2 : Create Controller File for Admin
         //check if admin controller is active
         if(isset($input['Admin_Coding'])){
             $this->CreateControllerFile($module_name,$table_name,$table_fields,$section_flag,$input,$Capital_table_name);
         }
 
+
+        //Step 2 : Create Controller File for website
+        //check if admin controller is active
+        if(isset($input['Web_Coding'])){
+            $this->CreateWebControllerFile($module_name,$table_name,$table_fields,$section_flag,$input,
+                $Capital_table_name);
+        }
+
+
         //Step 3 : Create Controller File
         //check if mobile API controller is active
         if(isset($input['Mobile_Coding'])){
-            $this->CreateAPIControllerFile($module_name,$table_name,$table_fields,$section_flag,$input,$Capital_table_name);
+            $this->CreateAPIControllerFile($module_name,$table_name,$table_fields,$section_flag,$input,
+                $Capital_table_name);
         }
 
         //Step 4 : ِAdd Module to Admin Section table and Menu

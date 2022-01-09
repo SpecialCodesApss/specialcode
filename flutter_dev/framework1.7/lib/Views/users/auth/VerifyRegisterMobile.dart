@@ -1,3 +1,4 @@
+import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../Controllers/VerificationController.dart';
 import '../../../helpers/LoaderDialog.dart';
@@ -8,6 +9,7 @@ import '../../../lang/en/app.dart' as messages_en;
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import '../../Home.dart';
 import 'Login.dart';
 import 'EditMobile.dart';
 import '../../../helpers/DialogHelper.dart';
@@ -26,10 +28,31 @@ class VerifyRegisterMobile extends StatefulWidget {
 
 class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
 
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
+  read() async {
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    read();
   }
   @override
   void dispose() {
@@ -56,7 +79,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
             hideLoaderDialogFunction(context);
             ShowToast('success', verificationController.message);
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => LoginPage()));
+                context, MaterialPageRoute(builder: (context) => Home()));
           } else {
             hideLoaderDialogFunction(context);
             ShowToast('warning', verificationController.message);
@@ -74,8 +97,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
 
   _SendVerifyCode() {
     var verifyCode_method = 'mobile'; // get this from settings
-    setState(() {
-      showLoaderDialogFunction(context);
+    Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
       if (verifyCode_method == 'mobile') {
         verificationController.SendMobVerifyCode(context).whenComplete(() {
           if (verificationController.status == true) {
@@ -97,7 +119,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
           }
         });
       }
-    });
+
   }
 
   /***End of Declare API functions ****/
@@ -132,7 +154,18 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
         ),
         centerTitle: true,
       ),
-      body: Container(
+      body:
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+      Container(
           decoration: BoxDecoration(
             /*image: DecorationImage(
             image: AssetImage("assets/images/bg.png"),
@@ -143,7 +176,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
             padding: EdgeInsets.all(30.0),
             children: <Widget>[
               Image(
-                image: AssetImage('assets/images/white_logo.png'),
+                image: AssetImage('assets/images/logo_white.png'),
                 height: 150.0,
               ),
               Container(

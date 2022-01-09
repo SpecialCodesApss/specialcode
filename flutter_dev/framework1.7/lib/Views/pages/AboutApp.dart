@@ -1,3 +1,4 @@
+import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../Controllers/PageController.dart';
 import '../../helpers/LoaderDialog.dart';
@@ -26,8 +27,27 @@ class _AboutAppState extends State<AboutApp> {
   var pageHtml = '';
   var language = LanguageHelper.Language;
 
+
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
   ViewPageController pageController = new ViewPageController();
   read() async {
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     pageController.show("aboutapp").whenComplete(() {
       if (pageController.status == true) {
@@ -82,7 +102,18 @@ class _AboutAppState extends State<AboutApp> {
         ),
         centerTitle: true,
       ),
-      body: Container(
+      body:
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+      Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
             /*image: DecorationImage(

@@ -17,15 +17,23 @@ class LoginController
      */
     public function index()
     {
+
         if(Auth::user()){
-            $user_id=Auth::user()->id;
-            $user_role=Role::find($user_id);
-            if ($user_role->name == 'super_admin') {
+            $user = Auth::user();
+            if ($user->hasRole(['super_admin','admin','moderator'])) {
                 return redirect('admin/dashboard');
             }
             else{
-                return redirect('login');
+                return redirect('/home');
             }
+//            $user_id=Auth::user()->id;
+//            $user_role=Role::find($user_id);
+//            if ($user_role->name == 'super_admin') {
+//                return redirect('admin/dashboard');
+//            }
+//            else{
+//                return redirect('login');
+//            }
         }
 
         $theme_name = config('global.theme_name');

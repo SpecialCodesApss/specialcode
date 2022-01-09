@@ -71,6 +71,37 @@
 <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/script.min.js')}}"></script>
 
 
+
+<!--  File Input -->
+<script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/fileinput.js')}}"></script>
+
+<!--  Chosen selector  -->
+<script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/chosen.jquery.js')}}"></script>
+
+
+{{--    <!-- Font Awesome  -->--}}
+<script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/fontawesome5.js')}}"></script>
+
+<script>
+
+    //prevent form from submit data on click enter
+    $('form').submit(function () {
+        if ($(document.activeElement).attr('type') == 'submit')
+            return true;
+        else return false;
+    });
+
+
+    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+    elems.forEach(function(html) {
+        var switchery = new Switchery(html);
+    });
+
+    $(".chosen-select").chosen();
+
+</script>
+
+
 @yield('footer')
 
 
@@ -104,5 +135,4 @@
 </body>
 
 
-<!-- Mirrored from demo.dashboardpack.com/admindek-html/default/sample-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 12 Dec 2021 18:01:54 GMT -->
 </html>

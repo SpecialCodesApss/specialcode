@@ -33,10 +33,18 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         $user=Auth::user();
+
         if ($user->hasRole(['super_admin','admin','moderator'])) {
-            return 'admin/dashboard';
+            return redirect('admin/dashboard');
         }
-        return '/home';
+        else{
+            return redirect('/home');
+        }
+
+//        if ($user->hasRole(['super_admin','admin','moderator'])) {
+//            return 'admin/dashboard';
+//        }
+//        return '/home';
     }
 
     /**
@@ -68,7 +76,16 @@ class LoginController extends Controller
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
         if(auth()->attempt(array($fieldType => $input['email'], 'password' => $input['password'])))
         {
-            return redirect()->route('home');
+
+            $user=Auth::user();
+            if ($user->hasRole(['super_admin','admin','moderator'])) {
+                return redirect('admin/dashboard');
+            }
+            else{
+                return redirect('/home');
+            }
+
+//            return redirect()->route('home');
         }else{
 
             return redirect()->route('login')

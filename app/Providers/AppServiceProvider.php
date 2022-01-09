@@ -38,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
         $theme_name=Setting::where('setting_key','admin_theme_name')->first()->setting_value;
         view()->share('theme_name', $theme_name);
 
+//        $lang = app()->getLocale();
+//        view()->share('lang', $lang);
+
         view()->addNamespace('themes', app_path('../themes'));
     }
 }

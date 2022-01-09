@@ -22,7 +22,6 @@
     <!-- Animate.css -->
     <link rel="stylesheet" href="{{url('themes/admin/admindek/assets/css/animate.css')}}" type="text/css" media="all">
 
-
     @if (Config::get('languages')[App::getLocale()] != "Arabic")
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom.css')}}">

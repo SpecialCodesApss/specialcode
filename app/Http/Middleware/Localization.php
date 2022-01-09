@@ -16,7 +16,12 @@ class Localization
      */
     public function handle(Request $request, Closure $next)
     {
-        $local = ($request->hasHeader('language')) ? $request->header('language') : 'ar';
+//        if(app()->Config::get('languages')[app()->getLocale()] == "Arabic"){
+//            $lang = "ar" ;
+//        }else{$lang = "en" ;}
+
+        $local =
+            ($request->hasHeader('language')) ? $request->header('language') : "en";
         // set laravel localization
         app()->setLocale($local);
         return $next($request);

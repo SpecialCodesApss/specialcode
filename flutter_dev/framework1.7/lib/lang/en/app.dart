@@ -70,6 +70,7 @@ var messages = {
   "Rating_negativeComment": "We're sad to hear :(",
 
   "comment": "comment",
+  "uploadPhoto": "upload Photo",
   "comment_placholder": "wirte your comment - optional",
 
 

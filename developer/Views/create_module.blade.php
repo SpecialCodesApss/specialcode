@@ -7,7 +7,7 @@
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
     <!-- Bootstrap-Iconpicker -->
-    <link rel="stylesheet" href="{{url('css/bootstrap-iconpicker.min.css')}}"/>
+    <link rel="stylesheet" href="{{url('developer/assets/css/bootstrap-iconpicker.min.css')}}"/>
     <link rel="stylesheet" href="{{url('developer/assets/css/table_scroller.css')}}"/>
 <!--    <link rel="stylesheet" href="{{url('developer/assets/css/fontawesome.css')}}"/>-->
 
@@ -407,6 +407,46 @@
 
 
 
+
+                    <br><br><br>
+                    <h3>Website Operations</h3>
+
+
+                    <table>
+                        <tr>
+                            <th style="font-size: 20px;text-decoration: underline">Web Coding Active</th>
+                            <td><td><input type="checkbox" name="Web_Coding" ></td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                        <thead>
+                        <th>List</th>
+                        <th>Create</th>
+                        <th>View</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                        </thead>
+                        <tr>
+                            <td><input type="checkbox" name="Web_List" checked></td>
+                            <td><input type="checkbox" name="Web_Create" checked></td>
+                            <td><input type="checkbox" name="Web_View" checked></td>
+                            <td><input type="checkbox" name="Web_Update" checked></td>
+                            <td><input type="checkbox" name="Web_Delete" checked></td>
+                        </tr>
+                        <tr>
+                            <th>Mobile_Require_User_Authentication</th>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="Web_require_auth_user_List" ></td>
+                            <td><input type="checkbox" name="Web_require_auth_user_Create" checked></td>
+                            <td><input type="checkbox" name="Web_require_auth_user_View" ></td>
+                            <td><input type="checkbox" name="Web_require_auth_user_Update" checked></td>
+                            <td><input type="checkbox" name="Web_require_auth_user_Delete" checked></td>
+                        </tr>
+                    </table>
+
+
+
 <br><br><br>
                     <h3>Flutter Mobile Operations</h3>
                     <h3>Index Page Screen</h3>
@@ -540,7 +580,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <!-- Bootstrap-Iconpicker Bundle -->
-    <script type="text/javascript" src="{{url('js/bootstrap-iconpicker.bundle.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('developer/assets/js/bootstrap-iconpicker.bundle.min.js')}}"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
     </script>
 

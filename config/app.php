@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'ar',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ar',
 
     /*
     |--------------------------------------------------------------------------
@@ -180,6 +180,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
 
         Yajra\DataTables\DataTablesServiceProvider::class,
+
 
     ],
 

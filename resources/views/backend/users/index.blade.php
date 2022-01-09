@@ -3,6 +3,7 @@
 @section('title',trans('users.Admin - Users'))
 @section('header')
 
+
 @endsection
 
 
@@ -61,7 +62,6 @@
                                     </p>
 
 
-                                    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
                                     <div class="container">
                                         <div class="row">
 

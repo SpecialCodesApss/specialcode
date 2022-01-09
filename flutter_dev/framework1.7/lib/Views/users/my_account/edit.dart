@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../Controllers/UserController.dart';
 import '../../../helpers/LoaderDialog.dart';
@@ -10,6 +13,8 @@ import '../../../helpers/SizeConfig.dart';
 import '../../../../helpers/LanguageHelper.dart' as LanguageHelper;
 import '../../../lang/ar/app.dart' as messages_ar;
 import '../../../lang/en/app.dart' as messages_en;
+// import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class EditMyAccount extends StatefulWidget {
   @override
@@ -28,32 +33,50 @@ class _EditMyAccountState extends State<EditMyAccount> {
   var language = LanguageHelper.Language;
 
 
-  _onPressedUpdate() {
+
+  var profile_image = "";
+  var user_profile_image;
+  Future getImage() async {
+    //focusout from keyboard - its important due to error happen when load image thats clear last textfield
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+    var image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
     setState(() {
-      showLoaderDialogFunction(context);
+      user_profile_image = File(image!.path);
+    });
+  }
+
+
+
+  _onPressedUpdate() {
+
+    showLoaderDialogFunction(context);
       if (_usernameController.text.trim().isNotEmpty &&
           _emailController.text.trim().isNotEmpty &&
           _mobileController.text.trim().isNotEmpty) {
         userController
             .update(
-                _usernameController.text.trim(), _emailController.text.trim(), _mobileController.text.trim(), context)
+                _usernameController.text.trim(), _emailController.text.trim(), _mobileController.text.trim()
+          ,context,user_profile_image)
             .whenComplete(() {
+          hideLoaderDialogFunction(context);
           if (userController.status == true) {
-            hideLoaderDialogFunction(context);
             ShowToast('success', userController.message);
             Navigator.push(context, MaterialPageRoute(builder: (context) => MyAccount()));
           } else {
-            hideLoaderDialogFunction(context);
             ShowToast('warning', userController.message);
           }
         });
       } else {
         hideLoaderDialogFunction(context);
         ShowToast('error',
-          language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields") ,
+          language == "en" ? messages_en.getTranslation("pleasefillallfields") :
+          messages_ar.getTranslation("pleasefillallfields") ,
             );
       }
-    });
+
   }
 
   //declare variables here
@@ -62,7 +85,28 @@ class _EditMyAccountState extends State<EditMyAccount> {
   var email = "";
   UserController userProfileController = new UserController();
 
+  String serverUrl = "http://192.168.1.5/framework1.7/";
+
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
   read() async {
+
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     userProfileController.profile(context).whenComplete(() {
       if (userProfileController.status == true) {
@@ -70,6 +114,11 @@ class _EditMyAccountState extends State<EditMyAccount> {
           _usernameController.text = userProfileController.data["data"]["fullname"] ?? "";
           _mobileController.text = userProfileController.data["data"]["mobile"] ?? "";
           _emailController.text = userProfileController.data["data"]["email"] ?? "";
+          if(userProfileController.data["data"]["profile_image"] != null ){
+            profile_image = serverUrl + userProfileController.data["data"]["profile_image"];
+          }else{
+            profile_image = "";
+          }
         });
         Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
       } else {
@@ -120,7 +169,20 @@ class _EditMyAccountState extends State<EditMyAccount> {
           onPressed: () => Navigator.pop(context, false),
         ),
       ),
-      body: Container(
+      body:
+
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+
+      Container(
         decoration: BoxDecoration(
             /*image: DecorationImage(
             image: AssetImage("assets/images/bg.png"),
@@ -137,6 +199,55 @@ class _EditMyAccountState extends State<EditMyAccount> {
                     padding: EdgeInsets.all(20.0),
                     child: Column(
                       children: <Widget>[
+
+
+                        Container(
+                          width: 122,height: 122,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color:const Color(0xFF707070),width:1),
+                          ),
+                          child:ClipRRect(
+                            borderRadius: BorderRadius.circular(60.0),
+                            child:
+                            user_profile_image != null ?
+                            Image.file(user_profile_image) :
+                            profile_image != '' ?
+                            Image.network(profile_image,fit: BoxFit.cover,width: 150,height: 150,)
+                                :Image.asset("assets/images/noimage.png",fit: BoxFit.cover,width: 150,height: 150,),
+                          ),
+                        ),
+
+                        const SizedBox(height: 8,),
+                        InkWell(
+                          onTap: getImage,
+                          child: Container(
+                            height: 27,
+                            width: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color:const Color(0xFF183A88),
+                              borderRadius: BorderRadius.circular(14),
+
+                            ),
+                            child: Text(
+                              language == "en" ? messages_en.getTranslation("uploadPhoto") :
+                              messages_ar.getTranslation("uploadPhoto")
+                              ,
+                              style: TextStyle(
+                                color: const Color(0xFFFFFFFF),
+                                fontFamily: 'Cairo',
+                                fontWeight: FontWeight.normal,
+                                fontSize: 10,
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+
+
                         TextFormField(
                           controller: _usernameController,
                           //initialValue: username,

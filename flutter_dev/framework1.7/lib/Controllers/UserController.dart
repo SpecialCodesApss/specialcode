@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../helpers/sharedPreferencesHelper.dart' as sharedPreferencesHelper;
 import '../helpers/LanguageHelper.dart' as LanguageHelper;
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 
 class UserController {
-  String serverUrl = "http://192.168.0.101/framework";
+  String serverUrl = "http://192.168.1.5/framework1.7";
   var status;
   var message;
   var data;
@@ -26,27 +29,45 @@ class UserController {
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
     data = json.decode(response.body);
     status = data["success"];
     message = data["message"];
   }
 
-  update(String fullname, String email, String mobile, context) async {
+  update(String fullname, String email, String mobile,context,File profile_image) async {
     //basic variables
-    Uri request_URL = Uri.parse(serverUrl + "/api/users");
-    final response = await http.put(request_URL, headers: {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-      'language': (language)!,
-    }, body: {
-      'fullname': '$fullname',
-      'email': '$email',
-      'mobile': '$mobile',
-    });
+    //basic variables
+    await _init();
+    Uri request_URL = Uri.parse(serverUrl + "/api/UpdateProfile");
+    var uri = request_URL;
+    var request = new http.MultipartRequest("POST", uri);
+
+    if(profile_image != null){
+      var profile_imagestream = new http.ByteStream(DelegatingStream.typed(profile_image.openRead()));
+      var profile_imagelength = await profile_image.length();
+      var multipartFile = new http.MultipartFile('profile_image', profile_imagestream, profile_imagelength,
+          filename: basename(profile_image.path));
+      request.files.add(multipartFile);
+    }
+
+    request.fields["fullname"] = fullname;
+    request.fields["email"] = email;
+    request.fields["mobile"] = mobile;
+
+    request.headers["Accept"] = 'application/json';
+    request.headers["Authorization"] = 'Bearer $token';
+    request.headers["language"] = (language)!;
+
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
 
     data = json.decode(response.body);
+
+    print("dataaaaaaaaaa");
+    print(data);
+
     status = data["success"];
     message = data["message"];
 
@@ -68,7 +89,7 @@ class UserController {
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     }, body: {
       'old_password': '$old_password',
       'password': '$password',

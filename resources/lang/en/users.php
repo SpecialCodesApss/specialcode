@@ -71,7 +71,7 @@
 		'edit_information'    =>   'Edit information' ,
 		'old password incorrect !'    =>   'old password incorrect !' ,
 		'Old Password'    =>   'Old Password' ,
-		'aaaaa'    =>   'aaaaa' ,
+		'Cant Delete Admin Account !'    =>   'Cant Delete Admin Account !' ,
 		'aaaaa'    =>   'aaaaa' ,
 		'aaaaa'    =>   'aaaaa' ,
 		'aaaaa'    =>   'aaaaa' ,

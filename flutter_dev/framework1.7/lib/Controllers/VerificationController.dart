@@ -4,7 +4,7 @@ import '../helpers/LanguageHelper.dart' as LanguageHelper;
 import '../helpers/sharedPreferencesHelper.dart' as sharedPreferencesHelper;
 
 class VerificationController {
-  String serverUrl = "http://192.168.0.101/zoythree";
+  String serverUrl =  "http://192.168.1.5/framework1.7";
   var status;
   var message;
   var data;
@@ -33,7 +33,7 @@ class VerificationController {
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     }, body: {
       "token": "$verifycode",
       "verify_type": "$verify_type",
@@ -56,7 +56,7 @@ class VerificationController {
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     }, body: {});
 
     var data = json.decode(response.body);
@@ -73,7 +73,7 @@ class VerificationController {
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     }, body: {});
 
     var data = json.decode(response.body);
@@ -89,7 +89,7 @@ class VerificationController {
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     }, body: {
       'mobile': '$mobile',
     });
@@ -108,7 +108,7 @@ class VerificationController {
     final response = await http.post(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     }, body: {
       'email': '$email',
     });

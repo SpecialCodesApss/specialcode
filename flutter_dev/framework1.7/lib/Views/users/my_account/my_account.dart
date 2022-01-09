@@ -1,3 +1,5 @@
+import 'package:flutter_dev/helpers/InternetHelper.dart';
+
 import '../../../helpers/bottomNavigatorBarHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../Controllers/UserController.dart';
@@ -27,6 +29,7 @@ class _MyAccountState extends State<MyAccount> {
   var username = '';
   var mobile = '';
   var email = '';
+  var profile_image = '';
   var data;
 
   String notificationCount = '0';
@@ -35,8 +38,29 @@ class _MyAccountState extends State<MyAccount> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   var language = LanguageHelper.Language;
 
+  String serverUrl = "http://192.168.1.5/framework1.7/";
+
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
   UserController userController = new UserController();
   read() async {
+
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     userController.profile(context).whenComplete(() {
       print(userController.data);
@@ -47,6 +71,11 @@ class _MyAccountState extends State<MyAccount> {
           username = userController.data["data"]["fullname"] ?? " ";
           mobile = userController.data["data"]["mobile"] ?? " ";
           email = userController.data["data"]["email"] ?? " ";
+          if(userController.data["data"]["profile_image"] != null ){
+            profile_image = serverUrl + userController.data["data"]["profile_image"];
+          }else{
+            profile_image = "";
+          }
         });
       } else {
         Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
@@ -107,7 +136,19 @@ class _MyAccountState extends State<MyAccount> {
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home())),
         ),
       ),
-      body: Container(
+      body:
+
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+      Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
               /*image: DecorationImage(
@@ -125,11 +166,27 @@ class _MyAccountState extends State<MyAccount> {
                       padding: EdgeInsets.all(20.0),
                       child: Column(
                         children: <Widget>[
-                          Icon(
-                            Icons.account_circle,
-                            size: (SizeConfig.screenHeight)! / 6,
-                            color: Theme.of(context).primaryColor,
+
+                          Container(
+                            width: 122,height: 122,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color:const Color(0xFF707070),width:1),
+                            ),
+                            child:ClipRRect(
+                              borderRadius: BorderRadius.circular(60.0),
+                              child: profile_image != '' ?
+                              Image.network(profile_image,fit: BoxFit.cover,width: 150,height: 150,)
+                                  :Image.asset("assets/images/noimage.png",fit: BoxFit.cover,width: 150,height: 150,),
+                            ),
                           ),
+
+                          // Icon(
+                          //   Icons.account_circle,
+                          //   size: (SizeConfig.screenHeight)! / 6,
+                          //   color: Theme.of(context).primaryColor,
+                          // ),
                           Text(
                             username,
                             style: Theme.of(context).textTheme.bodyText2,

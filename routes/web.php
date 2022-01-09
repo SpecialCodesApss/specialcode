@@ -21,10 +21,10 @@ use Spatie\Permission\Models\Role;
 Route::get('/test', function () {
 
    $permissions = [];
-    array_push($permissions,'User_Create');
-    array_push($permissions,'User_Read');
-    array_push($permissions,'User_Update');
-    array_push($permissions,'User_Delete');
+    array_push($permissions,'Page_Create');
+    array_push($permissions,'Page_Read');
+    array_push($permissions,'Page_Update');
+    array_push($permissions,'Page_Delete');
         foreach ($permissions as $permission) {
         Permission::create(['name' => $permission]);
     }
@@ -154,6 +154,13 @@ Route::post('users/my_account/edit','App\Http\Controllers\frontend\UsersControll
 Route::post('users/my_account/update_password','App\Http\Controllers\frontend\UsersController@updatepassword');
 Route::post('users/my_account/update_profile_image','App\Http\Controllers\frontend\UsersController@updateProfileImage');
 
+
+$web_sections=\App\Models\Web_sections::where('controller_name','!=','')->get();
+foreach ($web_sections as $web_sections){
+    Route::resource($web_sections['section_flag'], 'App\Http\Controllers\Frontend\\'.$web_sections['controller_name']);
+}
+
+
 ////////////////****** End Frontend Routes *****************//////////////
 /////////////////////////////////////////////////////////////////////
 
@@ -181,5 +188,22 @@ Route::get('/my_profile', 'App\Http\Controllers\Admin\UsersController@my_profile
 
 Route::get('/changePassword', 'PasswordController@viewChangePwd')->name('changePassword');
 Route::post('/changePassword', 'PasswordController@changePwd')->name('ChangePwd');
+
+
+// additional admin routes
+    $admin_routes=\App\Models\Route::where(['type'=>'web_routes','middleware' => 'admin'])->get();
+    if(isset($admin_routes)){
+        foreach ($admin_routes as $admin_route){
+            if($admin_route['request_method_type']=='get'){
+                Route::get
+                (''.$admin_route['router_name'], 'App\Http\Controllers\Admin\\'.$admin_route['controller_name'].'@'.$admin_route['controller_method'])->name($admin_route['router_name']);
+            }
+            elseif ($admin_route['request_method_type'] == 'post'){
+                Route::post
+                (''.$admin_route['router_name'], 'App\Http\Controllers\Admin\\'.$admin_route['controller_name'].'@'.$admin_route['controller_method'])->name($admin_route['router_name']);
+            }
+        }
+    }
+
 });
 

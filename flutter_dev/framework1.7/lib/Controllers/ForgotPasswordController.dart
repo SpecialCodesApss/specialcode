@@ -4,7 +4,7 @@ import '../helpers/LanguageHelper.dart' as LanguageHelper;
 import '../helpers/sharedPreferencesHelper.dart' as sharedPreferencesHelper;
 
 class ForgotPasswordController {
-  String serverUrl = "http://192.168.0.101/framework";
+  String serverUrl = "http://192.168.1.5/framework1.7";
   var status;
   var message;
   var data;
@@ -19,7 +19,7 @@ class ForgotPasswordController {
     Uri request_URL = Uri.parse(serverUrl + "/api/SendMobileResetCode/" + mobile);
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
-      'language': (language)!,
+      'language': (language)!
     });
 
     var data = json.decode(response.body);
@@ -32,7 +32,7 @@ class ForgotPasswordController {
     Uri request_URL = Uri.parse(serverUrl + "/api/SendEmailResetCode/" + email);
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
-      'language': (language)!,
+      'language': (language)!
     });
 
     var data = json.decode(response.body);
@@ -46,7 +46,7 @@ class ForgotPasswordController {
     if (mobile.isNotEmpty) {
       final response = await http.post(request_URL, headers: {
         'Accept': 'application/json',
-        'language': (language)!,
+        'language': (language)!
       }, body: {
         'mobile': '$mobile',
         'token': '$Resetcode',
@@ -57,7 +57,7 @@ class ForgotPasswordController {
     } else {
       final response = await http.post(request_URL, headers: {
         'Accept': 'application/json',
-        'language': (language)!,
+        'language': (language)!
       }, body: {
         'email': '$email',
         'token': '$Resetcode',
@@ -75,7 +75,7 @@ class ForgotPasswordController {
     if (mobile.isNotEmpty) {
       final response = await http.post(request_URL, headers: {
         'Accept': 'application/json',
-        'language': (language)!,
+        'language': (language)!
       }, body: {
         'mobile': '$mobile',
         'token': '$Resetcode',
@@ -88,7 +88,7 @@ class ForgotPasswordController {
     } else {
       final response = await http.post(request_URL, headers: {
         'Accept': 'application/json',
-        'language': (language)!,
+        'language': (language)!
       }, body: {
         'email': '$email',
         'token': '$Resetcode',

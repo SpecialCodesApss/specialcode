@@ -1,7 +1,7 @@
 <?php
 namespace Developer\Traits;
-use App\Admin_sections;
-use App\Route;
+use App\Models\Admin_sections;
+use App\Models\Route;
 use File;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -99,21 +99,21 @@ class '.$controller_name.' {
     message=data["message"];
     listData = data["data"]["data"];
   }
-  
-  
+
+
   store('.$functionParameters.') async {
     //basic variables
     String request_URL = serverUrl+"/api/'.$table_name.'";
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.get(\'token\') ?? \'0\';
     var Lang = prefs.get(\'lang\') ?? \'ar\';
-    
+
     var uri = Uri.parse(request_URL);
     var request = new http.MultipartRequest("POST", uri,);
-    
+
     '.$multipartImageCode.'
     '.$requestfields.'
-   
+
     request.headers["Accept"] = \'application/json\';
     request.headers["Authorization"] = \'Bearer $token\';
     request.headers["language"] = Lang;
@@ -122,24 +122,24 @@ class '.$controller_name.' {
     data = json.decode(response.body);
     status =data["success"];
     message=data["message"];
-    
-  
-    
-  }  
-  
+
+
+
+  }
+
   update(int id,'.$functionParameters.') async {
     //basic variables
     String request_URL = serverUrl+"/api/'.$table_name.'/$id?_method=PUT";
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.get(\'token\') ?? \'0\';
     var Lang = prefs.get(\'lang\') ?? \'ar\';
-    
+
     var uri = Uri.parse(request_URL);
     var request = new http.MultipartRequest("POST", uri,);
-    
+
     '.$multipartImageCode.'
     '.$requestfields.'
-   
+
     request.headers["Accept"] = \'application/json\';
     request.headers["Authorization"] = \'Bearer $token\';
     request.headers["language"] = Lang;
@@ -148,13 +148,13 @@ class '.$controller_name.' {
     data = json.decode(response.body);
     status =data["success"];
     message=data["message"];
-     
- 
-    
-    
+
+
+
+
   }
-    
-  
+
+
   view(int id) async {
     //basic variables
     String request_URL = serverUrl+"/api/'.$table_name.'/$id";
@@ -172,7 +172,7 @@ class '.$controller_name.' {
     status =data["success"];
     message=data["message"];
 
-  }  
+  }
 
   delete(int id) async {
     //basic variables
@@ -193,7 +193,7 @@ class '.$controller_name.' {
 
   }
 
-} 
+}
 ';
 
         //Step 2 :: make Controller for Table
@@ -368,7 +368,7 @@ class _'.$Capital_table_name.'IndexState extends State<'.$Capital_table_name.'In
 
   }
 
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -650,10 +650,10 @@ var language = LanguageHelper.Language;
       }
     });
   }
-  
+
   '.$deleteFunctions.'
 
- 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -768,7 +768,7 @@ var language = LanguageHelper.Language;
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
                         }
-                        
+
                         var image = await ImagePicker.pickImage(source: ImageSource.gallery);
                         setState(() {
                           '.$table_field.' = image;
@@ -854,17 +854,17 @@ class '.$Capital_table_name.'Store extends StatefulWidget {
 
 class _'.$Capital_table_name.'StoreState extends State<'.$Capital_table_name.'Store>{
   //declare variables here
-  
+
 var language = LanguageHelper.Language;
   var data;
-    
+
   '.$imageDesignFunction.'
-  
+
 
   '.$controller_name.' _'.$controller_name.' = new '.$controller_name.'();
-  
+
   '.$Fields_Controller.'
-  
+
   _onPressedStore(){
     setState(() {
       showLoaderDialogFunction(context);
@@ -876,7 +876,7 @@ var language = LanguageHelper.Language;
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>'.$Capital_table_name.'Index())
-            );   
+            );
           }else{
             hideLoaderDialogFunction(context);
             ShowToast(\'warning\',_'.$controller_name.'.message);
@@ -890,9 +890,9 @@ var language = LanguageHelper.Language;
       }
     });
   }
-  
+
   read() async {
-    
+
   }
 
 
@@ -942,14 +942,14 @@ var language = LanguageHelper.Language;
         ),
         ),
       ),
-      
+
       body: Container(
         child: ListView(
         padding: EdgeInsets.all(10.0),
                           children: <Widget>[
                             '.$formTextFields.'
                             '.$imageDesignCode.'
-                            
+
                         SizedBox(
                           height: SizeConfig.screenWidth / screenHightRatio,
                         ),
@@ -1045,7 +1045,7 @@ var language = LanguageHelper.Language;
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
                         }
-                        
+
                         var image = await ImagePicker.pickImage(source: ImageSource.gallery);
                         setState(() {
                           '.$table_field.' = image;
@@ -1143,15 +1143,15 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
   //declare variables here
   var language = LanguageHelper.Language;
   var data;
-  
- 
+
+
   '.$imageDesignFunction.'
-  
+
 
   '.$controller_name.' _'.$controller_name.' = new '.$controller_name.'();
-  
+
   '.$Fields_Controller.'
-  
+
   _onPressedUpdate(){
     setState(() {
       showLoaderDialogFunction(context);
@@ -1163,7 +1163,7 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>'.$Capital_table_name.'Index())
-            );   
+            );
           }else{
             hideLoaderDialogFunction(context);
             ShowToast(\'warning\',_'.$controller_name.'.message);
@@ -1178,7 +1178,7 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
       }
     });
   }
-  
+
   read() async {
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     _'.$controller_name.'.view(widget.id).whenComplete((){
@@ -1241,7 +1241,7 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
         ),
         ),
       ),
-      
+
       body: Container(
               child: ListView(
               padding: EdgeInsets.all(10.0),
@@ -1294,7 +1294,7 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
               });
               return translation_response;
             }
-            
+
             var messages = {
         ';
         $en_lines = '
@@ -1307,7 +1307,7 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
               });
               return translation_response;
             }
-            
+
             var messages = {
         ';
         foreach ($table_fields as $table_field) {

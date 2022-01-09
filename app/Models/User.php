@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens,HasRoles;
@@ -21,7 +22,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'fullname', 'type_id', 'mobile',
-        'gender','email','password','email_verify_code','mobile_verify_code','profile_image',
+        'gender','email','password','profile_image','email_verify_code','mobile_verify_code'
     ];
 
     /**
@@ -31,7 +32,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token','email_verify_code','mobile_verify_code',
     ];
 
     /**
@@ -41,5 +42,13 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'mobile_verified_at' => 'datetime',
     ];
+
+
+    public function findForPassport($identifier) {
+        return $this->orWhere('email', $identifier)->orWhere('mobile', $identifier)->first();
+    }
+
+
 }

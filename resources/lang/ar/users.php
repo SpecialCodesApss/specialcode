@@ -57,7 +57,7 @@
         'Password'    =>   'الرقم السري' ,
         'Confirm Password'    =>   'إعادة الرقم السري' ,
 		'Close'    =>   'إغلاق' ,
-		'aaaaa'    =>   'aaaaa' ,
+		'Cant Delete Admin Account !'    =>   'لا يمكنك حذف حساب الأدمن' ,
 		'aaaaa'    =>   'aaaaa' ,
 		'aaaaa'    =>   'aaaaa' ,
 		'aaaaa'    =>   'aaaaa' ,

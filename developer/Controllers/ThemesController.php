@@ -2,12 +2,12 @@
 
 namespace Developer\Controllers;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use File;
 use DB;
-use App\Admin_sections;
+use App\Models\Admin_sections;
 use Session;
 
 

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
 import '../../../lang/ar/app.dart' as messages_ar;
@@ -29,10 +33,32 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 
+
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
+  read() async {
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    read();
   }
   @override
   void dispose() {
@@ -55,6 +81,21 @@ class _RegisterState extends State<Register> {
   String radioItem = 'male';
 
 
+  var profile_image = "";
+  var user_profile_image;
+  Future getImage() async {
+    //focusout from keyboard - its important due to error happen when load image thats clear last textfield
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+    var image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    setState(() {
+      user_profile_image = File(image!.path);
+    });
+  }
+
+
   _onPressed() {
     setState(() {
       showLoaderDialogFunction(context);
@@ -71,7 +112,7 @@ class _RegisterState extends State<Register> {
                 radioItem.trim(),
                 _passwordController.text.trim(),
                 _c_passwordController.text.trim(),
-                "user")
+                user_profile_image,"user")
             .whenComplete(() {
           if (registerController.status == true) {
             hideLoaderDialogFunction(context);
@@ -126,7 +167,20 @@ class _RegisterState extends State<Register> {
 //            onPressed:() => Navigator.pop(context, false),
 //          ),
       ),
-      body: Container(
+      body:
+
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+
+      Container(
         decoration: BoxDecoration(
           /*image: DecorationImage(
             image: AssetImage("assets/images/bg.png"),
@@ -136,10 +190,64 @@ class _RegisterState extends State<Register> {
         child: ListView(
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
-            Image(
-              image: AssetImage('assets/images/logo_white.png'),
-              height: 150.0,
+
+
+            Column(
+              children: [
+                Container(
+                  width: 122,height: 122,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color:const Color(0xFF707070),width:1),
+                  ),
+                  child:ClipRRect(
+                    borderRadius: BorderRadius.circular(60.0),
+                    child:
+                    user_profile_image != null ?
+                    Image.file(user_profile_image) :
+                    profile_image != '' ?
+                    Image.network(profile_image,fit: BoxFit.cover,width: 150,height: 150,)
+                        :Image.asset("assets/images/noimage.png",fit: BoxFit.cover,width: 150,height: 150,),
+                  ),
+                ),
+
+
+                const SizedBox(height: 8,),
+                InkWell(
+                  onTap: getImage,
+                  child: Container(
+                    height: 27,
+                    width: 80,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color:const Color(0xFF183A88),
+                      borderRadius: BorderRadius.circular(14),
+
+                    ),
+                    child: Text(
+                      language == "en" ? messages_en.getTranslation("uploadPhoto") :
+                      messages_ar.getTranslation("uploadPhoto")
+                      ,
+                      style: TextStyle(
+                        color: const Color(0xFFFFFFFF),
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],
             ),
+
+
+
+            // Image(
+            //   image: AssetImage('assets/images/logo_white.png'),
+            //   height: 150.0,
+            // ),
             Container(
               child: Card(
                   color: Colors.white.withOpacity(0.8),

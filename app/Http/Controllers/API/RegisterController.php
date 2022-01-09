@@ -7,14 +7,12 @@ namespace App\Http\Controllers\API;
 use App\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
-use App\User;
-use App\Doctor;
-
-use App\Store;
+use App\Models\User;
+//use App\Doctor;
+//use App\Store;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Mail;
-use App\Wallet;
 use Illuminate\Support\Str;
 
 
@@ -34,8 +32,8 @@ class RegisterController extends BaseController
             'fullname' => 'required',
             'email' => 'required|email|unique:users',
             'mobile' => 'required|unique:users',
-            'type' => 'required',
-            'gender' => 'required',
+//            'type' => 'required',
+//            'gender' => 'required',
             'password' => 'required',
             'c_password' => 'required|same:password',
             ]);
@@ -45,13 +43,27 @@ class RegisterController extends BaseController
                 return $this->sendError($validator->errors()->first());
             }
 
-            if ($request->hasFile('image')){
-            $photo = $request->image;
-                $photodest = "storage/images/users/";
-                $photoname = rand(100000,999999).'_'.$photo->getClientOriginalName();
-                $photo->move($photodest,$photoname);
-                $photo=$photodest.$photoname;
-            }
+
+        if (isset($input['profile_image'])){
+            $photo = $input['profile_image'];
+            $photodest = 'storage/images/users/profile_image/';
+            $photoname = date('YmdHis')."_".rand(1000,9999).'_'.$photo->getClientOriginalName();
+            $photo->move($photodest,$photoname);
+            $photo=$photodest.$photoname;
+            $input['profile_image']=$photo;
+        }
+        else{
+            $input['profile_image']=null;
+        }
+
+
+//            if ($request->hasFile('image')){
+//            $photo = $request->image;
+//                $photodest = "storage/images/users/";
+//                $photoname = rand(100000,999999).'_'.$photo->getClientOriginalName();
+//                $photo->move($photodest,$photoname);
+//                $photo=$photodest.$photoname;
+//            }
 
 
            //Email and mobile verification Codes
@@ -65,40 +77,19 @@ class RegisterController extends BaseController
 
             $input['password'] = bcrypt($input['password']);
             $user = User::create($input);
+
+        $user = User::find($user->id);
+
             $user['token'] =  $user->createToken('MyApp')->accessToken;
-
-            //if current user type is doctor , create table field
-            if($input["type"]=="doctor"){
-                $doctor_input=[];
-                $doctor_input["user_id"]=$user->id;
-                $doctor_input["name_ar"]=$user->fullname;
-                $doctor_input["name_en"]=$user->fullname;
-                $doctor_input["gender"]=$user->gender;
-                $doctor_input["active"]="0";
-                Doctor::create($doctor_input);
-            }
-
-            //add new row to database of user wallet
-            $wallet_input=[];
-            //Start get auto generated reference number
-            $count = Wallet::all()->count();
-            if($count > 0){
-            $id_code = Wallet::orderBy('id', 'desc')->first()->id+1;}
-            else{$id_code=0;}
-            $id_code=Str::random(6).$id_code;
-            $id_code=strtoupper($id_code);
-            $wallet_input['user_id']=$user->id;
-            $wallet_input['wallet_id']=$id_code;
-            $wallet_input['wallet_balance']=0;
-            $wallet_input['active']=1;
-            Wallet::create($wallet_input);
 
 
 
 
         //check method of Verification and send Verify Email or Mobile
-        $mobile_API_verify_account=Setting::where('setting_key','mobile_API_verify_account')->first()->setting_value;
-        $mobile_API_verify_account_method=Setting::where('setting_key','mobile_API_verify_account_method')->first()->setting_value;
+//        $mobile_API_verify_account=Setting::where('setting_key','mobile_API_verify_account')->first()->setting_value;
+//        $mobile_API_verify_account_method=Setting::where('setting_key','mobile_API_verify_account_method')->first()->setting_value;
+        $mobile_API_verify_account=true;
+        $mobile_API_verify_account_method = "mobile";
         if($mobile_API_verify_account == true){
             if($mobile_API_verify_account_method == 'mobile'){
 

@@ -157,8 +157,12 @@ class UsersController extends Controller
 
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-        $user->assignRole($request->input('roles'));
+
+        $admins_array=[1];
+        if(!in_array($id,$admins_array)){
+            DB::table('model_has_roles')->where('model_id',$id)->delete();
+            $user->assignRole($request->input('roles'));
+        }
 
         return redirect()->back()->with('success',trans('users.Account Updated !'));
     }
@@ -212,6 +216,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $admins_array=[1];
+        if(in_array($id,$admins_array)){
+            return redirect()->back()
+                ->with('success',trans('users.Cant Delete Admin Account !'));
+        }
         //delete image
         $old_image=User::find($id)->profile_image;
         File::delete($old_image);

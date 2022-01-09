@@ -6,18 +6,23 @@ initialize_token() async{
 }
 
 Future<String> getCurrentUserToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  final key = 'token';
-  token = prefs.getString(key);
-  return (token)!;
+  // final prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var user_token = prefs.getString('token');
+  if(user_token != null){
+    token = user_token;
+    return user_token;
+  }
+  else{
+    return '';
+  }
+
 }
 
-saveLoginedUserData(String token,String username,String email,String mobile,String email_verified_at,String mobile_verified_at)
+saveLoginedUserData(String token,String username,String email,String mobile,[String email_verified_at='',String mobile_verified_at=''])
 async {
-  final prefs = await SharedPreferences.getInstance();
-  final key = 'token';
-  final value = token;
-  prefs.setString(key, value);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('token', token);
   prefs.setString('username', username);
   prefs.setString('email', email);
   prefs.setString('mobile', mobile);

@@ -1,3 +1,4 @@
+import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:flutter_dev/helpers/bottomNavigatorBarHelper.dart';
 import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -36,7 +37,28 @@ class _NotificationsState extends State<Notifications> {
   List data=[];
   bool isNoNotifications = true;
   NotificationController notificationController = new NotificationController();
+
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
+
   read() async {
+
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+
     //get all un readed notifications
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     notificationController.listUnread().whenComplete(() {
@@ -115,6 +137,17 @@ class _NotificationsState extends State<Notifications> {
         ),
       ),
       body:
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+
       isNoNotifications
           ? Container(
               decoration: BoxDecoration(

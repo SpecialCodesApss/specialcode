@@ -1,3 +1,4 @@
+import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../Controllers/PageController.dart';
 import '../../helpers/LoaderDialog.dart';
@@ -26,7 +27,28 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
   var language = LanguageHelper.Language;
 
   ViewPageController pageController = new ViewPageController();
+
+  /*Internet and loading*/
+  /**************/
+  var is_not_connected = false;
+  var is_loading = false;
+  checkInternetConnection() async{
+    var connected = await InternetHelper().chkInternetConnection(context);
+    setState((){ is_not_connected = connected;});
+  }
+  /*End Internet and loading*/
+  /**************/
+
+
   read() async {
+
+    /*Internet and loading*/
+    /**************/
+    await checkInternetConnection();
+    setState(() {is_loading = false;});
+    /*End Internet and loading*/
+    /**************/
+
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     pageController.show("termsandconditions").whenComplete(() {
       if (pageController.status == true) {
@@ -79,7 +101,18 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
         ),
         centerTitle: true,
       ),
-      body:Container(
+      body:
+      /*Internet and loading*/
+      /**************/
+      is_not_connected == true ?
+      InternetHelper().getInternetWidget(context,checkInternetConnection)
+          :is_loading == true ?
+      Center(child: CircularProgressIndicator())
+          :
+      /*Internet and loading*/
+      /**************/
+
+      Container(
           alignment: Alignment.topRight,
           decoration: BoxDecoration(
             /*image: DecorationImage(

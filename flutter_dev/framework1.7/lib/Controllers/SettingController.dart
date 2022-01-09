@@ -4,7 +4,7 @@ import '../helpers/sharedPreferencesHelper.dart' as sharedPreferencesHelper;
 import '../helpers/LanguageHelper.dart' as LanguageHelper;
 
 class SettingController {
-  String serverUrl = "http://192.168.0.101/framework";
+  String serverUrl = "http://192.168.1.5/framework1.7";
   var status;
   var message;
   var data;
@@ -26,7 +26,7 @@ class SettingController {
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
     data = json.decode(response.body);
     status = data["success"];
@@ -43,7 +43,7 @@ class SettingController {
     final response = await http.get(request_URL, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'language': (language)!,
+      'language': (language)!
     });
     data = json.decode(response.body);
     status = data["success"];
