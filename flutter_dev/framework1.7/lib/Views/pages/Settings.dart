@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dev/helpers/InternetHelper.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
+
 
 class Settings extends StatefulWidget {
   @override
@@ -51,7 +50,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("Settings") : messages_ar.getTranslation("Settings")
+            LanguageHelper.trans("app","Settings")
         ),
         centerTitle: true,
       ),
@@ -76,8 +75,7 @@ class _SettingsState extends State<Settings> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                  language == "en" ? messages_en.getTranslation("Choose_language") : messages_ar.getTranslation
-                    ("Choose_language")
+          LanguageHelper.trans("app","Choose_language")
               ),
               // ButtonTheme(
               //   minWidth: double.infinity,

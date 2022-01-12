@@ -7,8 +7,8 @@ import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/MenuHelper.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class _MyAccountState extends State<MyAccount> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   var language = LanguageHelper.Language;
 
-  String serverUrl = "http://192.168.1.5/framework1.7/";
+  String serverUrl = "http://192.168.1.4/framework1.7/";
 
   /*Internet and loading*/
   /**************/
@@ -126,7 +126,7 @@ class _MyAccountState extends State<MyAccount> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("MyAccount") : messages_ar.getTranslation("MyAccount")
+            LanguageHelper.trans("app","MyAccount")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -209,7 +209,7 @@ class _MyAccountState extends State<MyAccount> {
                             minWidth: double.infinity,
                             child: RaisedButton(
                               child: Text(
-                                language == "en" ? messages_en.getTranslation("EditMyAccount") : messages_ar.getTranslation("EditMyAccount")
+                                  LanguageHelper.trans("app","EditMyAccount")
                                 ,
                                 style: Theme.of(context).textTheme.button,
                               ),
@@ -228,7 +228,7 @@ class _MyAccountState extends State<MyAccount> {
                             child: RaisedButton(
                               color: Theme.of(context).primaryColor,
                               child: Text(
-                                language == "en" ? messages_en.getTranslation("EditMyAccountPassword") : messages_ar.getTranslation("EditMyAccountPassword")
+                                  LanguageHelper.trans("app","EditMyAccountPassword")
                                 ,
                                 style: Theme.of(context).textTheme.button,
                               ),

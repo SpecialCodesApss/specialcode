@@ -6,7 +6,7 @@ import '../helpers/LanguageHelper.dart';
 import '../helpers/LanguageHelper.dart' as LanguageHelper;
 
 class CustomerServiceMsgController {
-  String serverUrl = 'https://doctorn.app';
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status ;
   var message;
   var data;

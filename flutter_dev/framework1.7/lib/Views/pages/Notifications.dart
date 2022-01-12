@@ -8,8 +8,6 @@ import '../../helpers/LoaderDialog.dart';
 import '../../helpers/MenuHelper.dart';
 import '../../helpers/ToastHelper.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
 import '../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +124,8 @@ class _NotificationsState extends State<Notifications> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("Notifications") : messages_ar.getTranslation("Notifications") ,
+            LanguageHelper.trans("app","Notifications")
+            ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
         centerTitle: true,
@@ -167,7 +166,8 @@ class _NotificationsState extends State<Notifications> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                language == "en" ? messages_en.getTranslation("Nonotifications") : messages_ar.getTranslation("Nonotifications"),
+                          LanguageHelper.trans("app","Nonotifications")
+                            ,
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ],

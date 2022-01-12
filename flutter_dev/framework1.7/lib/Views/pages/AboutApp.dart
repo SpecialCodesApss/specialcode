@@ -3,8 +3,6 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../Controllers/PageController.dart';
 import '../../helpers/LoaderDialog.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
 import '../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -137,8 +135,9 @@ class _AboutAppState extends State<AboutApp> {
       bottomSheet:
       Padding(
         padding: EdgeInsets.only(right: 20.0,left: 20.0),
-        child: Text( language == "en" ? messages_en.getTranslation("app_copyrights") : messages_ar.getTranslation
-          ("app_copyrights") ),
+        child: Text(
+            LanguageHelper.trans("app","app_copyrights")
+             ),
       ),
     );
   }

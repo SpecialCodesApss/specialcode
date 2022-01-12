@@ -1,14 +1,12 @@
 getTranslation(String message_name) {
-  var translation_response = "not found $message_name";
-  messages.forEach((key, value) {
-    if (key == message_name) {
-      translation_response = value;
-    }
-  });
+  String translation_response = "not found $message_name";
+  translation_response = messages[message_name] ?? translation_response;
   return translation_response;
 }
 
 var messages = {
+  "home": "..الرئيسية",
+  "homes": "الأساسي",
   "login": "تسجيل الدخول",
   "mobile": "رقم الجوال",
   "password": "الرقم السري",
@@ -40,7 +38,7 @@ var messages = {
   "VerifyMobileNumber": "تأكيد رقم الجوال",
   "resendverifycode": "إعادة إرسال كود التفعيل",
   "changeMobileNo": "تعديل رقم الجوال",
-  "home": "الرئيسية",
+
   "MyAccount": "حسابي",
   "Notifications": "الإشعارات",
   "Contactus": "اتصل بنا",
@@ -72,4 +70,6 @@ var messages = {
   "comment": "تعليقك",
   "uploadPhoto": "تحميل صورة",
   "comment_placholder": "اكتب تعليقك هنا - اختياري",
+
+
 };

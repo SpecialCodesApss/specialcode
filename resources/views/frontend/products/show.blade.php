@@ -1,7 +1,7 @@
-@extends('backend.layouts.app')
+@extends('layouts.app')
 
 
-@section('title',trans('products.Admin - products'))
+@section('title',trans('products.products'))
 @section('header')
 @endsection
 
@@ -16,7 +16,7 @@
                 <div class="page-header-title">
                     <i class="empty bg-c-blue"></i>
                     <div class="d-inline">
-                        <h5>{{trans('products.Admin - products')}}</h5>
+                        <h5>{{trans('products.products')}}</h5>
                         <span>{{trans('admin_messages.manage and control all system sides')}}
                              </span>
                     </div>
@@ -48,7 +48,7 @@
 
     <div class="card">
                                 <div class="card-header">
-                                    <h5>{{trans('products.Admin - products')}}</h5>
+                                    <h5>{{trans('products.products')}}</h5>
                                     <div class="card-header-right">
                                         <ul class="list-unstyled card-option">
                                             <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
@@ -71,7 +71,7 @@
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
-                <a class="btn btn-primary" href="{{ route('products.index') }}">
+                <a class="btn btn-primary" href="{{ url('products') }}">
                 {{trans('admin_messages.back')}}</a>
             </div>
         </div>
@@ -106,11 +106,12 @@
                     </div>
                         </div>
             
-             <div class="col-xs-3 col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <strong>{{trans("products.user_id")}}:</strong>
-<div>{{$Product->user_id}}</div>                        </div>
-                    </div>
+             <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <strong>{{trans("products.user_id")}}:</strong>
+                                {!!Form::select('user_id', $users,  $Product->user_id, ['class' => 'form-control  chosen-select','disabled'])!!}
+                            </div>
+                        </div>
             
             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">

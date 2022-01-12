@@ -22,6 +22,37 @@
 <script src="{{url('themes/admin/admindek/assets/js/vertical/vertical-layout.min.js')}}"></script>
 
 
+
+<!--  File Input -->
+<script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/fileinput.js')}}"></script>
+
+<!--  Chosen selector  -->
+<script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/chosen.jquery.js')}}"></script>
+
+
+{{--    <!-- Font Awesome  -->--}}
+<script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/fontawesome5.js')}}"></script>
+
+<script>
+
+    //prevent form from submit data on click enter
+    $('form').submit(function () {
+        if ($(document.activeElement).attr('type') == 'submit')
+            return true;
+        else return false;
+    });
+
+
+    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+    elems.forEach(function(html) {
+        var switchery = new Switchery(html);
+    });
+
+    $(".chosen-select").chosen();
+
+</script>
+
+
 @yield('footer')
 
 
@@ -31,7 +62,7 @@
         $(document).ready(function() {
             notify('bottom', 'right', '', 'inverse',
                 'animated fadeInUp', 'animated fadeOutDown', '', '{{session('success')}}'
-                , '' );
+                , '');
         });
     </script>
 @endif
@@ -52,6 +83,7 @@
     </script>
     @endif
 
+    </body>
 
-</body>
-</html>
+
+    </html>

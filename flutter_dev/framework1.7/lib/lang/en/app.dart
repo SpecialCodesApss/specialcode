@@ -1,12 +1,9 @@
 getTranslation(String message_name) {
-  var translation_response = "not found $message_name";
-  messages.forEach((key, value) {
-    if (key == message_name) {
-      translation_response = value;
-    }
-  });
+  String translation_response = "not found $message_name";
+  translation_response = messages[message_name] ?? translation_response;
   return translation_response;
 }
+
 
 var messages = {
   "login": "Login",

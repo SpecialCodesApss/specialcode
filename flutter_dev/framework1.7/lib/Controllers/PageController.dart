@@ -6,7 +6,7 @@ import '../helpers/LanguageHelper.dart' as LanguageHelper;
 import '../helpers/sharedPreferencesHelper.dart';
 
 class ViewPageController {
-  String serverUrl = "http://192.168.1.5/framework1.7";
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status;
   var message;
   var data;

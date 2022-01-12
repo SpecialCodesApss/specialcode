@@ -7,8 +7,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 import 'package:flutter_app_restart/flutter_app_restart.dart';
 import '../Auth/Login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,9 +129,7 @@ class _RegisterState extends State<Register> {
         });
       } else {
         hideLoaderDialogFunction(context);
-        ShowToast('error',
-            language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("Notificationspleasefillallfields") ,
-);
+        ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
       }
     });
   }
@@ -157,7 +155,7 @@ class _RegisterState extends State<Register> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("registernewaccount") : messages_ar.getTranslation("registernewaccount")
+            LanguageHelper.trans("app","registernewaccount")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -226,8 +224,7 @@ class _RegisterState extends State<Register> {
 
                     ),
                     child: Text(
-                      language == "en" ? messages_en.getTranslation("uploadPhoto") :
-                      messages_ar.getTranslation("uploadPhoto")
+                        LanguageHelper.trans("app","uploadPhoto")
                       ,
                       style: TextStyle(
                         color: const Color(0xFFFFFFFF),
@@ -260,7 +257,7 @@ class _RegisterState extends State<Register> {
                           style: Theme.of(context).textTheme.bodyText1,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("name") : messages_ar.getTranslation("name")
+                            LanguageHelper.trans("app","name")
                             ,
                             icon: Icon(Icons.account_circle),
                           ),
@@ -272,7 +269,7 @@ class _RegisterState extends State<Register> {
                           autocorrect: false,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("email") : messages_ar.getTranslation("email")
+                            LanguageHelper.trans("app","email")
                             ,
                             icon: Icon(Icons.email),
                           ),
@@ -283,7 +280,7 @@ class _RegisterState extends State<Register> {
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("mobile") : messages_ar.getTranslation("mobile")
+                            LanguageHelper.trans("app","mobile")
                             ,
                             icon: Icon(Icons.mobile_screen_share),
                           ),
@@ -326,7 +323,7 @@ class _RegisterState extends State<Register> {
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("password") : messages_ar.getTranslation("password")
+                            LanguageHelper.trans("app","password")
                             ,
                             icon: Icon(Icons.lock),
                           ),
@@ -337,7 +334,7 @@ class _RegisterState extends State<Register> {
                           obscureText: true,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("confirmpassword") : messages_ar.getTranslation("confirmpassword")
+                            LanguageHelper.trans("app","confirmpassword")
                             ,
                             icon: Icon(Icons.lock),
                           ),
@@ -349,7 +346,7 @@ class _RegisterState extends State<Register> {
                           minWidth: double.infinity,
                           child: RaisedButton(
                               child: Text(
-                                language == "en" ? messages_en.getTranslation("register") : messages_ar.getTranslation("register")
+                                LanguageHelper.trans("app","register")
                                 ,
                                 style: Theme.of(context).textTheme.button,
                               ),
@@ -363,7 +360,7 @@ class _RegisterState extends State<Register> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              language == "en" ? messages_en.getTranslation("haveaccount") : messages_ar.getTranslation("haveaccount")
+                              LanguageHelper.trans("app","haveaccount")
                               ,
                               style: TextStyle(),
                             ),
@@ -380,7 +377,7 @@ class _RegisterState extends State<Register> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                language == "en" ? messages_en.getTranslation("login") : messages_ar.getTranslation("login")
+                                LanguageHelper.trans("app","login")
                                 ,
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,

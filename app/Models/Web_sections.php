@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Admin_sections extends Model
+class Web_sections extends Model
 {
     /**
      * The attributes that are mass assignable.

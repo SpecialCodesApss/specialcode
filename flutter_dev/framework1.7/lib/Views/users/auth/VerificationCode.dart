@@ -4,8 +4,8 @@ import '../../../Controllers/ForgotPasswordController.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
@@ -109,9 +109,7 @@ class _VerificationcodeState extends State<Verificationcode> {
         }
       });
     } else {
-      ShowToast('error',
-          language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("Notificationspleasefillallfields") ,
-);
+      ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
     }
   }
 
@@ -143,7 +141,7 @@ class _VerificationcodeState extends State<Verificationcode> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("verificationcode") : messages_ar.getTranslation("verificationcode")
+            LanguageHelper.trans("app","verificationcode")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -189,7 +187,7 @@ class _VerificationcodeState extends State<Verificationcode> {
                                 top:
                                     (SizeConfig.screenHeight)! / screenHightRatio),
                             child: Text(
-                              language == "en" ? messages_en.getTranslation("verificationcodetext") : messages_ar.getTranslation("verificationcodetext")
+                                LanguageHelper.trans("app","verificationcodetext")
                               ,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
@@ -201,7 +199,7 @@ class _VerificationcodeState extends State<Verificationcode> {
                             autofocus: true,
                             decoration: InputDecoration(
                               hintText:
-                              language == "en" ? messages_en.getTranslation("verificationcodehint") : messages_ar.getTranslation("verificationcodehint")
+                              LanguageHelper.trans("app","verificationcodehint")
                               ,
                               icon: Icon(Icons.mobile_screen_share),
                             ),
@@ -213,7 +211,7 @@ class _VerificationcodeState extends State<Verificationcode> {
                             minWidth: double.infinity,
                             child: RaisedButton(
                                 child: Text(
-                                  language == "en" ? messages_en.getTranslation("verify") : messages_ar.getTranslation("verify")
+                                  LanguageHelper.trans("app","verify")
                                   ,
                                   style: Theme.of(context).textTheme.button,
                                 ),

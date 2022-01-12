@@ -4,8 +4,8 @@ import '../../../Controllers/ForgotPasswordController.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+//
+//
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -60,11 +60,7 @@ class _ForgetpasswordState extends State<Forgetpassword> {
           });
         }
       } else {
-        ShowToast(
-            'error',
-            language == "en"
-                ? messages_en.getTranslation("pleasefillallfields")
-                : messages_ar.getTranslation("Notificationspleasefillallfields"));
+        ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
       }
     });
   }
@@ -129,9 +125,8 @@ class _ForgetpasswordState extends State<Forgetpassword> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en"
-              ? messages_en.getTranslation("forgetpassword")
-              : messages_ar.getTranslation("forgetpassword"),
+            LanguageHelper.trans("app","forgetpassword")
+          ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
         centerTitle: true,
@@ -174,9 +169,7 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                           Padding(
                             padding: EdgeInsets.only(top: (SizeConfig.screenHeight)! / screenHightRatio),
                             child: Text(
-                              language == "en"
-                                  ? messages_en.getTranslation("forgetpasswordbymobiletext")
-                                  : messages_ar.getTranslation("forgetpasswordbymobiletext"),
+                                LanguageHelper.trans("app","forgetpasswordbymobiletext")
                             ),
                           ),
                           TextField(
@@ -185,9 +178,9 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                             autofocus: true,
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
-                              hintText: language == "en"
-                                  ? messages_en.getTranslation("forgetpassmobhinttext")
-                                  : messages_ar.getTranslation("forgetpassmobhinttext"),
+                              hintText:
+                              LanguageHelper.trans("app","forgetpassmobhinttext")
+                                ,
                               icon: Icon(Icons.mobile_screen_share),
                             ),
                           ),
@@ -198,9 +191,8 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                             minWidth: double.infinity,
                             child: RaisedButton(
                                 child: Text(
-                                  language == "en"
-                                      ? messages_en.getTranslation("sendcode")
-                                      : messages_ar.getTranslation("sendcode"),
+                                    LanguageHelper.trans("app","sendcode")
+                                  ,
                                   style: Theme.of(context).textTheme.button,
                                 ),
                                 onPressed: _SendResetCode),

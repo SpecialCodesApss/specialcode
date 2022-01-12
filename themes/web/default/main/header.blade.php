@@ -22,12 +22,48 @@
     <!-- Animate.css -->
     <link rel="stylesheet" href="{{url('themes/admin/admindek/assets/css/animate.css')}}" type="text/css" media="all">
 
+
+
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fontawesome5.css')}}">
+
+    <!-- chosen selector -->
+    <link href="{{url('themes/admin/admindek/assets/css/chosen.css')}} " rel="stylesheet">
+
+
+    <!--  Switchery -->
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/switchery.css')}}">
+    <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/switchery.js')}}"></script>
+
+
+
+
+    <!-- File Input -->
+    <!-- default icons used in the plugin are from Bootstrap 5.x icon library (which can be enabled by loading CSS below) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    @if (Config::get('languages')[App::getLocale()] == "Arabic")
+        <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fileinput.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fileinput-rtl.css')}}">
+    @else
+        <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/fileinput.css')}}">
+    @endif
+
+
+
+<!-- HTML Editor -->
+    <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/richtext.min.css')}}">
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="{{url('themes/admin/admindek/assets/bower_components/jquery/js/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/jquery.richtext.js')}}"></script>
+
+
+
     @if (Config::get('languages')[App::getLocale()] != "Arabic")
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom.css')}}">
     @else
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{url('themes/admin/admindek/assets/css/custom_ar.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url('themes/web/default/assets/css/custom_ar.css')}}">
     @endif
 
 
@@ -79,6 +115,48 @@
                                 </form>
                             </div>
                         </li>
+
+
+
+                        <li class="user-profile header-notification">
+                            <div class="dropdown-primary dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-toggle="dropdown">
+
+
+                                    @if (Config::get('languages')[App::getLocale()] != "Arabic")
+                                        <img src="{{url('themes/admin/admindek/assets/images/usa.png')}}" class="img-radius flagimg" alt="User-Profile-Image">
+
+                                    @else
+                                        <img src="{{url('themes/admin/admindek/assets/images/ksa.png')}}" class="img-radius flagimg" alt="User-Profile-Image">
+
+                                    @endif
+                                    <span>{{ trans('admin_messages.'.Config::get('languages')[App::getLocale()]) }}</span>
+
+                                    <i class="feather icon-chevron-down"></i>
+
+                                </a>
+                                <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+
+
+                                    @foreach (Config::get('languages') as $lang => $language)
+                                        @if ($lang != App::getLocale())
+
+                                            <li>
+                                                <a  class="dropdown-item" href="{{ route('lang.switch', $lang) }}">
+                                                    <i class="feather icon-settings"></i>
+                                                    {{ trans('admin_messages.'.$language) }}
+
+                                                </a>
+                                            </li>
+
+                                        @endif
+                                    @endforeach
+
+                                </ul>
+                            </div>
+                        </li>
+
+
                     @endguest
                 </ul>
             </div>

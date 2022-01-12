@@ -43,7 +43,7 @@ trait Developer_traits{
 
         //Step 1 :: make Module for Table
         $file = $module_name.'.php';
-        $destinationPath="app/Models";
+        $destinationPath="app/Models/";
         if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
         File::put($destinationPath.$file,$module_content);
         /******************************/
@@ -569,7 +569,7 @@ class '.$controller_name.' extends BaseController
                     $joined_table_name = $input[$table_field.'_joinedTable'];
                     $table_module_name=ucfirst($joined_table_name);
                     $table_module_name=rtrim($table_module_name, "s");
-                    $index_header_code.= 'use App\\'.$table_module_name.';';
+                    $index_header_code.= 'use App\Models\\'.$table_module_name.';';
 
                     $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
 
@@ -596,7 +596,7 @@ class '.$controller_name.' extends BaseController
                     $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
                     $table_module_name=ucfirst($joined_table_name);
                     $table_module_name=rtrim($table_module_name, "s");
-                    $index_header_code.= 'use App\\'.$table_module_name.';';
+                    $index_header_code.= 'use App\Models\\'.$table_module_name.';';
 
                     $AutoCode_for_showing_selectbox_names.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
@@ -618,7 +618,7 @@ class '.$controller_name.' extends BaseController
                     $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
                     $table_module_name=ucfirst($joined_table_name);
                     $table_module_name=rtrim($table_module_name, "s");
-                    $index_header_code.= 'use App\\'.$table_module_name.';';
+                    $index_header_code.= 'use App\Models\\'.$table_module_name.';';
                 }
                 elseif($input[$table_field.'_datatype'] == 'time'){
                     if( isset($input[$table_field.'_adminRequiredStore'])) {
@@ -1067,7 +1067,8 @@ class '.$controller_name.' extends BaseController
             $route_inserted=\App\Models\Route::
             where(['request_method_type'=>'post',
                 'router_name'=>'delete'.$module_name.'images',
-                'type' => 'web_routes'
+                'type' => 'web_routes',
+                'middleware' => 'admin',
             ])->first();
 
             $Routeinput=[];
@@ -1124,7 +1125,8 @@ class '.$controller_name.' extends BaseController
             $route_inserted=\App\Models\Route::
             where(['request_method_type'=>'post',
                 'router_name'=>'delete'.$module_name.'files',
-                'type' => 'web_routes'
+                'type' => 'web_routes',
+                'middleware' => 'admin',
             ])->first();
 
             $Routeinput=[];
@@ -1236,7 +1238,8 @@ class '.$controller_name.' extends BaseController
                 $route_inserted=\App\Models\Route::
                 where(['request_method_type'=>'get',
                     'router_name'=>'get'.$custom_field_table_name.'Info_for_'.$table_name.'_forField'.$table_field.'',
-                    'type' => 'web_routes'
+                    'type' => 'web_routes',
+                    'middleware' => 'admin',
                 ])->first();
 
                 $Routeinput=[];
@@ -1293,7 +1296,8 @@ if($input[''.$table_field.'_datatype']=="table_to_tagInput" || $input[$table_fie
                 $route_inserted=\App\Models\Route::
                 where(['request_method_type'=>'post',
                     'router_name'=>'check'.$custom_field_table_name.'_for_'.$table_name.'_forField'.$table_field.'',
-                    'type' => 'web_routes'
+                    'type' => 'web_routes',
+                    'middleware' => 'admin',
                 ])->first();
                 $Routeinput=[];
                 $Routeinput['request_method_type']='post';
@@ -1316,7 +1320,8 @@ if($input[''.$table_field.'_datatype']=="table_to_tagInput" || $input[$table_fie
                 $route_inserted=\App\Models\Route::
                 where(['request_method_type'=>'post',
                     'router_name'=>'search'.$custom_field_table_name.'_for_'.$table_name.'_forField'.$table_field.'',
-                    'type' => 'web_routes'
+                    'type' => 'web_routes',
+                    'middleware' => 'admin',
                 ])->first();
                 $Routeinput=[];
                 $Routeinput['request_method_type']='post';
@@ -1598,15 +1603,17 @@ class '.$controller_name.' extends Controller
         /******start add module to admin_menu Content******/
         /******************************/
 
+
         //first check if this flag inserted before or not
         $isThereSameFlag=Admin_sections::where('section_flag',$section_flag)->first();
         if(! isset($isThereSameFlag) ){
             Admin_sections::create([
                 'section_name_ar' => $input['section_name_ar'],
                 'section_name_en' => $input['section_name_en'],
-                'section_icon' => $input['section_icon'],
+                'section_icon' => $input["section_icon"],
                 'section_flag' => $section_flag,
                 'controller_name' => $controller_name,
+                'module_name' => $input['module_name'],
                 'is_notification_able' => $input['is_notification_able'],
                 'is_drop_menu' => $input['is_drop_menu'],
                 'active' => $input['active'],
@@ -1685,148 +1692,155 @@ class '.$controller_name.' extends Controller
 
 
 
-//
-//        /******************************/
-//        /******Start Make Language File******/
-//        /******************************/
-//
-//        //get ar and en lang content
-//        //get fields
-//        $ar_lines='';
-//        $en_lines='';
-//        foreach ($table_fields as $table_field){
-//
-//            $ar_new_line="'".$table_field."'=>'".$input[$table_field."_ar"]."',\n";
-//            $en_new_line="'".$table_field."'=>'".$input[$table_field."_en"]."',\n";
-//            $ar_lines=$ar_lines.$ar_new_line;
-//            $en_lines=$en_lines.$en_new_line;
-//
-//
-//
-//            if($input[$table_field.'_datatype']=='enum_selector'){
-//                $selector_array= $input[$table_field.'_selector_items'];
-//                $selector_array=explode(',', $selector_array);
-//                $selector_options='';
-//                foreach ($selector_array as $selector_en){
-//                    //translate select //for google translate object
-//                    $trans = new GoogleTranslate(); $source = 'en'; $target = 'ar';
-//                    $selector_ar = $trans->translate($source, $target, $selector_en);
-//                    $ar_new_line="'".$selector_en."'=>'".$selector_ar."',\n";
-//                    $en_new_line="'".$selector_en."'=>'".$selector_en."',\n";
-//                    $ar_lines=$ar_lines.$ar_new_line;
-//                    $en_lines=$en_lines.$en_new_line;
-//                }
-//
-//
-//            }
-//        }
-//
-//        //add CRUD Messages TRanslation to Files
-//        //for google translate object
-//        $trans = new GoogleTranslate();
-//        //translate table name
-//        $source = 'en';
-//        $target = 'ar';
-//        $module_name=$input['module_name'];
-//
-//
-//        //module Capital
-//        $module_message_en=$module_name;
-//        $module_message_ar= $trans->translate($source, $target, $module_message_en);
-//        $ar_new_line="'".$module_name."'=>'".$module_message_ar."',\n";
-//        $en_new_line="'".$module_name."'=>'".$module_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//        //module Small
-//        $module_message_en=strtolower($module_name);
-//        $module_message_ar= $trans->translate($source, $target, $module_message_en);
-//        $ar_new_line="'".$module_message_en."'=>'".$module_message_ar."',\n";
-//        $en_new_line="'".$module_message_en."'=>'".$module_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//        //Section flag
-//        $text_message_en=ucfirst($section_flag);
-//        $text_message_ar= $trans->translate($source, $target, $text_message_en);
-//        $ar_new_line="'".$text_message_en."'=>'".$text_message_ar."',\n";
-//        $en_new_line="'".$text_message_en."'=>'".$text_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//
-//        //Section flag
-//        $text_message_en=$section_flag;
-//        $text_message_ar= $trans->translate($source, $target, $text_message_en);
-//        $ar_new_line="'".$text_message_en."'=>'".$text_message_ar."',\n";
-//        $en_new_line="'".$text_message_en."'=>'".$text_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//        //Page Title
-//        $ar_new_line="'Admin - ".$text_message_en."'=>' لوحة التحكم - ".$text_message_ar."',\n";
-//        $en_new_line="'Admin - ".$text_message_en."'=>'Admin - ".ucfirst($text_message_en)."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//
-//
-//        //Create
-//        $create_message_en=$module_name." created successfully";
-//        $create_message_ar= $trans->translate($source, $target, $create_message_en);
-//        $ar_new_line="'".$module_name."_create'=>'".$create_message_ar."',\n";
-//        $en_new_line="'".$module_name."_create'=>'".$create_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//        //read
-//        $read_message_en=$module_name." retrieved successfully";
-//        $read_message_ar= $trans->translate($source, $target, $read_message_en);
-//        $ar_new_line="'".$module_name."_read'=>'".$read_message_ar."',\n";
-//        $en_new_line="'".$module_name."_read'=>'".$read_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//        //update
-//        $update_message_en=$module_name." updated successfully";
-//        $update_message_ar= $trans->translate($source, $target, $update_message_en);
-//        $ar_new_line="'".$module_name."_update'=>'".$update_message_ar."',\n";
-//        $en_new_line="'".$module_name."_update'=>'".$update_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//        //delete
-//        $delete_message_en=$module_name." deleted successfully";
-//        $delete_message_ar= $trans->translate($source, $target, $delete_message_en);
-//        $ar_new_line="'".$module_name."_delete'=>'".$delete_message_ar."',\n";
-//        $en_new_line="'".$module_name."_delete'=>'".$delete_message_en."',\n";
-//        $ar_lines=$ar_lines.$ar_new_line;
-//        $en_lines=$en_lines.$en_new_line;
-//
-//
-//        $ar_lang_content='
-//        <?php
-//        return [
-//            '.$ar_lines.'
-/*        ];?>';*/
-//        $en_lang_content='
-//        <?php
-//        return [
-//            '.$en_lines.'
-/*        ];?>';*/
-//
-//
-//
-//
-//        $file = $section_flag.'.php';
-//        $ar_destinationPath="resources/lang/ar/";
-//        $en_destinationPath="resources/lang/en/";
-//        if (!is_dir($ar_destinationPath)) {  mkdir($ar_destinationPath,0777,true); }
-//        if (!is_dir($en_destinationPath)) {  mkdir($en_destinationPath,0777,true); }
-//        File::put($ar_destinationPath.$file,$ar_lang_content);
-//        File::put($en_destinationPath.$file,$en_lang_content);
-//
-//        /******************************/
-//        /******End Make Language File******/
-//        /******************************/
+
+        /******************************/
+        /******Start Make Language File******/
+        /******************************/
+
+        //get ar and en lang content
+        //get fields
+        $ar_lines='';
+        $en_lines='';
+        foreach ($table_fields as $table_field){
+
+            $ar_new_line="'".$table_field."'=>'".$input[$table_field."_ar"]."',\n";
+            $en_new_line="'".$table_field."'=>'".$input[$table_field."_en"]."',\n";
+            $ar_lines=$ar_lines.$ar_new_line;
+            $en_lines=$en_lines.$en_new_line;
+
+
+
+            if($input[$table_field.'_datatype']=='enum_selector'){
+                $selector_array= $input[$table_field.'_selector_items'];
+                $selector_array=explode(',', $selector_array);
+                $selector_options='';
+                foreach ($selector_array as $selector_en){
+                    //translate select //for google translate object
+                    $trans = new GoogleTranslate(); $source = 'en'; $target = 'ar';
+                    $selector_ar = $trans->translate($source, $target, $selector_en);
+                    $ar_new_line="'".$selector_en."'=>'".$selector_ar."',\n";
+                    $en_new_line="'".$selector_en."'=>'".$selector_en."',\n";
+                    $ar_lines=$ar_lines.$ar_new_line;
+                    $en_lines=$en_lines.$en_new_line;
+                }
+
+
+            }
+        }
+
+        //add CRUD Messages TRanslation to Files
+        //for google translate object
+        $trans = new GoogleTranslate();
+        //translate table name
+        $source = 'en';
+        $target = 'ar';
+        $module_name=$input['module_name'];
+
+
+        //module Capital
+        $module_message_en=$module_name;
+        $module_message_ar= $trans->translate($source, $target, $module_message_en);
+        $ar_new_line="'".$module_name."'=>'".$module_message_ar."',\n";
+        $en_new_line="'".$module_name."'=>'".$module_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+        //module Small
+        $module_message_en=strtolower($module_name);
+        $module_message_ar= $trans->translate($source, $target, $module_message_en);
+        $ar_new_line="'".$module_message_en."'=>'".$module_message_ar."',\n";
+        $en_new_line="'".$module_message_en."'=>'".$module_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+        //Section flag
+        $text_message_en=ucfirst($section_flag);
+        $text_message_ar= $trans->translate($source, $target, $text_message_en);
+        $ar_new_line="'".$text_message_en."'=>'".$text_message_ar."',\n";
+        $en_new_line="'".$text_message_en."'=>'".$text_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+        //Section flag
+        $text_message_en=$section_flag;
+        $text_message_ar= $trans->translate($source, $target, $text_message_en);
+        $ar_new_line="'".$text_message_en."'=>'".$text_message_ar."',\n";
+        $en_new_line="'".$text_message_en."'=>'".$text_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+        //Page Title
+        $ar_new_line="'Admin - ".$text_message_en."'=>' لوحة التحكم - ".$text_message_ar."',\n";
+        $en_new_line="'Admin - ".$text_message_en."'=>'Admin - ".ucfirst($text_message_en)."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+
+        //Section English Name
+        $text_message_en=$input["section_name_en"];
+        $text_message_ar= $trans->translate($source, $target, $text_message_en);
+        $ar_new_line="'".$text_message_en."'=>'".$text_message_ar."',\n";
+        $en_new_line="'".$text_message_en."'=>'".$text_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+
+
+        //Create
+        $create_message_en=$module_name." created successfully";
+        $create_message_ar= $trans->translate($source, $target, $create_message_en);
+        $ar_new_line="'".$module_name."_create'=>'".$create_message_ar."',\n";
+        $en_new_line="'".$module_name."_create'=>'".$create_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+        //read
+        $read_message_en=$module_name." retrieved successfully";
+        $read_message_ar= $trans->translate($source, $target, $read_message_en);
+        $ar_new_line="'".$module_name."_read'=>'".$read_message_ar."',\n";
+        $en_new_line="'".$module_name."_read'=>'".$read_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+        //update
+        $update_message_en=$module_name." updated successfully";
+        $update_message_ar= $trans->translate($source, $target, $update_message_en);
+        $ar_new_line="'".$module_name."_update'=>'".$update_message_ar."',\n";
+        $en_new_line="'".$module_name."_update'=>'".$update_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+        //delete
+        $delete_message_en=$module_name." deleted successfully";
+        $delete_message_ar= $trans->translate($source, $target, $delete_message_en);
+        $ar_new_line="'".$module_name."_delete'=>'".$delete_message_ar."',\n";
+        $en_new_line="'".$module_name."_delete'=>'".$delete_message_en."',\n";
+        $ar_lines=$ar_lines.$ar_new_line;
+        $en_lines=$en_lines.$en_new_line;
+
+
+        $ar_lang_content='
+        <?php
+        return [
+            '.$ar_lines.'
+        ];?>';
+        $en_lang_content='
+        <?php
+        return [
+            '.$en_lines.'
+        ];?>';
+
+
+
+
+        $file = $section_flag.'.php';
+        $ar_destinationPath="resources/lang/ar/";
+        $en_destinationPath="resources/lang/en/";
+        if (!is_dir($ar_destinationPath)) {  mkdir($ar_destinationPath,0777,true); }
+        if (!is_dir($en_destinationPath)) {  mkdir($en_destinationPath,0777,true); }
+        File::put($ar_destinationPath.$file,$ar_lang_content);
+        File::put($en_destinationPath.$file,$en_lang_content);
+
+        /******************************/
+        /******End Make Language File******/
+        /******************************/
     }
 
     public function CreateIndexPage($table_fields,$table_name,$input,$section_flag){
@@ -2184,7 +2198,6 @@ class '.$controller_name.' extends Controller
     }
 
     public function CreateViewPage($table_fields,$table_name,$section_flag,$module_name,$input){
-
 
         /******************************/
         /******start show page Content******/
@@ -4738,13 +4751,25 @@ class '.$controller_name.' extends Controller
 
     public function UpdateCSRF_TokenFile(){
         //generate code for expect CSRFtoken of
-        $admin_routes=\App\Models\Route::where(['type'=>'web_routes','middleware' => 'admin','expect_from_CSRF'=>1])->get();
         $expected_routes='';
+        $comma='';
+        $admin_routes=\App\Models\Route::where(
+            ['type'=>'web_routes','middleware' => 'admin','expect_from_CSRF'=>1])->get();
         if(isset($admin_routes)){
             foreach ($admin_routes as $admin_route){
                 $expected_routes=$expected_routes.'\'admin/'.$admin_route['router_name'].'\',';
             }
+            $comma=',';
         }
+
+        $web_routes=\App\Models\Route::where(
+            ['type'=>'web_routes','middleware' => 'user','expect_from_CSRF'=>1])->get();
+        if(isset($web_routes)){
+            foreach ($web_routes as $web_route){
+                $expected_routes=$expected_routes.$comma.$web_route['router_name'].'\',';
+            }
+        }
+
         $VerifyCsrfToken_content='<?php
 
     namespace App\Http\Middleware;

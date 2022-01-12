@@ -155,10 +155,12 @@ Route::post('users/my_account/update_password','App\Http\Controllers\frontend\Us
 Route::post('users/my_account/update_profile_image','App\Http\Controllers\frontend\UsersController@updateProfileImage');
 
 
-$web_sections=\App\Models\Web_sections::where('controller_name','!=','')->get();
-foreach ($web_sections as $web_sections){
-    Route::resource($web_sections['section_flag'], 'App\Http\Controllers\Frontend\\'.$web_sections['controller_name']);
-}
+Route::middleware("auth")->group(function () {
+    $web_sections = \App\Models\Web_sections::where('controller_name', '!=', '')->get();
+    foreach ($web_sections as $web_sections) {
+        Route::resource($web_sections['section_flag'], 'App\Http\Controllers\Frontend\\' . $web_sections['controller_name']);
+    }
+});
 
 
 ////////////////****** End Frontend Routes *****************//////////////

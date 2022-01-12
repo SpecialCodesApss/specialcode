@@ -1205,10 +1205,10 @@ class ExtensionsController extends Controller
             ';
 
             //delete this auto generated code from json file
-        $JSON_Content = file('developer/Framework_V_1.6.postman_collection.json');
+        $JSON_Content = file('developer/Framework_V_1.7.postman_collection.json');
         $JSON_Content = implode($JSON_Content);
         $JSON_Content=str_replace($Generated_JSON_APIs_Requests,"",$JSON_Content);
-        $new_file = 'Framework_V_1.6.postman_collection.json';
+        $new_file = 'Framework_V_1.7.postman_collection.json';
         $destinationPath="developer/";
         File::put($destinationPath.$new_file,$JSON_Content);
 

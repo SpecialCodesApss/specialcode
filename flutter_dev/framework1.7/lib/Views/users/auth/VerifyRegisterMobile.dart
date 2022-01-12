@@ -4,8 +4,8 @@ import '../../../Controllers/VerificationController.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -87,10 +87,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
         });
       } else {
         hideLoaderDialogFunction(context);
-        ShowToast('error',
-            language == "en" ? messages_en.getTranslation("pleasefillallfields") :
-      messages_ar.getTranslation("Notificationspleasefillallfields") ,
-);
+        ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
       }
     });
   }
@@ -148,7 +145,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("VerifyMobileNumber") : messages_ar.getTranslation("VerifyMobileNumber")
+            LanguageHelper.trans("app","VerifyMobileNumber")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -192,9 +189,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
                                 top:
                                     (SizeConfig.screenHeight)! / screenHightRatio),
                             child: Text(
-                                language == "en" ?
-                                messages_en.getTranslation("verificationcodetext") +" "+widget.mobile
-                                    : messages_ar.getTranslation("verificationcodetext")+" "+widget.mobile
+                                LanguageHelper.trans("app","verificationcodetext")+" "+widget.mobile
                             ),
                           ),
                           TextField(
@@ -204,7 +199,8 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
                             autofocus: true,
                             decoration: InputDecoration(
                               hintText:
-                              language == "en" ? messages_en.getTranslation("verificationcodehint") : messages_ar.getTranslation("verificationcodehint")
+                              LanguageHelper.trans("app","verificationcodehint")
+
                               ,
                               icon: Icon(Icons.mobile_screen_share),
                             ),
@@ -217,7 +213,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
                             child:
                             RaisedButton(
                               child: Text(
-                                language == "en" ? messages_en.getTranslation("verify") : messages_ar.getTranslation("verify")
+                                  LanguageHelper.trans("app","verify")
                                 ,
                                 style: Theme.of(context).textTheme.button,
                               ),
@@ -235,7 +231,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
                             child:  RaisedButton(
                                 color: Theme.of(context).primaryColor,
                                 child: Text(
-                                  language == "en" ? messages_en.getTranslation("resendverifycode") : messages_ar.getTranslation("resendverifycode")
+                                    LanguageHelper.trans("app","resendverifycode")
                                   ,
                                   style: Theme.of(context).textTheme.button,
                                 ),
@@ -253,7 +249,7 @@ class _VerifyRegisterMobileState extends State<VerifyRegisterMobile> {
                             child:
                             RaisedButton(
                               child: Text(
-                                language == "en" ? messages_en.getTranslation("changeMobileNo") : messages_ar.getTranslation("changeMobileNo")
+                                  LanguageHelper.trans("app","changeMobileNo")
                                 ,
                                 style: Theme.of(context).textTheme.button,
                               ),

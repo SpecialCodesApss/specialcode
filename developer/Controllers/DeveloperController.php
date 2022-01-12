@@ -905,6 +905,9 @@ class DeveloperController extends Controller
         }
 
         //Step 4 : ِAdd Module to Admin Section table and Menu
+
+//        return $input['sort'];
+
         if(isset($input['Admin_Coding'])){
             $this->Insert_AdminSectionDB($controller_name,$section_flag,$input);
         }
@@ -915,6 +918,8 @@ class DeveloperController extends Controller
         if(isset($input['Admin_Coding'])){
             $this->Insert_PremissionDB($module_name,$input);
         }
+
+
 
         //Step 6 : Create Langauges Files
         $this->CreateLanguageFiles($table_fields,$section_flag,$input);
@@ -939,6 +944,28 @@ class DeveloperController extends Controller
 
         //Step 13 : Update JSON Collection File
         $this->Update_JSON_API_File($table_name);
+
+
+
+        if(isset($input['Web_Coding'])){
+            //Step Add to web section
+            $this->Insert_WebSectionDB($controller_name,$section_flag,$input);
+
+            //Step : Create View Page
+            $this->CreateWebIndexPage($table_fields,$table_name,$input,$section_flag);
+
+            //Step 8 : Create View Page
+            $this->CreateWebViewPage($table_fields,$table_name,$section_flag,$module_name,$input);
+
+            //Step 9 : Create Store Page
+            $this->CreateWebStorePage($table_fields,$section_flag,$input);
+
+            //Step 10 : Create Update Page
+            $this->CreateWebUpdatePage($table_fields,$table_name,$section_flag,$module_name,$input,$Capital_table_name);
+
+        }
+
+
 
 
         //check if mobile API controller is active
@@ -973,3 +1000,4 @@ class DeveloperController extends Controller
 
     }
 }
+

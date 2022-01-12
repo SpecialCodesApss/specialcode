@@ -6,8 +6,8 @@ import '../../../Controllers/UserController.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 import 'my_account.dart';
 import 'package:flutter/widgets.dart';
 import '../../../helpers/SizeConfig.dart';
@@ -81,9 +81,7 @@ class _EditMyAccountPasswordState extends State<EditMyAccountPassword> {
         });
       } else {
         hideLoaderDialogFunction(context);
-        ShowToast('error',
-            language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields")
-            );
+        ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
       }
     });
   }
@@ -113,7 +111,7 @@ class _EditMyAccountPasswordState extends State<EditMyAccountPassword> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("EditMyAccountPassword") : messages_ar.getTranslation("EditMyAccountPassword")
+            LanguageHelper.trans("app","EditMyAccountPassword")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -164,7 +162,7 @@ class _EditMyAccountPasswordState extends State<EditMyAccountPassword> {
                             obscureText: true,
                             decoration: InputDecoration(
                               hintText:
-                              language == "en" ? messages_en.getTranslation("currentpass") : messages_ar.getTranslation("currentpass")
+                              LanguageHelper.trans("app","currentpass")
                               ,
                               icon: Icon(Icons.lock_open),
                             ),
@@ -175,7 +173,7 @@ class _EditMyAccountPasswordState extends State<EditMyAccountPassword> {
                             obscureText: true,
                             decoration: InputDecoration(
                               hintText:
-                              language == "en" ? messages_en.getTranslation("newpass") : messages_ar.getTranslation("newpass")
+                              LanguageHelper.trans("app","newpass")
                               ,
                               icon: Icon(Icons.lock),
                             ),
@@ -186,7 +184,7 @@ class _EditMyAccountPasswordState extends State<EditMyAccountPassword> {
                             obscureText: true,
                             decoration: InputDecoration(
                               hintText:
-                              language == "en" ? messages_en.getTranslation("confirmnewpass") : messages_ar.getTranslation("confirmnewpass")
+                              LanguageHelper.trans("app","confirmnewpass")
                               ,
                               icon: Icon(Icons.lock),
                             ),
@@ -198,7 +196,7 @@ class _EditMyAccountPasswordState extends State<EditMyAccountPassword> {
                             minWidth: double.infinity,
                             child: RaisedButton(
                                 child: Text(
-                                  language == "en" ? messages_en.getTranslation("edit") : messages_ar.getTranslation("edit")
+                                  LanguageHelper.trans("app","edit")
                                   ,
                                   style: Theme.of(context).textTheme.button,
                                 ),

@@ -8,8 +8,8 @@ import '../Auth/Login.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
@@ -112,8 +112,7 @@ class _RsestPasswordState extends State<RsestPassword>{
       });
     }
     else{
-      ShowToast('error',language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("Notificationspleasefillallfields")
-);
+      ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
     }
   }
 
@@ -144,7 +143,7 @@ class _RsestPasswordState extends State<RsestPassword>{
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title:Text(
-          language == "en" ? messages_en.getTranslation("resetpass") : messages_ar.getTranslation("resetpass")
+            LanguageHelper.trans("app","resetpass")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -193,7 +192,7 @@ class _RsestPasswordState extends State<RsestPassword>{
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText:
-                  language == "en" ? messages_en.getTranslation("newpass") : messages_ar.getTranslation("newpass")
+                  LanguageHelper.trans("app","newpass")
                   ,
                   icon: Icon(Icons.lock),
                 ),
@@ -205,7 +204,7 @@ class _RsestPasswordState extends State<RsestPassword>{
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText:
-                  language == "en" ? messages_en.getTranslation("confirmnewpass") : messages_ar.getTranslation("confirmnewpass")
+                  LanguageHelper.trans("app","confirmnewpass")
                   ,
                   icon: Icon(Icons.lock),
                 ),
@@ -218,7 +217,7 @@ class _RsestPasswordState extends State<RsestPassword>{
                 minWidth: double.infinity,
                 child:RaisedButton(
                     child: Text(
-                      language == "en" ? messages_en.getTranslation("edit") : messages_ar.getTranslation("edit")
+                      LanguageHelper.trans("app","edit")
                        ,
                       style: Theme.of(context).textTheme.button,
                     ),

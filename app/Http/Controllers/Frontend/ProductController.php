@@ -1,121 +1,38 @@
 <?php
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 
 use Spatie\Permission\Models\Role;
 use DB;
+use Auth;
 use File;
 use DataTables;
 use Illuminate\Support\Facades\App;
 use \App\Http\Traits\file_type_traits;
 
-
+use App\User;
 
 class ProductController extends Controller
 {
 
     use file_type_traits;
-   /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct()
+    public function index(Request $request)
     {
-        
-        $this->middleware('permission:Product_Create', ['only' => ['create','store']]);
-        $this->middleware('permission:Product_Read', ['only' => ['index','show']]);
-        $this->middleware('permission:Product_Update', ['only' => ['update','edit']]);
-        $this->middleware('permission:Product_Delete', ['only' => ['delete','destroy']]);
-        
+        $user_id=Auth::user()->id;
+        $searchText=$request->searchText;
+        $products = Product::where(['user_id' => $user_id ])->paginate(20);
+        return view("frontend.products.index",compact('products'));
     }
 
-            /**
-             * Display a listing of the resource.
-             *
-             * @return \Illuminate\Http\Response
-             */
-            public function index(Request $request)
-            {
 
-                if ($request->ajax()) {
-                    $data = Product::query();
-
-
-                    
-
-                    
-
-
-
-                    return Datatables::eloquent($data)
-
-                        
-                     ->editColumn('type_selector', function(Product $data) {
-                                
-                            if($data->type_selector=="active"){
-                            return trans('products.active');
-                            }
-                            if($data->type_selector=="inactive"){
-                            return trans('products.inactive');
-                            }
-                            if($data->type_selector=="submit"){
-                            return trans('products.submit');
-                            }
-                            if($data->type_selector=="role"){
-                            return trans('products.role');
-                            }
-                        })
-                    
-                        
-                        
-                     ->editColumn('is_checkbox', function(Product $data) {
-                            if($data->is_checkbox != null){
-                              return trans("admin_messages.yes");
-                            }
-                            else{
-                                return trans("admin_messages.no");
-                            }
-                        })
-                    
-                        
-                     ->editColumn('active', function(Product $data) {
-                            if($data->active == "1"){
-                              return trans("admin_messages.active");
-                            }
-                            else{
-                                return trans("admin_messages.inactive");
-                            }
-                        })
-                    
-
-                        ->addColumn('action', function($row){
-                            $row_id=$row->id;
-                            $form_id="delete_Product_form_".$row_id;
-                            $btn='<div style="display:inline-block; width: 210px;">
-            <a class="icon-btn" href="products/'.$row_id.'"><i class="fa fa-eye text-view"></i></a>
-            <a class="icon-btn" href="products/'.$row_id.'/edit"><i class="fa fa-pencil text-edit"></i></a>
-            <form id="'.$form_id.'" method="POST" action="products/'.$row_id.'" style="display:inline">
-                                        <input name="_method" type="hidden" value="DELETE">
-                                        <input name="_token" type="hidden" value="'.csrf_token().'">
-                                        <button type="button" onclick="return deleteItem('."'$form_id'".')"
-                                        class="btn icon-btn"><i class="fa fa-trash text-delete"></i></button>
-                                    </form></div>';
-                            return $btn;
-                        })
-                        ->rawColumns(['action'])
-
-                        ->make(true);
-                }
-                return view('backend.products.index');
-
-            }
-
-
-
-            /**
+    /**
              * Show the form for creating a new resource.
              *
              * @return \Illuminate\Http\Response
@@ -127,7 +44,13 @@ class ProductController extends Controller
                 $sort_number = Product::all()->count()+1;
 
             
-                return view('backend.products.create',compact('sort_number'));
+                $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
+                $users=[];
+                foreach ($user_ids as $info){
+                    $users[$info->id]=$info->email;
+                }
+                
+                return view('frontend.products.create',compact('sort_number','users'));
             }
 
             /**
@@ -143,7 +66,6 @@ class ProductController extends Controller
                 
             $this->validate($request, [
             'type_selector'=>'required',
-                    'user_id'=>'required',
                     'week_check'=>'required',
                     'week_select'=>'required',
                     'name_ar'=>'required',
@@ -159,7 +81,25 @@ class ProductController extends Controller
         ]);
         
 
-                $input = $request->all();
+                
+                $input["type_selector"]=$request->type_selector;
+                $input["is_checkbox"]=$request->is_checkbox;
+                $input["week_check"]=$request->week_check;
+                $input["week_select"]=$request->week_select;
+                $input["name_ar"]=$request->name_ar;
+                $input["name_en"]=$request->name_en;
+                $input["description_ar"]=$request->description_ar;
+                $input["description_en"]=$request->description_en;
+                $input["html_text_ar"]=$request->html_text_ar;
+                $input["html_text_en"]=$request->html_text_en;
+                $input["sort"]=$request->sort;
+                $input["active"]=$request->active;
+                $input["save_type"]=$request->save_type;
+
+
+                 $user_id=Auth::user()->id;
+             $input['user_id']=$user_id;
+            
 
                 
                         if(isset($input['is_checkbox'])){
@@ -192,11 +132,11 @@ class ProductController extends Controller
 
 
                 if($input['save_type']=="save_and_add_new"){
-                    return redirect()->route('products.create')
+                    return redirect('products/create')
                         ->with('success',trans('admin_messages.info_added'));
                 }
                 else{
-                    return redirect()->route('products.index')
+                    return redirect('products')
                         ->with('success',trans('admin_messages.info_added'));
                 }
 
@@ -212,15 +152,32 @@ class ProductController extends Controller
             public function show($id)
             {
             $lang = App::getLocale();
-                $Product = Product::find($id);
-                
-                
 
+            $user_id=Auth::user()->id;
+            
+
+               $Product = Product::where('id', $id)->where(['user_id' => $user_id ])->first();
+
+        if(isset($Product)){
+        
+        
+        }
+
+        if (is_null($Product)) {
+            return $this->sendError('Product not found.');
+        }
+
+                
+                $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
+                $users=[];
+                foreach ($user_ids as $info){
+                    $users[$info->id]=$info->email;
+                }
                 
                  
 
 
-                return view('backend.products.show',compact('Product'   ));
+                return view('frontend.products.show',compact('Product'  ,'users' ));
 
             }
 
@@ -240,6 +197,12 @@ class ProductController extends Controller
                 
 
                 
+                $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
+                $users=[];
+                foreach ($user_ids as $info){
+                    $users[$info->id]=$info->email;
+                }
+                
                 
 
                 
@@ -247,8 +210,8 @@ class ProductController extends Controller
             
 
 
-                return view('backend.products.edit',compact('Product'
-                ,'product_file_filetype' ));
+                return view('frontend.products.edit',compact('Product'
+                ,'users','product_file_filetype' ));
             }
 
 
@@ -262,8 +225,25 @@ class ProductController extends Controller
             public function update(Request $request, $id)
             {
 
-            $Product = Product::find($id);
-                 
+            
+                $input["type_selector"]=$request->type_selector;
+                $input["is_checkbox"]=$request->is_checkbox;
+                $input["week_check"]=$request->week_check;
+                $input["week_select"]=$request->week_select;
+                $input["name_ar"]=$request->name_ar;
+                $input["name_en"]=$request->name_en;
+                $input["description_ar"]=$request->description_ar;
+                $input["description_en"]=$request->description_en;
+                $input["html_text_ar"]=$request->html_text_ar;
+                $input["html_text_en"]=$request->html_text_en;
+                $input["sort"]=$request->sort;
+                $input["active"]=$request->active;
+            $user_id=Auth::user()->id;
+             $input['user_id']=$user_id;
+            
+
+
+              
             $this->validate($request, [
             'type_selector'=>'required',
                     'user_id'=>'required',
@@ -282,7 +262,23 @@ class ProductController extends Controller
         ]);
         
 
-                $input = $request->all();
+ 
+                $old_product_file=Product::find($id)->product_file;
+                if ($request->hasFile('product_file')) {
+                    $document = $request->file('product_file');
+                    $ext = $document->getClientOriginalExtension();
+                    if ($request->file('product_file') && $request->file('product_file')->isValid()) {
+                        $imageName = date('YmdHis') . ".$ext";
+                        $path = 'storage/images/products/product_file/';
+                        $request->file('product_file')->move($path, $imageName);
+                        $input['product_file'] = $path.$imageName;
+                        File::delete($old_product_file);
+                    }
+                    else{
+                    $input['product_file'] =$old_product_file;
+                    }
+                }
+                
 
                 
                         if(isset($input['is_checkbox'])){
@@ -312,13 +308,14 @@ class ProductController extends Controller
                 }
                 
 
+                 $Product=Product::where(['id'=>$id ])->where(['user_id' => $user_id ])->update($input);
 
-                $Product->update($input);
+        //store images if found
+        //store files if found
 
-                //store images if found
-                //store files if found
+        $Product = Product::where(['id'=>$id , 'user_id' => $user_id ])->get();
 
-                return redirect()->route('products.index')
+                return redirect('products')
                     ->with('success',trans('admin_messages.info_edited'));
             }
 
@@ -330,17 +327,21 @@ class ProductController extends Controller
              */
             public function destroy($id)
             {
-                 // delete files and images
+
+        //delete files
+         // delete files and images
         
                 $old_product_file=Product::find($id)->product_file;
                  File::delete($old_product_file);
                 
-
-                 // delete files and images in sub tables if this module has mutiple files or images
+        $user_id=Auth::user()->id;
+            
+         // delete files and images in sub tables if this module has mutiple files or images
         
 
-                Product::find($id)->delete();
-                return redirect()->route('products.index')
+        Product::where(['id'=>$Product_id ])->where(['user_id' => $user_id ])->delete();
+
+                return redirect('products')
                     ->with('success',trans('admin_messages.info_deleted'));
             }
 
@@ -350,8 +351,4 @@ class ProductController extends Controller
 
 
             
-
-
-
-
-        }
+}

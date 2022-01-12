@@ -4,8 +4,8 @@ import '../../../Controllers/VerificationController.dart';
 import '../../../helpers/LoaderDialog.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+//
+//
 import '../../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -71,9 +71,7 @@ class _EditMobileState extends State<EditMobile> {
         }
       });
     } else {
-      ShowToast('error',
-          language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields")
-          );
+      ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
     }
   }
 
@@ -136,7 +134,7 @@ class _EditMobileState extends State<EditMobile> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("changeMobileNo") : messages_ar.getTranslation("changeMobileNo")
+            LanguageHelper.trans("app","changeMobileNo")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -180,7 +178,7 @@ class _EditMobileState extends State<EditMobile> {
                                 top:
                                     (SizeConfig.screenHeight)! / screenHightRatio),
                             child: Text(
-                              language == "en" ? messages_en.getTranslation("changeMobileNo") : messages_ar.getTranslation("changeMobileNo")
+                                LanguageHelper.trans("app","changeMobileNo")
                               ,
                             ),
                           ),
@@ -191,7 +189,7 @@ class _EditMobileState extends State<EditMobile> {
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                               hintText:
-                              language == "en" ? messages_en.getTranslation("mobilehinttext") : messages_ar.getTranslation("mobilehinttext")
+                              LanguageHelper.trans("app","mobilehinttext")
                               ,
                               icon: Icon(Icons.mobile_screen_share),
                             ),
@@ -203,7 +201,7 @@ class _EditMobileState extends State<EditMobile> {
                             minWidth: double.infinity,
                             child: RaisedButton(
                                 child: Text(
-                                  language == "en" ? messages_en.getTranslation("edit") : messages_ar.getTranslation("edit")
+                                    LanguageHelper.trans("app","edit")
                                   ,
                                   style: Theme.of(context).textTheme.button,
                                 ),

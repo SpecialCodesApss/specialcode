@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title',trans('products.Admin - products'))
+@section('title',trans('tests.Admin - tests'))
 @section('header')
 
 
@@ -19,9 +19,9 @@
         <div class="row align-items-end">
             <div class="col-lg-8">
                 <div class="page-header-title">
-                    <i class="empty bg-c-blue"></i>
+                    <i class="fab fa-accusoft bg-c-blue"></i>
                     <div class="d-inline">
-                        <h5>{{trans('products.Admin - products')}}</h5>
+                        <h5>{{trans('tests.Admin - tests')}}</h5>
                         <span>{{trans('admin_messages.manage and control all system sides')}}
                              </span>
                     </div>
@@ -34,7 +34,7 @@
                             <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">{{trans('products.products')}}</a>
+                            <a href="#">{{trans('tests.tests')}}</a>
                         </li>
                     </ul>
                 </div>
@@ -53,7 +53,7 @@
 
     <div class="card">
                                 <div class="card-header">
-                                    <h5>{{trans('products.Admin - products')}}</h5>
+                                    <h5>{{trans('tests.Admin - tests')}}</h5>
                                     <div class="card-header-right">
                                         <ul class="list-unstyled card-option">
                                             <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-lg-12 align_btn_end">
                         <a class="btn btn-primary"
-            href="{{ route('products.create') }}">
+            href="{{ route('tests.create') }}">
   {{trans('admin_messages.Create')}} </a> <br> <br>
                 </div>
 
@@ -86,36 +86,24 @@
                                 <table  id="example" class="table table-striped table-bordered display nowrap dataTable " style="width:100%">
                                     <thead>
                                     <tr>
-                                        <th class="is_filter">{{trans("products.id")}}</th>
-                          <th class="is_filter">{{trans("products.type_selector")}}</th>
-                          <th class="is_filter">{{trans("products.user_id")}}</th>
-                          <th class="is_filter">{{trans("products.is_checkbox")}}</th>
-                          <th class="is_filter">{{trans("products.week_check")}}</th>
-                          <th class="is_filter">{{trans("products.week_select")}}</th>
-                          <th class="is_filter">{{trans("products.name_ar")}}</th>
-                          <th class="is_filter">{{trans("products.name_en")}}</th>
-                          <th class="is_filter">{{trans("products.product_file")}}</th>
-                          <th class="is_filter">{{trans("products.description_ar")}}</th>
-                          <th class="is_filter">{{trans("products.description_en")}}</th>
-                          <th class="is_filter">{{trans("products.active")}}</th>
+                                        <th class="is_filter">{{trans("tests.id")}}</th>
+                          <th class="is_filter">{{trans("tests.name_ar")}}</th>
+                          <th class="is_filter">{{trans("tests.name_en")}}</th>
+                          <th class="is_filter">{{trans("tests.number")}}</th>
+                          <th class="is_filter">{{trans("tests.image")}}</th>
+                          <th class="is_filter">{{trans("tests.active")}}</th>
                           <th width="100px">{{trans("admin_messages.Control")}}</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                     <tr>
-                                        <th class="is_filter">{{trans("products.id")}}</th>
-                          <th class="is_filter">{{trans("products.type_selector")}}</th>
-                          <th class="is_filter">{{trans("products.user_id")}}</th>
-                          <th class="is_filter">{{trans("products.is_checkbox")}}</th>
-                          <th class="is_filter">{{trans("products.week_check")}}</th>
-                          <th class="is_filter">{{trans("products.week_select")}}</th>
-                          <th class="is_filter">{{trans("products.name_ar")}}</th>
-                          <th class="is_filter">{{trans("products.name_en")}}</th>
-                          <th class="is_filter">{{trans("products.product_file")}}</th>
-                          <th class="is_filter">{{trans("products.description_ar")}}</th>
-                          <th class="is_filter">{{trans("products.description_en")}}</th>
-                          <th class="is_filter">{{trans("products.active")}}</th>
+                                        <th class="is_filter">{{trans("tests.id")}}</th>
+                          <th class="is_filter">{{trans("tests.name_ar")}}</th>
+                          <th class="is_filter">{{trans("tests.name_en")}}</th>
+                          <th class="is_filter">{{trans("tests.number")}}</th>
+                          <th class="is_filter">{{trans("tests.image")}}</th>
+                          <th class="is_filter">{{trans("tests.active")}}</th>
                           <th width="100px">{{trans("admin_messages.Control")}}</th>
                                     </tr>
                                     </tfoot>
@@ -198,29 +186,18 @@
                                         "sLast":     "{{trans("admin_messages.sLast")}}",
                                     }
                                 },
-                                ajax: "{{ route('products.index') }}",
+                                ajax: "{{ route('tests.index') }}",
                                 aoColumns: [
                                     {data: 'id', name: 'id'},
-                    {data: 'type_selector', name: 'type_selector'},
-                    {data: 'user_id', name: 'user_id'},
-                    {data: 'is_checkbox', name: 'is_checkbox'},
-                    {data: 'week_check', name: 'week_check'},
-                    {data: 'week_select', name: 'week_select'},
                     {data: 'name_ar', name: 'name_ar'},
                     {data: 'name_en', name: 'name_en'},
-                    
-                    {data: 'product_file', name: 'product_file',
-                        "render": function(data, type, row, meta) {
-                            if (type === 'display') {
-                                data = '<a target="_blank" href="' + '{{url('/')}}' +'/'+ data + '">{{trans("admin_messages.openFile")}} </a>';
-                            }
-                            return data;
-                        }
-                        },
-
-                    {data: 'description_ar', name: 'description_ar'},
-                    {data: 'description_en', name: 'description_en'},
-                    {data: 'active', name: 'active'},
+                    {data: 'number', name: 'number'},
+                    {data: 'image', name: 'image',
+                                        render: function(data,type,row){
+                                            return '<img src="' + '{{url('/')}}' +'/'+ data + '",width=60px, height=60px />'},
+                                        orderable: false
+                                    },
+                                    {data: 'active', name: 'active'},
                      {data: 'action', name: 'action', orderable: false,
                                         paging:false,
                                         searchable: false,

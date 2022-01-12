@@ -11,8 +11,8 @@ import 'my_account.dart';
 import 'package:flutter/widgets.dart';
 import '../../../helpers/SizeConfig.dart';
 import '../../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 // import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -71,10 +71,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
         });
       } else {
         hideLoaderDialogFunction(context);
-        ShowToast('error',
-          language == "en" ? messages_en.getTranslation("pleasefillallfields") :
-          messages_ar.getTranslation("pleasefillallfields") ,
-            );
+        ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
       }
 
   }
@@ -85,7 +82,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
   var email = "";
   UserController userProfileController = new UserController();
 
-  String serverUrl = "http://192.168.1.5/framework1.7/";
+  String serverUrl = "http://192.168.1.4/framework1.7/";
 
   /*Internet and loading*/
   /**************/
@@ -158,7 +155,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
       backgroundColor: HexColor('f0f0f0'),
       appBar: AppBar(
         title: Text(
-          language == "en" ? messages_en.getTranslation("EditMyAccount") : messages_ar.getTranslation("EditMyAccount")
+            LanguageHelper.trans("app","EditMyAccount")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -232,8 +229,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
 
                             ),
                             child: Text(
-                              language == "en" ? messages_en.getTranslation("uploadPhoto") :
-                              messages_ar.getTranslation("uploadPhoto")
+                                LanguageHelper.trans("app","uploadPhoto")
                               ,
                               style: TextStyle(
                                 color: const Color(0xFFFFFFFF),
@@ -254,7 +250,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
                           style: Theme.of(context).textTheme.bodyText1,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("name") : messages_ar.getTranslation("name")
+                            LanguageHelper.trans("app","name")
                             ,
                             icon: Icon(Icons.account_circle),
                           ),
@@ -265,7 +261,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
                           style: Theme.of(context).textTheme.bodyText1,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("mobile") : messages_ar.getTranslation("mobile")
+                            LanguageHelper.trans("app","mobile")
                             ,
                             icon: Icon(Icons.mobile_screen_share),
                           ),
@@ -277,7 +273,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
                           style: Theme.of(context).textTheme.bodyText1,
                           decoration: InputDecoration(
                             hintText:
-                            language == "en" ? messages_en.getTranslation("email") : messages_ar.getTranslation("email")
+                            LanguageHelper.trans("app","email")
                             ,
                             icon: Icon(Icons.email),
                           ),
@@ -289,7 +285,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
                           minWidth: double.infinity,
                           child: RaisedButton(
                               child: Text(
-                                language == "en" ? messages_en.getTranslation("edit") : messages_ar.getTranslation("edit")
+                                 LanguageHelper.trans("app","edit")
                                 ,
                                 style: Theme.of(context).textTheme.button,
                               ),

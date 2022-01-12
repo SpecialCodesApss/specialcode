@@ -322,3 +322,9 @@ b, strong{
     background: none !important;
     border: none !important;
 }
+
+.flagimg{
+    height: 35px;
+    width: 35px;
+}
+

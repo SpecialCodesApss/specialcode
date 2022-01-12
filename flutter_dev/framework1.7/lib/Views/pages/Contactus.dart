@@ -5,8 +5,6 @@ import '../../Controllers/PageController.dart';
 import '../../helpers/LoaderDialog.dart';
 import '../../helpers/ToastHelper.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
 import '../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
 import '../Home.dart';
 
 class Contactus extends StatefulWidget {
@@ -117,7 +113,8 @@ class _ContactusState extends State<Contactus> {
     } else {
       Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
       ShowToast('error',
-          language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields") ,
+          LanguageHelper.trans("app","pleasefillallfields")
+         ,
           );
     }
   }
@@ -147,7 +144,7 @@ class _ContactusState extends State<Contactus> {
       appBar: AppBar(
         title: Text(
           //pageTitle,
-          language == "en" ? messages_en.getTranslation("Contactus") : messages_ar.getTranslation("Contactus")
+            LanguageHelper.trans("app","Contactus")
           ,
           style: Theme.of(context).textTheme.subtitle1,
         ),
@@ -208,7 +205,7 @@ class _ContactusState extends State<Contactus> {
                       style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(
                         hintText:
-                        language == "en" ? messages_en.getTranslation("name") : messages_ar.getTranslation("name")
+                        LanguageHelper.trans("app","name")
                         ,
                       ),
                     ),
@@ -219,7 +216,7 @@ class _ContactusState extends State<Contactus> {
                       style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(
                         hintText:
-                        language == "en" ? messages_en.getTranslation("email") : messages_ar.getTranslation("email")
+                        LanguageHelper.trans("app","email")
                         ,
                       ),
                     ),
@@ -230,7 +227,7 @@ class _ContactusState extends State<Contactus> {
                       style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(
                         hintText:
-                        language == "en" ? messages_en.getTranslation("mobile") : messages_ar.getTranslation("mobile")
+                        LanguageHelper.trans("app","mobile")
                         ,
                       ),
                     ),
@@ -240,7 +237,7 @@ class _ContactusState extends State<Contactus> {
                       style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(
                         hintText:
-                        language == "en" ? messages_en.getTranslation("Message") : messages_ar.getTranslation("Message")
+                        LanguageHelper.trans("app","Message")
                         ,
                       ),
                       maxLines: 6,
@@ -255,7 +252,7 @@ class _ContactusState extends State<Contactus> {
                       minWidth: double.infinity,
                       child: RaisedButton(
                           child: Text(
-                            language == "en" ? messages_en.getTranslation("send") : messages_ar.getTranslation("send")
+                              LanguageHelper.trans("app","send")
                             ,
                             style: Theme.of(context).textTheme.button,
                           ),

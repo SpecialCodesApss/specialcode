@@ -1,4 +1,5 @@
 import 'package:flutter_dev/helpers/InternetHelper.dart';
+// import 'package:flutter_dev/helpers/LanguageHelper.dart';
 
 import '../../../../helpers/bottomNavigatorBarHelper.dart';
 
@@ -13,8 +14,8 @@ import '../../helpers/MenuHelper.dart';
 import '../../helpers/SizeConfig.dart';
 import '../../helpers/ToastHelper.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
+// import '../../lang/ar/app.dart' as messages_ar;
+// import '../../lang/en/app.dart' as messages_en;
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'views/users/my_account/my_account.dart';
 // import 'views/pages/notifications.dart';
@@ -95,7 +96,7 @@ class _HomeState extends State<Home> {
   }
 
 
-  String serverUrl = "192.168.1.5/framework1.7/";
+  String serverUrl = "192.168.1.4/framework1.7/";
 
 
   final appcastURL =
@@ -113,7 +114,7 @@ class _HomeState extends State<Home> {
     // final appcastURL =
     //     'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
 
-     final appcastURL = 'http://192.168.1.5/framework1.7/appcast.xml';
+     final appcastURL = 'http://192.168.1.4/framework1.7/appcast.xml';
     final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android','ios']);
 
     return
@@ -129,7 +130,7 @@ class _HomeState extends State<Home> {
     child:
     Scaffold(
         appBar: AppBar(
-          title:Text(language == "en" ? messages_en.getTranslation("home") : messages_ar.getTranslation("home"))
+          title:Text(LanguageHelper.trans("app","home"))
           ,
           centerTitle: true,
         ),

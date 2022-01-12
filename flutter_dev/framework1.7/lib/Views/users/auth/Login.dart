@@ -8,8 +8,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../Controllers/UserController.dart';
 import '../../../helpers/ToastHelper.dart';
 import '../../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../../lang/ar/app.dart' as messages_ar;
-import '../../../lang/en/app.dart' as messages_en;
+
+
 import 'package:flutter_app_restart/flutter_app_restart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/widgets.dart';
@@ -134,8 +134,7 @@ class _LoginPageState extends State<LoginPage>{
       }
       else{
         // hideLoaderDialogFunction(context);
-        ShowToast('error',language == "en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields")
-            );
+        ShowToast('error', LanguageHelper.trans("app","pleasefillallfields"));
       }
 
   }
@@ -162,7 +161,7 @@ class _LoginPageState extends State<LoginPage>{
         backgroundColor: HexColor('f0f0f0'),
         appBar: AppBar(
           title: Text(
-            language == "en" ? messages_en.getTranslation("login") : messages_ar.getTranslation("login")
+              LanguageHelper.trans("app","login")
             ,
             style: Theme.of(context).textTheme.subtitle1,
           ),
@@ -203,10 +202,10 @@ class _LoginPageState extends State<LoginPage>{
                             decoration: InputDecoration(
                               icon: Icon(Icons.account_circle),
                               hintText:
-                              language == "en" ? messages_en.getTranslation("mobilehinttext") : messages_ar.getTranslation("mobilehinttext")
+                              LanguageHelper.trans("app","mobilehinttext")
                               ,
                               labelText:
-                              language == "en" ? messages_en.getTranslation("mobile") : messages_ar.getTranslation("mobile")
+                              LanguageHelper.trans("app","mobile")
                               ,
                               focusColor: Colors.green,
                             ),
@@ -219,10 +218,10 @@ class _LoginPageState extends State<LoginPage>{
                               counterStyle: TextStyle(fontFamily: 'Droid'),
                               icon: Icon(Icons.lock),
                               hintText:
-                              language == "en" ? messages_en.getTranslation("passwordhinttext") : messages_ar.getTranslation("passwordhinttext")
+                              LanguageHelper.trans("app","passwordhinttext")
                               ,
                               labelText:
-                              language == "en" ? messages_en.getTranslation("password") : messages_ar.getTranslation("password")
+                              LanguageHelper.trans("app","password")
                               ,
                               focusColor: Colors.green,
                             ),
@@ -242,7 +241,7 @@ class _LoginPageState extends State<LoginPage>{
                                 bottom: (SizeConfig.screenHeight)! / screenHightRatio,
                               ),
                               child :Text(
-                                language == "en" ? messages_en.getTranslation("forgetpassword") : messages_ar.getTranslation("forgetpassword")
+                                  LanguageHelper.trans("app","forgetpassword")
                                  ,
                                 style: TextStyle(
 //                    decoration: TextDecoration.underline,
@@ -259,7 +258,7 @@ class _LoginPageState extends State<LoginPage>{
                             minWidth: double.infinity,
                               child: RaisedButton(
                                 child:  Text(
-                                  language == "en" ? messages_en.getTranslation("login") : messages_ar.getTranslation("login")
+                                    LanguageHelper.trans("app","login")
                                   ,
                                   style: Theme.of(context).textTheme.button,
                                 ),
@@ -275,8 +274,8 @@ class _LoginPageState extends State<LoginPage>{
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                language == "en" ? messages_en.getTranslation("didnthaveaccount") : messages_ar.getTranslation("didnthaveaccount")
-                                 ,
+                                LanguageHelper.trans("app","didnthaveaccount")
+                                ,
                                 style: TextStyle(
                                 ),
                               ),
@@ -293,7 +292,7 @@ class _LoginPageState extends State<LoginPage>{
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  language == "en" ? messages_en.getTranslation("registernewaccount") : messages_ar.getTranslation("registernewaccount")
+                                  LanguageHelper.trans("app","registernewaccount")
                                    ,
                                   style: TextStyle(
 //                      decoration: TextDecoration.underline,

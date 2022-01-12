@@ -1,14 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'flutter_restart.dart';
 import 'package:flutter_app_restart/flutter_app_restart.dart';
-// import 'package:restart_app/restart_app.dart';
+import '../../lang/ar/app.dart' as app_messages_ar;
+import '../../lang/en/app.dart' as app_messages_en;
+/*Import Additional languages files here*/
 
 String? Language;
 
+trans(module,word_text){
+  var translate;
+
+  if (module == "app"){
+    Language == "en" ? translate = app_messages_en.getTranslation(word_text)
+    : translate = app_messages_ar.getTranslation(word_text);
+  }
+
+  /*Add Additional languages functions here*/
+
+  return translate;
+}
+
 initialize() async {
-  // final prefs = await SharedPreferences.getInstance();
-  // var current_lang = prefs.getString('Lang');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var current_lang = prefs.getString('Lang');
   if (current_lang == "en") {
@@ -19,7 +30,6 @@ initialize() async {
   else{
     Language = "ar";
   }
-  // return Language;
 }
 
 _save_ar(context) async {
@@ -27,12 +37,6 @@ _save_ar(context) async {
   prefs.setString("Lang", "ar");
   Language = "ar";
   FlutterRestart.restartApp();
-  // final prefs = await SharedPreferences.getInstance();
-  // prefs.setString("Lang", "ar");
-  // Language = "ar";
-  // await FlutterRestart.restartApp();
-  // FlutterRestart.restartApp();
-  // RestartWidget.of(context).restartApp();
 }
 
 _save_en(context) async {
@@ -40,13 +44,6 @@ _save_en(context) async {
   prefs.setString("Lang", "en");
   Language = "en";
   FlutterRestart.restartApp();
-  // final prefs = await SharedPreferences.getInstance();
-  // final key = 'Lang';
-  // final value = 'en';
-  // prefs.setString(key, value);
-  // Language = value;
-  // await FlutterRestart.restartApp();
-  // RestartWidget.of(context).restartApp();
 }
 
 onLocaleChange(context,lang) {

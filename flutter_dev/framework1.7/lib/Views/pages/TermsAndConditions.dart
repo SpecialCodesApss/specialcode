@@ -3,8 +3,6 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../Controllers/PageController.dart';
 import '../../helpers/LoaderDialog.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
-import '../../lang/ar/app.dart' as messages_ar;
-import '../../lang/en/app.dart' as messages_en;
 import '../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
