@@ -124,7 +124,7 @@ class _News_commentsIndexState extends State<News_commentsIndex>{
 
   }
 
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -284,7 +284,7 @@ class _News_commentsIndexState extends State<News_commentsIndex>{
                                       children: <Widget>[
                                         FadeInImage.assetNetwork(
                                           placeholder:"assets/images/noimage.png" ,
-                                          image:"http://192.168.1.101/framework/"+data[index]["id"] ,
+                                          image:"http://192.168.1.6/framework/"+data[index]["id"] ,
                                           width: 40.0 ,
                                           height: 40.0 ,
                                         ),

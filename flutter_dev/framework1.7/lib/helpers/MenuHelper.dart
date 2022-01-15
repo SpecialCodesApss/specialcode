@@ -1,3 +1,10 @@
+// import 'package:flutter_dev/Views/pages/Privacy.dart';
+
+import 'package:flutter_dev/Views/faqs/index.dart';
+import 'package:flutter_dev/Views/pages/Contactus.dart';
+import 'package:flutter_dev/Views/pages/Notifications.dart';
+import 'package:flutter_dev/Views/pages/view.dart';
+
 import '../Views/Pages/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,12 +16,13 @@ import '../Controllers/NotificationController.dart';
 import '../Views/users/auth/Login.dart';
 import '../Views/Home.dart';
 import '../Views/users/my_account/my_account.dart';
-import '../Views/Pages/AboutApp.dart';
-import '../Views/Pages/Aboutus.dart';
-import '../Views/Pages/Contactus.dart';
-import '../Views/Pages/Notifications.dart';
-import '../Views/Pages/TermsAndConditions.dart';
+// import '../Views/Pages/AboutApp.dart';
+// import '../Views/Pages/Aboutus.dart';
+// import '../Views/Pages/Contactus.dart';
+// import '../Views/Pages/Notifications.dart';
+// import '../Views/Pages/TermsAndConditions.dart';
 //import '../Views/wallets/view.dart';
+// import '../Views/pages/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'LanguageHelper.dart';
@@ -215,22 +223,7 @@ class MenuHelper  implements Function {
               );
             },
           ),
-          SizedBox(
-            height: 5.0,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 20.0,
-                right: 20.0,
-              ),
-              child : Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1.0, color: Colors.black12),
-                  ),
-                ),
-              ),
-            )
-          ),
+
 
 
           SizedBox(
@@ -249,9 +242,6 @@ class MenuHelper  implements Function {
                 ),
               )
           ),
-
-
-
           ListTile(
               leading: Icon(Icons.notifications_active,color:  HexColor("036474")),
               title: Row(
@@ -300,7 +290,6 @@ class MenuHelper  implements Function {
                 ),
               )
           ),
-
           ListTile(
             leading: Icon(Icons.email,color:  HexColor("036474")),
             title: Text(
@@ -331,7 +320,6 @@ class MenuHelper  implements Function {
                 ),
               )
           ),
-
           ListTile(
             leading: Icon(Icons.info,color:  HexColor("036474")),
             title: Text(
@@ -341,7 +329,7 @@ class MenuHelper  implements Function {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Aboutus())
+                  MaterialPageRoute(builder: (context) => PagesView("aboutus_mobile"))
               );
             },
           ),
@@ -362,7 +350,6 @@ class MenuHelper  implements Function {
                 ),
               )
           ),
-
           ListTile(
             leading: Icon(Icons.info_outline,color:  HexColor("036474")),
             title: Text(
@@ -372,7 +359,7 @@ class MenuHelper  implements Function {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AboutApp())
+                  MaterialPageRoute(builder: (context) => PagesView("aboutapp_mobile"))
               );
             },
           ),
@@ -402,7 +389,71 @@ class MenuHelper  implements Function {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TermsAndConditions())
+                  MaterialPageRoute(builder: (context) => PagesView("terms_mobile"))
+              );
+            },
+          ),
+
+
+          SizedBox(
+              height: 5.0,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                ),
+                child : Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1.0, color: Colors.black12),
+                    ),
+                  ),
+                ),
+              )
+          ),
+          ListTile(
+            leading: Icon(Icons.add_moderator_outlined,color:  HexColor("036474")),
+            title: Text(
+              language == "en" ? messages_en.getTranslation("Privacy") : messages_ar.getTranslation("Privacy")
+              ,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PagesView("privacy_mobile"))
+              );
+            },
+          ),
+
+
+
+
+          SizedBox(
+              height: 5.0,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                ),
+                child : Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1.0, color: Colors.black12),
+                    ),
+                  ),
+                ),
+              )
+          ),
+          ListTile(
+            leading: Icon(Icons.comment_outlined,color:  HexColor("036474")),
+            title: Text(
+              language == "en" ? messages_en.getTranslation("faqs") : messages_ar.getTranslation("faqs")
+              ,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FaqsIndex())
               );
             },
           ),

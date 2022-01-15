@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dev/Views/Home.dart';
 import 'package:flutter_dev/Views/Splash.dart';
+import 'package:flutter_dev/Views/faqs/index.dart';
 import 'package:flutter_dev/Views/main/LangaugePage.dart';
+import 'package:flutter_dev/Views/products/index.dart';
+import 'package:flutter_dev/Views/products/store.dart';
+import 'package:flutter_dev/Views/products/update.dart';
+import 'package:flutter_dev/Views/products/view.dart';
 import 'package:flutter_dev/Views/users/auth/Login.dart';
 import 'package:flutter_dev/Views/users/my_account/edit.dart';
 import 'package:flutter_dev/Views/users/my_account/my_account.dart';
@@ -29,6 +34,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:framework_01_6/Views/our_services/index.dart';
 // import 'package:framework_01_6/Views/sponsers/index.dart';
 // import 'Views/Splash.dart';
+// import 'Views/pages/Aboutus.dart';
 import 'helpers/InternetHelper.dart';
 import 'helpers/LanguageHelper.dart' as LanguageHelper;
 import 'package:flutter_app_restart/flutter_app_restart.dart';
@@ -112,7 +118,10 @@ class _MyAppState extends State<MyApp> {
                     padding: EdgeInsets.all(10.0),
                     buttonColor: HexColor('#0a0a0a'), //  <-- dark color
                   ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(secondary: HexColor('#f8f80a'))),
-              home: Splash(),
+              // home: Splash(),
+              home: Home(),
+              // home: ProductsUpdate(7),
+              // home: ProductsView(1),
               // home: LoginPage(),
             )
 

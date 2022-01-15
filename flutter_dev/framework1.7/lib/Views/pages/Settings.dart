@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dev/helpers/InternetHelper.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
+import '../Home.dart';
 
 
 class Settings extends StatefulWidget {
@@ -22,6 +23,18 @@ class _SettingsState extends State<Settings> {
   /*End Internet and loading*/
   /**************/
 
+  var language;
+
+  changeLanguage(lang) async {
+    await LanguageHelper.onLocaleChange(context,lang);
+    await LanguageHelper.initialize();
+    setState(() {
+      language = LanguageHelper.Language;
+    });
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Home())
+    );
+  }
 
   read() async {
     /*Internet and loading*/
@@ -30,6 +43,11 @@ class _SettingsState extends State<Settings> {
     setState(() {is_loading = false;});
     /*End Internet and loading*/
     /**************/
+
+    await LanguageHelper.initialize();
+    setState(() {
+      language = LanguageHelper.Language;
+    });
   }
 
   @override
@@ -44,7 +62,6 @@ class _SettingsState extends State<Settings> {
     super.dispose();
   }
 
-  var language = LanguageHelper.Language;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +94,22 @@ class _SettingsState extends State<Settings> {
               Text(
           LanguageHelper.trans("app","Choose_language")
               ),
+
+              ElevatedButton(
+                  onPressed: (){
+                    changeLanguage("ar");
+                  },
+                  child: Text(
+                      'العربية'
+                  )),
+              ElevatedButton(
+                  onPressed: (){
+                    changeLanguage("en");
+                  },
+                  child: Text(
+                      'English'
+                  ))
+
               // ButtonTheme(
               //   minWidth: double.infinity,
               //   child: RaisedButton(

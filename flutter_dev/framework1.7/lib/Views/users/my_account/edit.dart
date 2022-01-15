@@ -37,7 +37,6 @@ class _EditMyAccountState extends State<EditMyAccount> {
   var profile_image = "";
   var user_profile_image;
   Future getImage() async {
-    //focusout from keyboard - its important due to error happen when load image thats clear last textfield
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
@@ -82,7 +81,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
   var email = "";
   UserController userProfileController = new UserController();
 
-  String serverUrl = "http://192.168.1.4/framework1.7/";
+  String serverUrl = "http://192.168.1.6/framework1.7/";
 
   /*Internet and loading*/
   /**************/
@@ -229,8 +228,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
 
                             ),
                             child: Text(
-                                LanguageHelper.trans("app","uploadPhoto")
-                              ,
+                                LanguageHelper.trans("app","uploadPhoto"),
                               style: TextStyle(
                                 color: const Color(0xFFFFFFFF),
                                 fontFamily: 'Cairo',

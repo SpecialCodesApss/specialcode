@@ -5,7 +5,7 @@ getTranslation(String message_name) {
 }
 
 var messages = {
-  "home": "..الرئيسية",
+  "home": "الرئيسية",
   "homes": "الأساسي",
   "login": "تسجيل الدخول",
   "mobile": "رقم الجوال",
@@ -60,8 +60,7 @@ var messages = {
   "Settings": "الإعدادات",
   "Choose_language": "اختر اللغة المفضلة",
   "please_update_app": "هناك نسخة حديثة من هذا التطبيق ، من فضلك قم بتحديث التطبيق عن طريق المتجر",
-  "app_copyrights": "تم تطوير وتصميم التطبيق بواسطة شركة سعودي آب Saudi-App.com",
-
+  "app_copyrights": "تم التطوير بواسطة شركة Special-codes.com",
 
   "Rating_alternativeButton": "تواصل معنا الآن ؟",
   "Rating_positiveComment":  "نحن سعداء لاستقبال تقييمك الجيد :) ",
@@ -70,6 +69,23 @@ var messages = {
   "comment": "تعليقك",
   "uploadPhoto": "تحميل صورة",
   "comment_placholder": "اكتب تعليقك هنا - اختياري",
+
+  "create": "إضافة جديد",
+  "update": "تحديث",
+  "delete": "حذف",
+
+  "theImage": "الصورة",
+  "title": "العنوان",
+  "SARcurrency": "ر.س",
+  "confirmDeleteMessage": "هل أنت متأكد من الحذف ؟",
+  "yes": "نعم",
+  "no": "لا",
+  "Alert": "تنبيه",
+
+  "Privacy": "سياسة الخصوصية",
+  "faqs": "الأسئلة الشائعة",
+
+  "noImageSelected": "لم يتم اختيار صورة",
 
 
 };

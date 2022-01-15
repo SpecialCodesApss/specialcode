@@ -96,7 +96,7 @@ class _HomeState extends State<Home> {
   }
 
 
-  String serverUrl = "192.168.1.4/framework1.7/";
+  String serverUrl = "192.168.1.6/framework1.7/";
 
 
   final appcastURL =
@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
     // final appcastURL =
     //     'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
 
-     final appcastURL = 'http://192.168.1.4/framework1.7/appcast.xml';
+     final appcastURL = 'http://192.168.1.6/framework1.7/appcast.xml';
     final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android','ios']);
 
     return

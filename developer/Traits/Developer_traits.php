@@ -66,6 +66,9 @@ trait Developer_traits{
         $controller_name=$module_name.'Controller';
         $module_controller_name="use App\\Models\\".$module_name.";";
 
+        $input_variable='';
+
+
         //store validator
         $validations ='';
         foreach ($table_fields as $table_field){
@@ -73,6 +76,15 @@ trait Developer_traits{
                 $new_line='\''.$table_field.'\'=>\'required\',
                 ';
                 $validations=$validations.$new_line;
+            }
+
+            //input variable define
+            if($table_field != "id" && $table_field != "user_id" && $table_field != "created_at" &&
+                $table_field != "updated_at" && $input[$table_field.'_datatype'] != 'file'
+                && $input[$table_field.'_datatype'] != 'image'){
+                $new_input_variable = '
+                $input["'.$table_field.'"]=$request->'.$table_field.';';
+                $input_variable.=$new_input_variable;
             }
         }
         if($input['table_has_multiple_images']=='1'){
@@ -151,7 +163,7 @@ trait Developer_traits{
         foreach ($table_fields as $table_field){
             if($input[$table_field.'_datatype'] == 'image' || $input[$table_field.'_datatype'] == 'file'){
                 $files_to_deleted_statements=$files_to_deleted_statements.'
-                $old_'.$table_field.'='.$module_name.'::find($'.$module_name.'_id)->'.$table_field.';
+                $old_'.$table_field.'='.$module_name.'::find($id)->'.$table_field.';
                  File::delete($old_'.$table_field.');
                 ';
             }
@@ -365,6 +377,23 @@ trait Developer_traits{
         $section_flag = $input["section_flag"];
 
 
+        //check notification
+        $notification_export_commands='';
+        $notification_use_commands='';
+        $notification_commands='';
+        if($input['is_notification_able']=='1'){
+            $notification_export_commands='use App\Http\Traits\admin_notification_traits;';
+            $notification_use_commands='use admin_notification_traits;';
+            $notification_commands='
+         //create admin notification
+        $notification_input=[];
+        $notification_input["notification_id"]='.$input["notification_text_id"].';
+        $notification_input["module_id"]=$'.$module_name.'->id;
+        $this->createNotification($notification_input);
+        ';
+        }
+
+
 
         $API_controller_content='<?php
 namespace App\Http\Controllers\API;
@@ -374,9 +403,12 @@ use App\Http\Controllers\API\BaseController as BaseController;
 '.$use_module_statments.'
 use Validator;
 use File;
+'.$notification_export_commands.'
 
 class '.$controller_name.' extends BaseController
 {
+
+    '.$notification_use_commands.'
     /**
      * Display a listing of the resource.
      *
@@ -398,7 +430,10 @@ class '.$controller_name.' extends BaseController
      */
     public function store(Request $request)
     {
-        $input = $request->all();
+
+        '.$input_variable.'
+
+
        '.$user_id_code_Store.'
 
         $validator='.$controller_validations.'
@@ -409,7 +444,13 @@ class '.$controller_name.' extends BaseController
 
         '.$files_store_statements.'
 
+
+        $sort_number = '.$module_name.'::all()->count()+1;
+        $input[\'sort\'] = $sort_number;
+
         $'.$module_name.' = '.$module_name.'::create($input);
+
+        '.$notification_commands.'
 
         '.$Multiple_images_store_statements.'
         '.$Multiple_files_store_statements.'
@@ -436,7 +477,7 @@ class '.$controller_name.' extends BaseController
         }
 
         if (is_null($'.$module_name.')) {
-            return $this->sendError(\''.$module_name.' not found.\');
+            return $this->sendError(trans("messages.data not found"));
         }
 
         return $this->sendResponse(trans("'.$section_flag.'.'.$module_name.'_read"),$'.$module_name.'->toArray());
@@ -451,7 +492,8 @@ class '.$controller_name.' extends BaseController
      */
     public function update(Request $request,$'.$module_name.'_id)
     {
-        $input = $request->except(\'images\',\'files\',\'_method\');
+       '.$input_variable.'
+
         '.$user_id_code_Update.'
 
          $validator='.$controller_update_validations.'
@@ -477,13 +519,13 @@ class '.$controller_name.' extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$'.$module_name.'_id)
+    public function destroy(Request $request,$id)
     {
         //delete files
         '.$files_to_deleted_statements.'
         '.$user_id_code_Delete.'
         '.$multiple_files_to_deleted_statements.'
-        '.$module_name.'::where([\'id\'=>$'.$module_name.'_id ])'.$where_Delete.'->delete();
+        '.$module_name.'::where([\'id\'=>$id ])'.$where_Delete.'->delete();
 
 
 
@@ -534,6 +576,8 @@ class '.$controller_name.' extends BaseController
 
         $file_type_commands='';
         $file_type_vars='';
+
+        $input_variable='';
 
         foreach ($table_fields as $table_field){
 
@@ -768,6 +812,15 @@ class '.$controller_name.' extends BaseController
             $'.$table_field.'_filetype = $this->getFileTypeByLink($'.$module_name.'->'.$table_field.');
             ';
                 $file_type_vars=',\''.$table_field.'_filetype\'';
+            }
+
+            //input variable define
+            if($table_field != "id" && $table_field != "user_id" && $table_field != "created_at" &&
+                $table_field != "updated_at" && $input[$table_field.'_datatype'] != 'file'
+                && $input[$table_field.'_datatype'] != 'image'){
+                $new_input_variable = '
+                $input["'.$table_field.'"]=$request->'.$table_field.';';
+                $input_variable.=$new_input_variable;
             }
 
         }
@@ -1453,7 +1506,7 @@ class '.$controller_name.' extends Controller
                 $lang = App::getLocale();
                 '.$controller_validations.'
 
-                $input = $request->all();
+                '.$input_variable.'
 
                 '.$AutoCode_for_showing_checkbox_value.'
 
@@ -1468,7 +1521,7 @@ class '.$controller_name.' extends Controller
                 '.$Multiple_files_store_statements.'
 
 
-                if($input[\'save_type\']=="save_and_add_new"){
+                if($request->save_type=="save_and_add_new"){
                     return redirect()->route(\''.$table_name.'.create\')
                         ->with(\'success\',trans(\'admin_messages.info_added\'));
                 }
@@ -1540,7 +1593,7 @@ class '.$controller_name.' extends Controller
             $'.$module_name.' = '.$module_name.'::find($id);
                  '.$controller_update_validations.'
 
-                $input = $request->all();
+                '.$input_variable.'
 
                 '.$AutoCode_for_showing_checkbox_value.'
 
@@ -3874,7 +3927,9 @@ class '.$controller_name.' extends Controller
 
 
 
-    {!! Form::open(array(\'enctype\'=>\'multipart/form-data\',\'route\' => \''.$section_flag.'.store\',\'method\'=>\'POST\')) !!}
+    {!! Form::open(array(\'enctype\'=>\'multipart/form-data\',\'route\' => \''.$section_flag.'.store\',
+    \'method\'=>\'POST\',
+    \'id\'=>\'form\')) !!}
     <input type="text" name="save_type" id="save_type" value="save" class="hidden">
 
     <div class="row">
@@ -3889,8 +3944,8 @@ class '.$controller_name.' extends Controller
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <button type="submit" class="btn btn-primary">{{trans(\'admin_messages.save\')}}</button>
             <button type="button"  onclick="
-                $(\'#save_type\').val(\'save_and_add_new\');
-                $(\'form\').submit();
+            $(\'#save_type\').val(\'save_and_add_new\');
+                document.getElementById(\'form\').submit();
                 return false
             " class="btn btn-primary">{{trans(\'admin_messages.save_and_addNew\')}}</button>
         </div>

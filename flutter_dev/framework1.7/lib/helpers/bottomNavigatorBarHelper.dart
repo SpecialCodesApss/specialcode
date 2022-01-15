@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:badges/badges.dart';
+import 'package:flutter_dev/Views/pages/view.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_dev/Views/Home.dart';
 import 'package:flutter_dev/Views/users/my_account/my_account.dart';
-import 'package:flutter_dev/Views/Pages/AboutApp.dart';
+// import 'package:flutter_dev/Views/Pages/AboutApp.dart';
 import 'package:flutter_dev/Views/Pages/Contactus.dart';
 import 'package:flutter_dev/Views/Pages/Notifications.dart';
 
@@ -65,7 +66,7 @@ Widget bottomNavigator(context,current_index){
         }
         if(index == 4){
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => AboutApp())
+              MaterialPageRoute(builder: (context) => PagesView("aboutus"))
           );
         }
     },

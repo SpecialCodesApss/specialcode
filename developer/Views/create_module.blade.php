@@ -116,6 +116,10 @@
                 <div class="col-md-6">
 
                 </div>
+
+
+
+
             <div class="form-group col-md-3">
                 <label for="is_notification_able">is_notification_able</label>
                 <select class="form-control  col-md-12"  name="is_notification_able" id="is_notification_able">
@@ -123,6 +127,17 @@
                     <option value="0" selected>no</option>
                 </select>
             </div>
+
+                <div class="form-group  col-md-3">
+                    <label for="sort">arabic notification</label>
+                    <input type="text" class="form-control  col-md-12" id="is_notification_ar" name="is_notification_ar"  value="">
+                </div>
+                <div class="form-group  col-md-3">
+                    <label for="sort">english notification</label>
+                    <input type="text" class="form-control  col-md-12" id="is_notification_en" name="is_notification_en"  value="">
+                </div>
+
+
             <div class="form-group  col-md-3">
                 <label for="is_drop_menu">is_drop_menu</label>
                 <select  class="form-control  col-md-12" name="is_drop_menu" id="is_drop_menu">
@@ -616,7 +631,7 @@
             var Page='indexPage';
             //get theme items
             var _token = '<?php echo csrf_token() ?>';
-            var tableName=$("#table_select").val();
+            var tableName=$("#table_name").val();
             $.ajax({
                 type:'get',
                 url:'../developer/get_theme_items',
@@ -642,7 +657,7 @@
             var Page='viewPage';
             //get theme items
             var _token = '<?php echo csrf_token() ?>';
-            var tableName=$("#table_select").val();
+            var tableName=$("#table_name").val();
             $.ajax({
                 type:'get',
                 url:'../developer/get_theme_items',

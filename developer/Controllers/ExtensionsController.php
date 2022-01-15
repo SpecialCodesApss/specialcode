@@ -163,6 +163,132 @@ class ExtensionsController extends Controller
             }
 
 
+
+
+
+
+
+
+
+
+//Copy Web Controller for extension in output module folder
+        $destination_folder = '/frontend/controller/';
+        $destinationPath=$destination_parent_folder.$destination_folder;
+        $file_name=$extension_controller_name.'.php';
+        $source_file='app/Http/Controllers/frontend/'. $extension_controller_name.'.php';
+        if (file_exists($source_file)){
+            if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+            $content = file($source_file);
+            File::put($destinationPath.$file_name,$content);
+            //Admin Controllers for Extra and additional extensions
+            foreach ($additional_extensions as $additional_extension){
+                //get full extension info from admin section
+                $additional_extension_full_info=DB::table("admin_sections")->where('section_flag',$additional_extension)->first();
+                $additional_extension_controller_name=$additional_extension_full_info->controller_name;
+                $destination_folder = '/frontend/controller/';
+                $destinationPath=$destination_parent_folder.$destination_folder;
+                $file_name=$additional_extension_controller_name.'.php';
+                $source_file='app/Http/Controllers/frontend/'. $additional_extension_controller_name.'.php';
+                if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+                $content = file($source_file);
+                File::put($destinationPath.$file_name,$content);
+            }
+        }
+        //Copy Web Views for extension in output module folder
+        $destination_folder = '/frontend/views/'.$extension_name.'/';
+        $destinationPath=$destination_parent_folder.$destination_folder;
+        //File 1 : index
+        $file_name='index.blade.php';
+        $source_file='resources/views/frontend/'.$extension_name.'/index.blade.php';
+        if (file_exists($source_file)) {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $content = file($source_file);
+            File::put($destinationPath . $file_name, $content);
+        }
+        //File 2 : create
+        $file_name='create.blade.php';
+        $source_file='resources/views/frontend/'.$extension_name.'/create.blade.php';
+        if (file_exists($source_file)) {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $content = file($source_file);
+            File::put($destinationPath . $file_name, $content);
+        }
+        //File 3 : view
+        $file_name='show.blade.php';
+        $source_file='resources/views/frontend/'.$extension_name.'/show.blade.php';
+        if (file_exists($source_file)) {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $content = file($source_file);
+            File::put($destinationPath . $file_name, $content);
+        }
+        //File 4 : edit
+        $file_name='edit.blade.php';
+        $source_file='resources/views/frontend/'.$extension_name.'/edit.blade.php';
+        if (file_exists($source_file)) {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $content = file($source_file);
+            File::put($destinationPath . $file_name, $content);
+        }
+
+        //Copy Admin Views for extension in output module folder for Extra and additional extensions
+        foreach ($additional_extensions as $additional_extension){
+            //get full extension info from admin section
+            $additional_extension_full_info=DB::table("admin_sections")->where('section_flag',$additional_extension)->first();
+            $additional_extension_controller_name=$additional_extension_full_info->controller_name;
+            $destination_folder = '/frontend/views/'.$additional_extension.'/';
+            $destinationPath=$destination_parent_folder.$destination_folder;
+            //File 1 : index
+            $file_name='index.blade.php';
+            $source_file='resources/views/frontend/'.$additional_extension.'/index.blade.php';
+            if (file_exists($source_file)) {
+                if (!is_dir($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $content = file($source_file);
+                File::put($destinationPath . $file_name, $content);
+            }
+            //File 2 : create
+            $file_name='create.blade.php';
+            $source_file='resources/views/frontend/'.$additional_extension.'/create.blade.php';
+            if (file_exists($source_file)) {
+                if (!is_dir($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $content = file($source_file);
+                File::put($destinationPath . $file_name, $content);
+            }
+            //File 3 : view
+            $file_name='show.blade.php';
+            $source_file='resources/views/frontend/'.$additional_extension.'/show.blade.php';
+            if (file_exists($source_file)) {
+                if (!is_dir($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $content = file($source_file);
+                File::put($destinationPath . $file_name, $content);
+            }
+            //File 4 : edit
+            $file_name='edit.blade.php';
+            $source_file='resources/views/frontend/'.$additional_extension.'/edit.blade.php';
+            if (file_exists($source_file)) {
+                if (!is_dir($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $content = file($source_file);
+                File::put($destinationPath . $file_name, $content);
+            }
+        }
+
+
+
         //Copy Mobile API Controller for extension in output module folder
         $destination_folder = '/api/';
         $destinationPath=$destination_parent_folder.$destination_folder;

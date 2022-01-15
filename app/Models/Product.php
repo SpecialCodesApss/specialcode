@@ -9,7 +9,7 @@
                      *
                      * @var array
                      */
-                    protected $fillable = ["type_selector","user_id","is_checkbox","week_check","week_select","name_ar","name_en","product_file","description_ar","description_en","html_text_ar","html_text_en","sort","active"];
+                    protected $fillable = ["name_ar","name_en"];
 
 
                     /**

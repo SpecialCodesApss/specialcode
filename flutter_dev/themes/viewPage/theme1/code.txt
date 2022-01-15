@@ -1,0 +1,81 @@
+﻿return Scaffold(
+      appBar: AppBar(
+        title:Text(
+        LanguageHelper.trans("##section_name##","##Capital_table_name##"),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        centerTitle: true,
+        leading: IconButton(icon:Icon(Icons.arrow_back),
+        onPressed:() => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ##Capital_table_name##Index())
+        ),
+        ),
+      ),
+
+        body: Container(
+            child: data != null ? ListView(
+              padding: EdgeInsets.all(5.0),
+                children: <Widget>[
+
+                  Text(
+                    "اسم المنتج",
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.center,
+                  ),
+
+                  Padding(
+                  padding: EdgeInsets.only(top:20.0,right: 0.0),
+                  child:Directionality(
+                    textDirection: language  =="ar" ? TextDirection.rtl : TextDirection.ltr,
+                    child: Text(
+                      "وصف المنتج",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textDirection: language  =="ar" ? TextDirection.rtl : TextDirection.ltr,
+                    ),
+                  )
+                  ),
+                  Text(
+                    "وصف المنتج هنا ، وصف المنتج هنا ، وصف المنتج هناوصف المنتج هنا ، وصف المنتج هنا ، وصف المنتج هناوصف المنتج هنا ، وصف المنتج هنا ، وصف المنتج هنا"
+                  ),
+
+                  Table(
+                      children:[
+                        TableRow(
+                            children: [
+                              Text(
+                                "اسم العنصر",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                  "قيمة العنصر"
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              Text(
+                                "اسم العنصر",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                  "قيمة العنصر"
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              Text(
+                                "اسم العنصر",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                  "قيمة العنصر"
+                              ),
+                            ]
+                        ),
+                      ]
+                  ),
+                ],
+              ): null ,
+            )
+    );

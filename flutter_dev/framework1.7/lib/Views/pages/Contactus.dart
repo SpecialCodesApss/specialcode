@@ -1,7 +1,7 @@
 import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../Controllers/CustomerServiceMsgController.dart';
-import '../../Controllers/PageController.dart';
+import '../../Controllers/PagesController.dart';
 import '../../helpers/LoaderDialog.dart';
 import '../../helpers/ToastHelper.dart';
 import '../../helpers/LanguageHelper.dart' as LanguageHelper;
@@ -37,7 +37,7 @@ class _ContactusState extends State<Contactus> {
   final TextEditingController _mobileController = new TextEditingController();
   final TextEditingController _messageController = new TextEditingController();
 
-  ViewPageController pageController = new ViewPageController();
+  PagesController pageController = new PagesController();
 
   /*Internet and loading*/
   /**************/
@@ -59,8 +59,11 @@ class _ContactusState extends State<Contactus> {
     /*End Internet and loading*/
     /**************/
 
+    await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
+
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
-    pageController.show("contactus").whenComplete(() {
+    pageController.view("contactus").whenComplete(() {
       if (pageController.status == true) {
         Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
         setState(() {

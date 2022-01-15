@@ -1,0 +1,111 @@
+return Scaffold(
+      appBar:
+      AppBar(
+        title:Text(
+        LanguageHelper.trans("##section_name##","##Capital_table_name##"),
+          style: Theme.of(context).textTheme.subtitle11,
+        ),
+        centerTitle: true,
+        leading: IconButton(icon:Icon(Icons.arrow_back),
+        onPressed:() => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => Home())
+        ),
+        ),
+      ),
+
+      body: isNoListData ?
+      Container(
+        child: Center(
+          child: Text(
+            LanguageHelper.trans("app","NoListData"),
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+      )
+    : Column(
+            children: <Widget>[
+
+              Expanded(child:
+              AnimationLimiter(
+                child :SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: WaterDropMaterialHeader(),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  onLoading: _onLoading,
+                  child: ListView.builder(
+                    itemCount: data == null ? 0 : data.length,
+                    itemBuilder: (BuildContext context, int index){
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => ##Capital_table_name##View(data[index]["id"]))
+                                );
+                              },
+                              child: Container(
+                                  margin: const EdgeInsets.all(5.0),
+                                  padding: const EdgeInsets.only(left: 5.0,right: 5.0,top: 10.0,bottom: 10.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)
+                                      ),
+                                      border: Border.all(color: Colors.black12)
+                                  ),
+                                  alignment: language == "en" ? Alignment.centerLeft : Alignment.centerRight  ,
+                                  child:
+                                  Column(
+                                    children: <Widget>[
+                                      Row(
+                                        textDirection: TextDirection.rtl ,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 10.0 , left: 10.0 , top: 0.0) ,
+                                            child: Text(
+                                              data[index]["##dateTitle##"],
+                                              style: Theme.of(context).textTheme.subtitle1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      Row(
+                                        textDirection: TextDirection.rtl ,
+                                        children: <Widget>[Padding(
+                                            padding: EdgeInsets.only(right: 10.0 , left: 10.0 , top: 0.0) ,
+                                            child: Text(
+                                               data[index]["##salary##"].toString() ,
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                    ],
+                                  )
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              ),
+            ],
+          ),
+          floatingActionButton: ViewAddButton==true ? FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+            Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ##Capital_table_name##Store())
+            );
+         }) : null ,
+        );

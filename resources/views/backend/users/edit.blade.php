@@ -194,10 +194,16 @@
                                                                 @foreach($roles as $role)
                                                                     <option value="{{$role}}"
 
+{{--                                                                            @if(old('roles') == null)--}}
+{{--                                                                                @if($role == "user") selected @endif--}}
+{{--                                                                            @endif--}}
+
                                                                             @if(old('roles') != null)
-                                                                            @if(old('roles') == $role) selected @endif
+                                                                                @if(old('roles') == $role) selected @endif
                                                                             @else
-                                                                            @if($user->hasRole($role) == $role) selected @endif
+                                                                                @if($user->hasRole($role) == $role)
+                                                                                selected
+                                                                                @endif
                                                                             @endif
 
 

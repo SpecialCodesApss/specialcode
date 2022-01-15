@@ -38,7 +38,7 @@ class _MyAccountState extends State<MyAccount> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   var language = LanguageHelper.Language;
 
-  String serverUrl = "http://192.168.1.4/framework1.7/";
+  String serverUrl = "http://192.168.1.6/framework1.7/";
 
   /*Internet and loading*/
   /**************/

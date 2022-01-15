@@ -12,12 +12,15 @@ use DataTables;
 use Illuminate\Support\Facades\App;
 use \App\Http\Traits\file_type_traits;
 
-use App\User;
+
+use App\Http\Traits\admin_notification_traits;
+
 
 class ProductController extends Controller
 {
 
     use file_type_traits;
+    use admin_notification_traits;
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +28,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $user_id=Auth::user()->id;
+        
         $searchText=$request->searchText;
-        $products = Product::where(['user_id' => $user_id ])->paginate(20);
+        $products = Product::paginate(20);
         return view("frontend.products.index",compact('products'));
     }
 
@@ -44,13 +47,7 @@ class ProductController extends Controller
                 $sort_number = Product::all()->count()+1;
 
             
-                $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
-                $users=[];
-                foreach ($user_ids as $info){
-                    $users[$info->id]=$info->email;
-                }
-                
-                return view('frontend.products.create',compact('sort_number','users'));
+                return view('frontend.products.create',compact('sort_number'));
             }
 
             /**
@@ -65,36 +62,15 @@ class ProductController extends Controller
                 $lang = App::getLocale();
                 
             $this->validate($request, [
-            'type_selector'=>'required',
-                    'week_check'=>'required',
-                    'week_select'=>'required',
-                    'name_ar'=>'required',
+            'name_ar'=>'required',
                     'name_en'=>'required',
-                    'product_file'=>'required',
-                    'description_ar'=>'required',
-                    'description_en'=>'required',
-                    'html_text_ar'=>'required',
-                    'html_text_en'=>'required',
-                    'sort'=>'required',
-                    'active'=>'required',
                     
         ]);
         
 
                 
-                $input["type_selector"]=$request->type_selector;
-                $input["is_checkbox"]=$request->is_checkbox;
-                $input["week_check"]=$request->week_check;
-                $input["week_select"]=$request->week_select;
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
-                $input["description_ar"]=$request->description_ar;
-                $input["description_en"]=$request->description_en;
-                $input["html_text_ar"]=$request->html_text_ar;
-                $input["html_text_en"]=$request->html_text_en;
-                $input["sort"]=$request->sort;
-                $input["active"]=$request->active;
-                $input["save_type"]=$request->save_type;
 
 
                  $user_id=Auth::user()->id;
@@ -102,36 +78,30 @@ class ProductController extends Controller
             
 
                 
-                        if(isset($input['is_checkbox'])){
-                        $input['is_checkbox']= 1;
-                        }else{
-                        $input['is_checkbox']= 0;
-                        }
-                    
 
                 
 
-                
-                if ($request->hasFile('product_file')) {
-                    $document = $request->file('product_file');
-                    $ext = $document->getClientOriginalExtension();
-                    if ($request->file('product_file') && $request->file('product_file')->isValid()) {
-                        $imageName = date('YmdHis') . ".$ext";
-                        $path = 'storage/images/products/product_file/';
-                        $request->file('product_file')->move($path, $imageName);
-                        $input['product_file'] = $path.$imageName;
-                    }
-                }
                 
 
 
                 $Product = Product::create($input);
 
+                
+         //create admin notification
+        $notification_input=[];
+        $notification_input["notification_id"]=5;
+        $notification_input["module_id"]=$Product->id;
+        $this->createNotification($notification_input);
+        
+
+
                 //store images if found
                 //store files if found
 
 
-                if($input['save_type']=="save_and_add_new"){
+
+
+                if($request->save_type=="save_and_add_new"){
                     return redirect('products/create')
                         ->with('success',trans('admin_messages.info_added'));
                 }
@@ -153,10 +123,9 @@ class ProductController extends Controller
             {
             $lang = App::getLocale();
 
-            $user_id=Auth::user()->id;
             
 
-               $Product = Product::where('id', $id)->where(['user_id' => $user_id ])->first();
+               $Product = Product::where('id', $id)->first();
 
         if(isset($Product)){
         
@@ -164,20 +133,14 @@ class ProductController extends Controller
         }
 
         if (is_null($Product)) {
-            return $this->sendError('Product not found.');
+            return back()->with('error',trans('admin_messages.Page not found.'));
         }
 
-                
-                $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
-                $users=[];
-                foreach ($user_ids as $info){
-                    $users[$info->id]=$info->email;
-                }
                 
                  
 
 
-                return view('frontend.products.show',compact('Product'  ,'users' ));
+                return view('frontend.products.show',compact('Product'   ));
 
             }
 
@@ -197,21 +160,13 @@ class ProductController extends Controller
                 
 
                 
-                $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
-                $users=[];
-                foreach ($user_ids as $info){
-                    $users[$info->id]=$info->email;
-                }
-                
                 
 
                 
-            $product_file_filetype = $this->getFileTypeByLink($Product->product_file);
-            
 
 
                 return view('frontend.products.edit',compact('Product'
-                ,'users','product_file_filetype' ));
+                 ));
             }
 
 
@@ -226,18 +181,8 @@ class ProductController extends Controller
             {
 
             
-                $input["type_selector"]=$request->type_selector;
-                $input["is_checkbox"]=$request->is_checkbox;
-                $input["week_check"]=$request->week_check;
-                $input["week_select"]=$request->week_select;
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
-                $input["description_ar"]=$request->description_ar;
-                $input["description_en"]=$request->description_en;
-                $input["html_text_ar"]=$request->html_text_ar;
-                $input["html_text_en"]=$request->html_text_en;
-                $input["sort"]=$request->sort;
-                $input["active"]=$request->active;
             $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
             
@@ -245,67 +190,18 @@ class ProductController extends Controller
 
               
             $this->validate($request, [
-            'type_selector'=>'required',
-                    'user_id'=>'required',
-                    'is_checkbox'=>'required',
-                    'week_check'=>'required',
-                    'week_select'=>'required',
-                    'name_ar'=>'required',
+            'name_ar'=>'required',
                     'name_en'=>'required',
-                    'description_ar'=>'required',
-                    'description_en'=>'required',
-                    'html_text_ar'=>'required',
-                    'html_text_en'=>'required',
-                    'sort'=>'required',
-                    'active'=>'required',
                     
         ]);
         
 
  
-                $old_product_file=Product::find($id)->product_file;
-                if ($request->hasFile('product_file')) {
-                    $document = $request->file('product_file');
-                    $ext = $document->getClientOriginalExtension();
-                    if ($request->file('product_file') && $request->file('product_file')->isValid()) {
-                        $imageName = date('YmdHis') . ".$ext";
-                        $path = 'storage/images/products/product_file/';
-                        $request->file('product_file')->move($path, $imageName);
-                        $input['product_file'] = $path.$imageName;
-                        File::delete($old_product_file);
-                    }
-                    else{
-                    $input['product_file'] =$old_product_file;
-                    }
-                }
-                
-
-                
-                        if(isset($input['is_checkbox'])){
-                        $input['is_checkbox']= 1;
-                        }else{
-                        $input['is_checkbox']= 0;
-                        }
-                    
 
                 
 
                 
-                $old_product_file=Product::find($id)->product_file;
-                if ($request->hasFile('product_file')) {
-                    $document = $request->file('product_file');
-                    $ext = $document->getClientOriginalExtension();
-                    if ($request->file('product_file') && $request->file('product_file')->isValid()) {
-                        $imageName = date('YmdHis') . ".$ext";
-                        $path = 'storage/images/products/product_file/';
-                        $request->file('product_file')->move($path, $imageName);
-                        $input['product_file'] = $path.$imageName;
-                        File::delete($old_product_file);
-                    }
-                    else{
-                    $input['product_file'] =$old_product_file;
-                    }
-                }
+
                 
 
                  $Product=Product::where(['id'=>$id ])->where(['user_id' => $user_id ])->update($input);
@@ -331,15 +227,12 @@ class ProductController extends Controller
         //delete files
          // delete files and images
         
-                $old_product_file=Product::find($id)->product_file;
-                 File::delete($old_product_file);
-                
         $user_id=Auth::user()->id;
             
          // delete files and images in sub tables if this module has mutiple files or images
         
 
-        Product::where(['id'=>$Product_id ])->where(['user_id' => $user_id ])->delete();
+        Product::where(['id'=>$id])->where(['user_id' => $user_id ])->delete();
 
                 return redirect('products')
                     ->with('success',trans('admin_messages.info_deleted'));

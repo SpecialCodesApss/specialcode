@@ -64,7 +64,14 @@
         'viewModule'    =>   'عرض البيانات' ,
         'date'    =>   ' التاريخ ' ,
         'time'    =>   ' الوقت ' ,
-
+        'cant_delete_this_page'    =>   'لا يمكن حذف هذه الصفحة' ,
+        'cant_update_key_this_page'    =>   'لا يمكن تحديث مفتاح الصفحات الرئيسية' ,
+        'Page not found.'    =>   'الصفحة المطلوبة غير موجودة' ,
+        'Notifications'    =>   'الإشعارات' ,
+        'New'    =>   'جديد' ,
+        'there are no notifications'    =>   'لايوجد اشعارات جديدة' ,
+        'view_all'    =>   'عرض الجميع' ,
+        'Mark_all_readed'    =>   'تحديد الجميع مقروء' ,
 
     ];
 

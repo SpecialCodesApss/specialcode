@@ -968,6 +968,26 @@ trait Web_traits{
         else{ $user_id_code_Delete=''; $where_Delete=''; }
 
 
+        //check notification
+        $notification_export_commands='';
+        $notification_use_commands='';
+        $notification_commands='';
+        if($input['is_notification_able']=='1'){
+            $notification_export_commands='use App\Http\Traits\admin_notification_traits;';
+            $notification_use_commands='use admin_notification_traits;';
+            $notification_commands='
+         //create admin notification
+        $notification_input=[];
+        $notification_input["notification_id"]='.$input["notification_text_id"].';
+        $notification_input["module_id"]=$'.$module_name.'->id;
+        $this->createNotification($notification_input);
+        ';
+        }
+
+
+
+
+
 
 
 
@@ -989,11 +1009,14 @@ use Illuminate\Support\Facades\App;
 use \App\Http\Traits\file_type_traits;
 '.$use_module_statments.'
 '.$index_header_code.'
+'.$notification_export_commands.'
+
 
 class '.$controller_name.' extends Controller
 {
 
     use file_type_traits;
+    '.$notification_use_commands.'
     /**
      * Display a listing of the resource.
      *
@@ -1037,7 +1060,6 @@ class '.$controller_name.' extends Controller
                 '.$controller_validations.'
 
                 '.$input_variable.'
-                $input["save_type"]=$request->save_type;
 
 
                  '.$user_id_code_Store.'
@@ -1051,11 +1073,16 @@ class '.$controller_name.' extends Controller
 
                 $'.$module_name.' = '.$module_name.'::create($input);
 
+                '.$notification_commands.'
+
+
                 '.$Multiple_images_store_statements.'
                 '.$Multiple_files_store_statements.'
 
 
-                if($input[\'save_type\']=="save_and_add_new"){
+
+
+                if($request->save_type=="save_and_add_new"){
                     return redirect(\''.$table_name.'/create\')
                         ->with(\'success\',trans(\'admin_messages.info_added\'));
                 }
@@ -1087,7 +1114,7 @@ class '.$controller_name.' extends Controller
         }
 
         if (is_null($'.$module_name.')) {
-            return $this->sendError(\''.$module_name.' not found.\');
+            return back()->with(\'error\',trans(\'admin_messages.Page not found.\'));
         }
 
                 '.$join_selected_resultsCode.'
@@ -1173,7 +1200,7 @@ class '.$controller_name.' extends Controller
         '.$user_id_code_Delete.'
         '.$multiple_files_to_deleted_statements.'
 
-        '.$module_name.'::where([\'id\'=>$id ])'.$where_Delete.'->delete();
+        '.$module_name.'::where([\'id\'=>$id])'.$where_Delete.'->delete();
 
                 return redirect(\''.$table_name.'\')
                     ->with(\'success\',trans(\'admin_messages.info_deleted\'));

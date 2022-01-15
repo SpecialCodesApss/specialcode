@@ -155,6 +155,12 @@ Route::post('users/my_account/update_password','App\Http\Controllers\frontend\Us
 Route::post('users/my_account/update_profile_image','App\Http\Controllers\frontend\UsersController@updateProfileImage');
 
 
+
+
+//additional routes
+//Route::post('page/{page_key}','App\Http\Controllers\frontend\PagesController@view');
+
+
 Route::middleware("auth")->group(function () {
     $web_sections = \App\Models\Web_sections::where('controller_name', '!=', '')->get();
     foreach ($web_sections as $web_sections) {
@@ -190,6 +196,10 @@ Route::get('/my_profile', 'App\Http\Controllers\Admin\UsersController@my_profile
 
 Route::get('/changePassword', 'PasswordController@viewChangePwd')->name('changePassword');
 Route::post('/changePassword', 'PasswordController@changePwd')->name('ChangePwd');
+
+
+Route::get('/notifications/mark_all_read', 'App\Http\Controllers\Admin\Admin_notificationController@mark_all_read')->name('mark_all_read');
+
 
 
 // additional admin routes

@@ -18,10 +18,11 @@ use Developer\Traits\Developer_traits;
 use Developer\Traits\JSON_API_traits;
 use Developer\Traits\Flutter_traits;
 use Developer\Traits\Web_traits;
+use Developer\Traits\admin_notification_traits;
 
 class DeveloperController extends Controller
 {
-    use Developer_traits,JSON_API_traits,Web_traits,Flutter_traits;
+    use Developer_traits,JSON_API_traits,Web_traits,Flutter_traits,admin_notification_traits;
 
 
     public function index(){
@@ -790,7 +791,7 @@ class DeveloperController extends Controller
             $table_fields_selector.='<option value="'.$table_field.'">'.$table_field.'</option>';
         }
 
-        $xmlContnet=simplexml_load_file('developer/Flutter/themes/'.$Page.'/'.$themeName.'/items.xml');
+        $xmlContnet=simplexml_load_file('flutter_dev/themes/'.$Page.'/'.$themeName.'/items.xml');
         foreach ($xmlContnet as $item){
             $itemsSelector.='
                 <th>'.$item->name.'</th>
@@ -850,6 +851,18 @@ class DeveloperController extends Controller
             }
         }
         $module_protected_fields=json_encode($module_protected_fields);
+
+
+        //if is notificationalble create its notification
+        $input["notification_text_id"]=1;
+        if($input['is_notification_able']=='1'){
+            //create notification text
+            $notification_data=[];
+            $notification_data["description_text_en"]=$input['is_notification_en'];
+            $notification_data["description_text_ar"]=$input['is_notification_ar'];
+            $notification_data["target_url"]="admin/$section_flag/##module_id##/edit";
+            $input["notification_text_id"]=$this->createNotificationText($notification_data);
+        }
 
 
         //Step 1 : Create Module File
@@ -971,26 +984,26 @@ class DeveloperController extends Controller
         //check if mobile API controller is active
         if(isset($input['Mobile_Coding'])){
             //Step 14 : Create Controller File
-            $this->CreateFlutterAPIControllerFile($module_name,$table_name,$table_fields,$input,'framework_01');
+            $this->CreateFlutterAPIControllerFile($module_name,$table_name,$table_fields,$input,'framework1.7');
             if(isset($input['Mobile_List'])){
                 //Step 15 : Create Flutter index Screen File
-                $this->CreateFlutterIndexPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework_01');
+                $this->CreateFlutterIndexPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7');
             }
             if(isset($input['Mobile_View'])){
                 //Step 16 : Create Flutter View Screen File
-                $this->CreateFlutterViewPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework_01',$Small_module_name);
+                $this->CreateFlutterViewPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7',$Small_module_name);
             }
             if(isset($input['Mobile_Create'])){
                 //Step 17 : Create Flutter Store Screen File
-                $this->CreateFlutterStorePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework_01');
+                $this->CreateFlutterStorePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7');
             }
             if(isset($input['Mobile_Update'])){
                 //Step 18 : Create Flutter Update Screen File
-                $this->CreateFlutterUpdatePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework_01');
+                $this->CreateFlutterUpdatePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7');
             }
 
             //Step 20 : update Flutter Languages Files by new translations
-           $this->UpdateFlutterLanguageFiles($table_fields,$section_flag,$table_name,$Capital_table_name,$input,'framework_01');
+           $this->UpdateFlutterLanguageFiles($table_fields,$section_flag,$table_name,$Capital_table_name,$input,'framework1.7');
         }
 
 

@@ -116,6 +116,13 @@
 
 <body>
 
+
+<?php
+$lang = \Illuminate\Support\Facades\App::getLocale();
+$admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreadedNotifications();
+?>
+
+
 <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
     <div class="loader-bar"></div>
@@ -164,47 +171,55 @@
                             <div class="dropdown-primary dropdown">
                                 <div class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="feather icon-bell"></i>
-                                    <span class="badge bg-c-red">5</span>
+                                    @if($admin_notifications->count() >0)
+                                    <span class="badge bg-c-red">{{$admin_notifications->unreaded_notifications}}</span>
+                                        @endif
                                 </div>
                                 <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                                     <li>
-                                        <h6>Notifications</h6>
-                                        <label class="label label-danger">New</label>
+                                        <h6>{{trans('admin_messages.Notifications')}}</h6>
+                                        <label class="label label-danger">{{trans('admin_messages.New')}}</label>
                                     </li>
-                                    <li>
+
+
+
+                                    @if($admin_notifications->count() > 0)
+                                    @foreach($admin_notifications as $notification)
+
+                                    <li class="notification_li">
+                                        <a href="{{url('admin/admin_notifications/'.$notification->id)}}">
                                         <div class="media">
-                                            @if(Auth::user()->profile_image != null)
-                                                <img class="img-radius" src="{{url(Auth::user()->profile_image)}}" alt="Generic placeholder image">
-                                            @else
-                                            <img class="img-radius" src="{{url('themes/admin/admindek/assets/images/avatar-4.jpg')}}" alt="Generic placeholder image">
-                                            @endif
+{{--                                            <img class="img-radius" src="{{url('themes/admin/admindek/assets/images/avatar-3.jpg')}}" alt="Generic placeholder image">--}}
+
                                                 <div class="media-body">
-                                                <h5 class="notification-user">{{Auth::user()->fullname}}</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
+                                                    {{--                                                <h5 class="notification-user">Joseph William</h5>--}}
+                                                    <p class="notification-msg">
+                                                        {{$notification->{"description_text_".$lang} }}</p>
+                                                    <span class="notification-time">
+                                                    {{date('d/m',strtotime($notification->created_at))}} -
+                                                    {{date('h:i a',strtotime($notification->created_at))}}
+                                                </span>
+                                                </div>
+
                                         </div>
+                                        </a>
                                     </li>
-                                    <li>
-                                        <div class="media">
-                                            <img class="img-radius" src="{{url('themes/admin/admindek/assets/images/avatar-3.jpg')}}" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Joseph William</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <img class="img-radius" src="{{url('themes/admin/admindek/assets/images/avatar-4.jpg')}}" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Sara Soudein</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
+
+                                    @endforeach
+
+                                        <li class="notify_all">
+                                            <hr>
+                                            <h6><a href="{{url('admin/admin_notifications/')}}">{{trans('admin_messages.view_all')}}</a></h6>
+                                            <label><a href="{{url('admin/notifications/mark_all_read')}}">{{trans('admin_messages.Mark_all_readed')}}</a></label>
+                                        </li>
+
+
+                                    @else
+
+                                        <li class="no_notification">
+                                            {{trans('admin_messages.there are no notifications')}}
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>

@@ -59,7 +59,7 @@ var messages = {
   "Settings": "Settings",
   "Choose_language": "Choose Perefered language",
   "please_update_app": "There is a new version of this App , please update it from the store",
-  "app_copyrights": "This App Developed and Designed By Saudi-App.com",
+  "app_copyrights": "This App Developed and Designed By Special-codes.com",
 
 
   "Rating_alternativeButton": "Contact us instead?",
@@ -69,6 +69,24 @@ var messages = {
   "comment": "comment",
   "uploadPhoto": "upload Photo",
   "comment_placholder": "wirte your comment - optional",
+
+
+  "create": "create",
+  "update": "update",
+  "delete": "delete",
+
+  "theImage": "the Image",
+  "title": "title",
+  "SARcurrency": "SAR",
+  "confirmDeleteMessage": "Are you sure , delete ?",
+  "yes": "Yes",
+  "no": "No",
+  "Alert": "Alert",
+  "Privacy": "Privacy",
+  "faqs": "Faqs",
+
+
+  "noImageSelected": "no Image Selected",
 
 
 };

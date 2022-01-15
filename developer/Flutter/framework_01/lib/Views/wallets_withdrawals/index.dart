@@ -221,7 +221,7 @@ class _Wallets_withdrawalsIndexState extends State<Wallets_withdrawalsIndex>{
                     );
                   },
                   child: Image.network(
-                    "https://doctorn.app/"+Ad["ad_image"].toString(),
+                    "http://192.168.1.6/framework1.7/"+Ad["ad_image"].toString(),
                   )
               )  : SizedBox(),
               Expanded(child:

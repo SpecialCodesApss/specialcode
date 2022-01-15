@@ -1,13 +1,22 @@
 <?php
-namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
+                namespace App\Models;
+                use Illuminate\Database\Eloquent\Model;
 
-class Faq extends Model
-{
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ["question_ar","question_en","answer_ar","answer_en","active","sort"];
-}
+                class Faq extends Model
+                {
+                    /**
+                     * The attributes that are mass assignable.
+                     *
+                     * @var array
+                     */
+                    protected $fillable = ["question_ar","question_en","answer_ar","answer_en","active","sort"];
+
+
+                    /**
+                     * The attributes that should be hidden for arrays.
+                     *
+                     * @var array
+                     */
+                    protected $hidden = [];
+
+                }

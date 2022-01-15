@@ -65,7 +65,6 @@ Route::middleware('auth:api')->group( function () {
     Route::put('users', 'App\Http\Controllers\API\UserController@update');
 
 
-
     //get routes for API which inserted into database Route Table For new modules
     $auth_routes=App\Models\Route::where(['type'=>'api_routes','middleware' => 'auth'])->get();
     if(isset($auth_routes)){
@@ -89,11 +88,11 @@ Route::middleware('auth:api')->group( function () {
         foreach ($default_routes as $route){
             if($route['request_method_type']=='get'){
                 Route::get
-                (''.$route['router_name'], 'API\\'.$route['controller_name'].'@'.$route['controller_method']);
+                (''.$route['router_name'], 'App\Http\Controllers\API\\'.$route['controller_name'].'@'.$route['controller_method']);
             }
             elseif ($route['request_method_type'] == 'post'){
                 Route::post
-                (''.$route['router_name'], 'API\\'.$route['controller_name'].'@'.$route['controller_method']);
+                (''.$route['router_name'], 'App\Http\Controllers\API\\'.$route['controller_name'].'@'.$route['controller_method']);
             }
         }
     }
@@ -119,68 +118,74 @@ Route::middleware('auth:api')->group( function () {
 });
 
 
+//
+//Route::middleware('auth:api')->group( function () {
+//    Route::get($request['name'], 'App\Http\Controllers\API\\'.$request['controller_name'].'@index');
+//});
+
 
 // Routes for Auto Generated Models
 
-/*
-$api_requests=Api_request::all();
+$api_requests=\App\Models\Api_request::all();
 foreach ($api_requests as $request){
 
     //List
     if($request['list_authorization_status'] == 1){
         Route::middleware('auth:api')->group( function () use ($request) {
-            Route::get($request['name'], 'API\\'.$request['controller_name'].'@index');
+            Route::get($request['name'], 'App\Http\Controllers\API\\'.$request['controller_name'].'@index');
         });
     }else{
         Route::middleware('api')->group( function () use ($request) {
-            Route::get($request['name'], 'API\\'.$request['controller_name'].'@index');
+            Route::get($request['name'], 'App\Http\Controllers\API\\'.$request['controller_name'].'@index');
         });
     }
 
     //Create
     if($request['create_authorization_status'] == 1){
         Route::middleware('auth:api')->group( function () use ($request) {
-            Route::post($request['name'], 'API\\'.$request['controller_name'].'@store');
+            Route::post($request['name'], 'App\Http\Controllers\API\\'.$request['controller_name'].'@store');
         });
     }else{
         Route::middleware('api')->group( function () use ($request) {
-            Route::post($request['name'], 'API\\'.$request['controller_name'].'@store');
+            Route::post($request['name'], 'App\Http\Controllers\API\\'.$request['controller_name'].'@store');
         });
     }
 
     //Update
     if($request['update_authorization_status'] == 1){
         Route::middleware('auth:api')->group( function () use ($request) {
-            Route::put($request['name'].'/{id}', 'API\\'.$request['controller_name'].'@update');
+            Route::put($request['name'].'/{id}', 'App\Http\Controllers\API\\'.$request['controller_name'].'@update');
         });
     }else{
         Route::middleware('api')->group( function () use ($request) {
-            Route::put($request['name'].'/{id}', 'API\\'.$request['controller_name'].'@update');
+            Route::put($request['name'].'/{id}', 'App\Http\Controllers\API\\'.$request['controller_name'].'@update');
         });
     }
 
     //View
     if($request['view_authorization_status'] == 1){
         Route::middleware('auth:api')->group( function () use ($request) {
-            Route::get($request['name'].'/{id}', 'API\\'.$request['controller_name'].'@show');
+            Route::get($request['name'].'/{id}', 'App\Http\Controllers\API\\'.$request['controller_name'].'@show');
         });
     }else{
         Route::middleware('api')->group( function () use ($request) {
-            Route::get($request['name'].'/{id}', 'API\\'.$request['controller_name'].'@show');
+            Route::get($request['name'].'/{id}', 'App\Http\Controllers\API\\'.$request['controller_name'].'@show');
         });
     }
 
     //Delete
     if($request['delete_authorization_status'] == 1){
         Route::middleware('auth:api')->group( function () use ($request) {
-            Route::delete($request['name'].'/{id}', 'API\\'.$request['controller_name'].'@destroy');
+            Route::delete($request['name'].'/{id}', 'App\Http\Controllers\API\\'.$request['controller_name'].'@destroy');
         });
     }else{
         Route::middleware('api')->group( function () use ($request) {
-            Route::delete($request['name'].'/{id}', 'API\\'.$request['controller_name'].'@destroy');
+            Route::delete($request['name'].'/{id}', 'App\Http\Controllers\API\\'.$request['controller_name'].'@destroy');
         });
     }
 
 }
-*/
+
+
+
 

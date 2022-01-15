@@ -9,8 +9,12 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use App\Http\Traits\admin_notification_traits;
+
 class RegisterController extends Controller
 {
+
+    use admin_notification_traits;
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -84,7 +88,7 @@ class RegisterController extends Controller
         }
 
 
-        return User::create([
+        $created_user=User::create([
             'fullname' => $data['fullname'],
             'email' => $data['email'],
             'mobile' => $data['mobile'],
@@ -95,5 +99,17 @@ class RegisterController extends Controller
             'active' => "0",
             'password' => Hash::make($data['password']),
         ]);
+
+        //create role
+        $created_user->assignRole('user');
+
+        //create admin notification
+        $notification_input=[];
+        $notification_input["notification_id"]=1;
+        $notification_input["module_id"]=$created_user->id;
+        $this->createNotification($notification_input);
+
+        return $created_user;
+
     }
 }

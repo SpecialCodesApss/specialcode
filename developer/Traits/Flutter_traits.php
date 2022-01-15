@@ -25,7 +25,7 @@ trait Flutter_traits{
         $controller_name=$module_name.'Controller';
 
         $base_url = $_SERVER['SERVER_NAME'];
-        $base_url=str_replace('localhost','192.168.1.101',$base_url); // if its link is local host replace it by local
+        $base_url=str_replace('localhost','192.168.1.6',$base_url); // if its link is local host replace it by local
 
         //get Store/Update Functions Parametes and its body
         $API_body='';
@@ -38,13 +38,15 @@ trait Flutter_traits{
                 $new_line=' \''.$table_field.'\' : \'$'.$table_field.'\',';
                 $API_body=$API_body.$new_line;
 
-                if($input[$table_field.'_datatype'] == 'number' || $input[$table_field.'_datatype'] == 'join_select' ){
-                    $dataType = 'int';
-                    $requestfields.='
-                    request.fields["'.$table_field.'"] = '.$table_field.';';
+                if($input[$table_field.'_datatype'] == 'number' || $input[$table_field.'_datatype'] == 'join_select'|| $input[$table_field.'_datatype'] == 'table_to_select' ){
+                    if($table_field !='user_id') {
+                        $dataType = 'int';
+                        $requestfields .= '
+                    request.fields["' . $table_field . '"] = ' . $table_field . ';';
+                    }
                 }
-                elseif($input[$table_field.'_datatype'] == 'image'){
-                    $dataType = 'File';
+                elseif($input[$table_field.'_datatype'] == 'image' || $input[$table_field.'_datatype'] == 'file'){
+                    $dataType = 'File?';
                     $multipartImageCode.='
                     if('.$table_field.' != null){
                     var '.$table_field.'stream = new http.ByteStream(DelegatingStream.typed('.$table_field.'.openRead()));
@@ -56,12 +58,18 @@ trait Flutter_traits{
                     ';
                 }
                 else{
-                    $dataType = 'String';
-                    $requestfields.='
-                    request.fields["'.$table_field.'"] = '.$table_field.';';
+                    if($table_field !='user_id') {
+                        $dataType = 'String';
+                        $requestfields .= '
+                    request.fields["' . $table_field . '"] = ' . $table_field . ';';
+                    }
                 }
-                $functionParameters = $functionParameters.$comma.$dataType.' '.$table_field;
-                $comma = ',';
+
+                if($table_field !='user_id'){
+                    $functionParameters = $functionParameters.$comma.$dataType.' '.$table_field;
+                    $comma = ',';
+                }
+
             }
         }
 
@@ -69,29 +77,40 @@ trait Flutter_traits{
           import \'dart:convert\';
 import \'package:http/http.dart\' as http ;
 import \'package:shared_preferences/shared_preferences.dart\';
-
+import \'../helpers/sharedPreferencesHelper.dart\' as sharedPreferencesHelper;
+import \'../helpers/LanguageHelper.dart\' as LanguageHelper;
 
 import \'package:path/path.dart\';
 import \'package:async/async.dart\';
 import \'dart:io\';
 
 class '.$controller_name.' {
-  String serverUrl = "http://'.$base_url.'/framework";
+  String serverUrl = "http://'.$base_url.'/framework1.7";
   var status ;
   var message;
   var data;
-  List listData;
+  var listData;
+  var token = sharedPreferencesHelper.token;
+  var language = LanguageHelper.Language;
 
-  Future<String> index(int page,String searchText) async {
-    String request_URL = serverUrl+"/api/'.$table_name.'?page=$page&searchText=$searchText";
+  _init() async{
+    await LanguageHelper.initialize();
+    await sharedPreferencesHelper.initialize_token();
+    language = LanguageHelper.Language;
+    token = sharedPreferencesHelper.token;
+  }
+
+  index(int page,String searchText) async {
+  await _init();
+    Uri request_URL = Uri.parse(serverUrl +"/api/'.$table_name.'?page=$page&searchText=$searchText");
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.get(\'token\') ?? \'0\';
-    var Lang = prefs.get(\'lang\') ?? \'ar\';
+
+
     final  response = await http.get(request_URL,
         headers: {
           \'Accept\' : \'application/json\',
-          \'Authorization\' :\'Bearer $token\',
-          \'language\' : Lang,
+          \'Authorization\': \'Bearer $token\',
+          \'language\': (language)!
         });
 
     data = json.decode(response.body);
@@ -103,20 +122,21 @@ class '.$controller_name.' {
 
   store('.$functionParameters.') async {
     //basic variables
-    String request_URL = serverUrl+"/api/'.$table_name.'";
+    await _init();
+    Uri request_URL = Uri.parse(serverUrl +"/api/'.$table_name.'");
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.get(\'token\') ?? \'0\';
-    var Lang = prefs.get(\'lang\') ?? \'ar\';
 
-    var uri = Uri.parse(request_URL);
-    var request = new http.MultipartRequest("POST", uri,);
+
+
+
+    var request = new http.MultipartRequest("POST", request_URL,);
 
     '.$multipartImageCode.'
     '.$requestfields.'
 
     request.headers["Accept"] = \'application/json\';
     request.headers["Authorization"] = \'Bearer $token\';
-    request.headers["language"] = Lang;
+    request.headers["language"] = (language)!;
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
     data = json.decode(response.body);
@@ -128,21 +148,22 @@ class '.$controller_name.' {
   }
 
   update(int id,'.$functionParameters.') async {
-    //basic variables
-    String request_URL = serverUrl+"/api/'.$table_name.'/$id?_method=PUT";
+     //basic variables
+    await _init();
+    Uri request_URL = Uri.parse(serverUrl +"/api/'.$table_name.'/$id?_method=PUT");
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.get(\'token\') ?? \'0\';
-    var Lang = prefs.get(\'lang\') ?? \'ar\';
 
-    var uri = Uri.parse(request_URL);
-    var request = new http.MultipartRequest("POST", uri,);
+
+
+
+    var request = new http.MultipartRequest("POST", request_URL,);
 
     '.$multipartImageCode.'
     '.$requestfields.'
 
     request.headers["Accept"] = \'application/json\';
     request.headers["Authorization"] = \'Bearer $token\';
-    request.headers["language"] = Lang;
+    request.headers["language"] = (language)!;
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
     data = json.decode(response.body);
@@ -156,17 +177,18 @@ class '.$controller_name.' {
 
 
   view(int id) async {
-    //basic variables
-    String request_URL = serverUrl+"/api/'.$table_name.'/$id";
+     //basic variables
+    await _init();
+    Uri request_URL = Uri.parse(serverUrl +"/api/'.$table_name.'/$id");
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.get(\'token\') ?? \'0\';
-    var Lang = prefs.get(\'lang\') ?? \'ar\';
+
+
 
     final  response = await http.get(request_URL,
         headers: {
           \'Accept\' : \'application/json\',
-          \'Authorization\' :\'Bearer $token\',
-          \'language\' : Lang,
+          \'Authorization\': \'Bearer $token\',
+          \'language\': (language)!
         });
     data = json.decode(response.body);
     status =data["success"];
@@ -175,17 +197,18 @@ class '.$controller_name.' {
   }
 
   delete(int id) async {
-    //basic variables
-    String request_URL = serverUrl+"/api/'.$table_name.'/$id";
+     //basic variables
+    await _init();
+    Uri request_URL = Uri.parse(serverUrl +"/api/'.$table_name.'/$id");
     final prefs = await SharedPreferences.getInstance();
-    var token = prefs.get(\'token\') ?? \'0\';
-    var Lang = prefs.get(\'lang\') ?? \'ar\';
+
+
 
     final  response = await http.delete(request_URL,
         headers: {
           \'Accept\' : \'application/json\',
-          \'Authorization\' :\'Bearer $token\',
-          \'language\' : Lang,
+          \'Authorization\': \'Bearer $token\',
+          \'language\': (language)!
         });
     data = json.decode(response.body);
     status =data["success"];
@@ -198,7 +221,7 @@ class '.$controller_name.' {
 
         //Step 2 :: make Controller for Table
         $file = $controller_name.'.dart';
-        $destinationPath="developer/Flutter/".$App_Folder_Name."/lib/Controllers/";
+        $destinationPath="flutter_dev/".$App_Folder_Name."/lib/Controllers/";
         if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
         File::put($destinationPath.$file,$FlutterAPI_controller_content);
 
@@ -225,38 +248,36 @@ class '.$controller_name.' {
         $themeCode='theme1';
         $indexTheme = $input['indexTheme'];
         if(isset($indexTheme)){
-            $themeCode = file('developer/Flutter/themes/indexPage/'.$indexTheme.'/code.txt');
+            $themeCode = file('flutter_dev/themes/indexPage/'.$indexTheme.'/code.txt');
             $themeCode = implode($themeCode);
+            $themeCode=str_replace("##section_name##",$section_flag,$themeCode);
             $themeCode=str_replace("##Capital_table_name##",$Capital_table_name,$themeCode);
         }
 
         //get items name foreach item and its field from DB on new module
-        $xmlContnet=simplexml_load_file('developer/Flutter/themes/indexPage/'.$indexTheme.'/items.xml');
+        $xmlContnet=simplexml_load_file('flutter_dev/themes/indexPage/'.$indexTheme.'/items.xml');
         foreach ($xmlContnet as $item){
             $itemName=$item->name;
-            ////$moduleFieldName=$input['item_'.$itemName];
-            $moduleFieldName="id";
+            $moduleFieldName=$input['item_'.$itemName];
+//            $moduleFieldName="id";
             $themeCode=str_replace('##'.$itemName.'##',$moduleFieldName,$themeCode);
         }
 
 
 
 
-        $page_content='import \'../../Controllers/'.$controller_name.'.dart\';
+$page_content='import \'../../Controllers/'.$controller_name.'.dart\';
 import \'package:flutter/cupertino.dart\';
 import \'../../helpers/LoaderDialog.dart\';
 import \'../../helpers/ToastHelper.dart\';
-import \'package:framework_01_5/helpers/LanguageHelper.dart\' as LanguageHelper;
-import \'../../lang/ar/'.$table_name.'.dart\' as messages_ar;
-import \'../../lang/en/'.$table_name.'.dart\' as messages_en;
+import \'../../helpers/LanguageHelper.dart\' as LanguageHelper;
 import \'../../main.dart\';
 import \'../../helpers/SizeConfig.dart\';
 import \'package:flutter/widgets.dart\';
 import \'package:flutter/material.dart\';
 import \'../Home.dart\';
-import \'../../packages/flutter_staggered_animations/lib/flutter_staggered_animations.dart\';
-import \'../../packages/flutter_pulltorefresh/lib/pull_to_refresh.dart\';
-import \'../../packages/simples_search_bar/lib/simple_search_bar.dart\';
+import \'package:flutter_staggered_animations/flutter_staggered_animations.dart\';
+import \'package:pull_to_refresh/pull_to_refresh.dart\';
 
 import \'../../Views/'.$table_name.'/view.dart\';
 import \'../../Views/'.$table_name.'/store.dart\';
@@ -272,7 +293,7 @@ class '.$Capital_table_name.'Index extends StatefulWidget {
 class _'.$Capital_table_name.'IndexState extends State<'.$Capital_table_name.'Index>{
   //declare variables here
   var language = LanguageHelper.Language;
-  List data;
+  var data;
   bool isNoListData=true;
   bool ViewAddButton='.$ViewAddButton.';
   bool ViewSearchBar='.$ViewSearchBar.';
@@ -284,7 +305,7 @@ class _'.$Capital_table_name.'IndexState extends State<'.$Capital_table_name.'In
     int pagesCount = 1 ;
     int newPage = 2;
   '.$controller_name.' _'.$controller_name.' = new '.$controller_name.'();
-    final AppBarController appBarController = AppBarController();
+
 
   RefreshController _refreshController =
     RefreshController(initialRefresh: false);
@@ -348,6 +369,11 @@ class _'.$Capital_table_name.'IndexState extends State<'.$Capital_table_name.'In
         }
 
   read() async {
+
+    await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
+
+
     //get list data
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     _'.$controller_name.'.index(1,searchText).whenComplete((){
@@ -406,7 +432,7 @@ class _'.$Capital_table_name.'IndexState extends State<'.$Capital_table_name.'In
 ';
 
         $file = 'index.dart';
-        $destinationPath="developer/Flutter/".$App_Folder_Name."/lib/Views/".$section_flag."/";
+        $destinationPath="flutter_dev/".$App_Folder_Name."/lib/Views/".$section_flag."/";
         if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
         File::put($destinationPath.$file,$page_content);
 
@@ -438,7 +464,7 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
                       child: RaisedButton(
                           color: Theme.of(context).primaryColor ,
                           child:  Text(
-                            language =="en" ? messages_en.getTranslation("order") : messages_ar.getTranslation("order"),
+                          LanguageHelper.trans("app","order"),
                             style: Theme.of(context).textTheme.button,
                           ),
                           onPressed: null
@@ -476,14 +502,14 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Center(child: Text(\'Alert\')),
+              title: Center(child: Text(LanguageHelper.trans("app","Alert"))),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(bottom: 30.0),
                     child: Text(
-                     language =="en" ? messages_en.getTranslation("confirmDeleteMessage") : messages_ar.getTranslation("confirmDeleteMessage"),
+                    LanguageHelper.trans("app","confirmDeleteMessage"),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.red,
@@ -494,12 +520,16 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         FlatButton(
-                            child: Text(language =="en" ? messages_en.getTranslation("yes") : messages_ar.getTranslation("yes")),
+                        child: Text(
+                        LanguageHelper.trans("app","yes")
+                        ),
                             onPressed: () {
                               deleteItem();
                             }),
                         FlatButton(
-                            child: Text(language =="en" ? messages_en.getTranslation("no") : messages_ar.getTranslation("no")),
+                            child: Text(
+                             LanguageHelper.trans("app","no")
+                             ),
                             autofocus: true,
                             color: Theme.of(context).primaryColor,
                             textColor: Colors.white,
@@ -518,7 +548,7 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
                       child:RaisedButton(
                             color: Colors.red ,
                             child:  Text(
-                              language =="en" ? messages_en.getTranslation("delete") : messages_ar.getTranslation("delete"),
+                            LanguageHelper.trans("app","delete"),
                               style: Theme.of(context).textTheme.button,
                             ),
                           onPressed:() => delete(),
@@ -535,7 +565,7 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
                         child: RaisedButton(
                           color: Theme.of(context).primaryColor ,
                           child:  Text(
-                           language =="en" ? messages_en.getTranslation("edit") : messages_ar.getTranslation("edit"),
+                          LanguageHelper.trans("app","edit"),
                             style: Theme.of(context).textTheme.button,
                           ),
                           onPressed:() => Navigator.of(context).push(
@@ -564,22 +594,24 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
     $themeCode='theme1';
     $viewTheme = $input['viewTheme'];
     if(isset($viewTheme)){
-        $themeCode = file('developer/Flutter/themes/viewPage/'.$viewTheme.'/code.txt');
+        $themeCode = file('flutter_dev/themes/viewPage/'.$viewTheme.'/code.txt');
         $themeCode = implode($themeCode);
+        $themeCode=str_replace("##section_name##",$section_flag,$themeCode);
         $themeCode=str_replace("##Capital_table_name##",$Capital_table_name,$themeCode);
     }
 
     //get items name foreach item and its field from DB on new module
-    $xmlContnet=simplexml_load_file('developer/Flutter/themes/viewPage/'.$viewTheme.'/items.xml');
+    $xmlContnet=simplexml_load_file('flutter_dev/themes/viewPage/'.$viewTheme.'/items.xml');
     foreach ($xmlContnet as $item){
         $itemName=$item->name;
-        //$moduleFieldName=$input['item_'.$itemName];
-            $moduleFieldName="id";
+        $moduleFieldName=$input['item_'.$itemName];
+//            $moduleFieldName="id";
         $themeCode=str_replace('##'.$itemName.'##',$moduleFieldName,$themeCode);
     }
 
     $themeCode=str_replace('##OrderBtn##',$orderBtnCode,$themeCode);
     $themeCode=str_replace('##$SectionEdit_DeleteCode##',$SectionEdit_DeleteCode,$themeCode);
+    $themeCode=str_replace('﻿','',$themeCode);
 
 
 
@@ -587,9 +619,7 @@ public function CreateFlutterViewPage($controller_name,$Capital_table_name,$tabl
         import \'../../Controllers/'.$controller_name.'.dart\';
 import \'../../helpers/LoaderDialog.dart\';
 import \'../../helpers/ToastHelper.dart\';
-import \'package:framework_01_5/helpers/LanguageHelper.dart\' as LanguageHelper;
-import \'../../lang/ar/'.$table_name.'.dart\' as messages_ar;
-import \'../../lang/en/'.$table_name.'.dart\' as messages_en;
+import \'../../helpers/LanguageHelper.dart\' as LanguageHelper;
 import \'../../main.dart\';
 import \'../../helpers/SizeConfig.dart\';
 import \'package:flutter/widgets.dart\';
@@ -604,7 +634,7 @@ import \'../../Views/'.$table_name.'/update.dart\';
 class '.$Capital_table_name.'View extends StatefulWidget {
 
   final int id;
-  '.$Capital_table_name.'View(this.id, {Key key}) : super(key: key);
+  '.$Capital_table_name.'View(this.id);
 
   @override
   State<StatefulWidget> createState() {
@@ -623,25 +653,16 @@ var language = LanguageHelper.Language;
 
   '.$controller_name.' _'.$controller_name.' = new '.$controller_name.'();
   read() async {
+
+  await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
+
     //get  data
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     _'.$controller_name.'.view(widget.id).whenComplete((){
       if(_'.$controller_name.'.status == true){
         setState(() {
           data = _'.$controller_name.'.data;
-            if(ViewImage){
-                if(ViewedImageType=="slider"){
-                  var images=data["data"]["images"];
-                  images.forEach((image) async {
-                    imgList.add("http://192.168.1.101/framework/"+image["image"]);
-                  });
-                }
-                else{
-                    if(data["data"]["'.$Small_module_name.'_image"] != null){
-                      imgList.add("http://192.168.1.101/framework/" + data["data"]["'.$Small_module_name.'_image"]);
-                    }
-                }
-            }
         });
         Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
       }else{
@@ -686,14 +707,13 @@ var language = LanguageHelper.Language;
       contenttopalignmentratio=3;
     }
 
-
-   '.$themeCode.'
+    '.$themeCode.'
   }
 }
 ';
 
     $file = 'view.dart';
-    $destinationPath="developer/Flutter/".$App_Folder_Name."/lib/Views/".$section_flag."/";
+    $destinationPath="flutter_dev/".$App_Folder_Name."/lib/Views/".$section_flag."/";
     if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
     File::put($destinationPath.$file,$page_content);
 
@@ -725,34 +745,38 @@ var language = LanguageHelper.Language;
             if(isset($input[$table_field.'_mobileAPIActive'])){
 
 
-
+                $new_line='';
                 //get parametes for store function
-                if($input[$table_field.'_datatype'] == 'number' || $input[$table_field.'_datatype'] == 'join_select' ){
-                    $new_line='final TextEditingController _'.$table_field.'Controller = new TextEditingController();';
-                    $Fields_Controller=$Fields_Controller.$new_line;
-                    //get if statments code
-                    $statment_line='_'.$table_field.'Controller.text.trim().isNotEmpty';
-                    $ifStatmentsForFields=$ifStatmentsForFields.$andand.$statment_line;
-                    $newParameterline='int.parse(_'.$table_field.'Controller.text.trim())';
-                    $storeFunctionParametes.=$comma.$newParameterline;
-                    $toStringVar='.toString()';
-                    $updateNewLine='_'.$table_field.'Controller.text=_'.$controller_name.'.data["data"]["'.$table_field.'"]'.$toStringVar.' ?? "";';
-                    //get form text fields
-                    $textFieldNewline = '
+                if($input[$table_field.'_datatype'] == 'number' || $input[$table_field.'_datatype'] == 'join_select'|| $input[$table_field.'_datatype'] == 'table_to_select' ){
+                    if($table_field !='user_id') {
+                        $new_line = 'final TextEditingController _' . $table_field . 'Controller = new TextEditingController();';
+                        $Fields_Controller = $Fields_Controller . $new_line;
+                        //get if statments code
+                        $statment_line = '_' . $table_field . 'Controller.text.trim().isNotEmpty';
+                        $ifStatmentsForFields = $ifStatmentsForFields . $andand . $statment_line;
+                        $newParameterline = 'int.parse(_' . $table_field . 'Controller.text.trim())';
+                        $storeFunctionParametes .= $comma . $newParameterline;
+                        $toStringVar = '.toString()';
+                        $updateNewLine = '_' . $table_field . 'Controller.text=_' . $controller_name . '.data["data"]["' . $table_field . '"]' . $toStringVar . ';';
+                        //get form text fields
+                        $textFieldNewline = '
                                             TextField(
-                                                      controller: _'.$table_field.'Controller,
-                                                      style: Theme.of(context).textTheme.body1,
+                                                      controller: _' . $table_field . 'Controller,
+                                                      style: Theme.of(context).textTheme.bodyText1,
                                                       keyboardType: TextInputType.text,
                                                       decoration: InputDecoration(
                                                         icon: Icon(Icons.arrow_left),
-                                                        hintText:language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
-                                                        labelText:language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
+                                                        hintText:
+                                                        LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
+                                                        labelText:
+                                                        LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
                                                       ),
                                                     ),
                                             ';
-                    $formTextFields.=$textFieldNewline;
-                    //this to update state and update text fields with ideal data
-                    $UpdateStateStatments.=$updateNewLine;
+                        $formTextFields .= $textFieldNewline;
+                        //this to update state and update text fields with ideal data
+                        $UpdateStateStatments .= $updateNewLine;
+                    }
 
                 }
                 elseif($input[$table_field.'_datatype'] == 'image'){
@@ -760,27 +784,29 @@ var language = LanguageHelper.Language;
                     $storeFunctionParametes.=$comma.$newParameterline;
                     $toStringVar='.toString()';
 
-                    $imageDesignFunction.='
-                    File '.$table_field.';
-                      Future getImage() async {
-                      //focusout from keyboard - its important due to error happen when load image thats clear last textfield
+                    $imageDesignFunction='
+                    var '.$table_field.';
+                    Future getImage() async {
                       FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-
-                        var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-                        setState(() {
-                          '.$table_field.' = image;
-                        });
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
                       }
+                      var picked_'.$table_field.' = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+                      setState(() {
+                        '.$table_field.' = File(picked_'.$table_field.'!.path);
+                      });
+                    }
                     ';
 
+
+
+
                     $imageDesignCode.='
-                                  '.$table_field.' == null
-                                      ? Text(
-                                      language =="en" ? messages_en.getTranslation("noImageSelected") : messages_ar.getTranslation("noImageSelected"))
-                                      : Image.file('.$table_field.'),
+                    '.$table_field.' != null ?
+                            Image.file('.$table_field.',width: 150,height: 150,)
+                            :Text(
+                                LanguageHelper.trans("app","noImageSelected")
+                            ),
                                   RaisedButton(
                                     onPressed: getImage,
                                     child: Icon(
@@ -791,34 +817,40 @@ var language = LanguageHelper.Language;
                     ';
                 }
                 else{
-                    $new_line='final TextEditingController _'.$table_field.'Controller = new TextEditingController();';
-                    $Fields_Controller=$Fields_Controller.$new_line;
-                    //get if statments code
-                    $statment_line='_'.$table_field.'Controller.text.trim().isNotEmpty';
-                    $ifStatmentsForFields=$ifStatmentsForFields.$andand.$statment_line;
-                    $newParameterline='_'.$table_field.'Controller.text.trim()';
-                    $storeFunctionParametes.=$comma.$newParameterline;
-                    $toStringVar='.toString()';
-                    $updateNewLine='_'.$table_field.'Controller.text=_'.$controller_name.'.data["data"]["'.$table_field.'"]'.$toStringVar.' ?? "";';
-                    //get form text fields
-                    $textFieldNewline = 'TextField(
-                                                      controller: _'.$table_field.'Controller,
-                                                      style: Theme.of(context).textTheme.body1,
+
+                    if($table_field !='user_id') {
+                        $new_line = 'final TextEditingController _' . $table_field . 'Controller = new TextEditingController();';
+                        $Fields_Controller = $Fields_Controller . $new_line;
+                        //get if statments code
+                        $statment_line = '_' . $table_field . 'Controller.text.trim().isNotEmpty';
+                        $ifStatmentsForFields = $ifStatmentsForFields . $andand . $statment_line;
+                        $newParameterline = '_' . $table_field . 'Controller.text.trim()';
+                        $storeFunctionParametes .= $comma . $newParameterline;
+                        $toStringVar = '.toString()';
+                        $updateNewLine = '_' . $table_field . 'Controller.text=_' . $controller_name . '.data["data"]["' . $table_field . '"]' . $toStringVar . ' ;';
+                        //get form text fields
+                        $textFieldNewline = 'TextField(
+                                                      controller: _' . $table_field . 'Controller,
+                                                      style: Theme.of(context).textTheme.bodyText1,
                                                       keyboardType: TextInputType.text,
                                                       decoration: InputDecoration(
                                                         icon: Icon(Icons.arrow_left),
-                                                        hintText: language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
-                                                        labelText:language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
+                                                        hintText:
+                                                        LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
+                                                        labelText:LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
                                                       ),
                                                     ),
                                             ';
-                    $formTextFields.=$textFieldNewline;
-                    //this to update state and update text fields with ideal data
-                    $UpdateStateStatments.=$updateNewLine;
+                        $formTextFields .= $textFieldNewline;
+                        //this to update state and update text fields with ideal data
+                        $UpdateStateStatments .= $updateNewLine;
+                    }
                 }
 
-                $andand='&&';
-                $comma=',';
+                if($table_field !='user_id') {
+                    $andand = '&&';
+                    $comma = ',';
+                }
 
             }
 
@@ -828,9 +860,7 @@ var language = LanguageHelper.Language;
 import \'../../Controllers/'.$controller_name.'.dart\';
 import \'../../helpers/LoaderDialog.dart\';
 import \'../../helpers/ToastHelper.dart\';
-import \'package:framework_01_5/helpers/LanguageHelper.dart\' as LanguageHelper;
-import \'../../lang/ar/'.$table_name.'.dart\' as messages_ar;
-import \'../../lang/en/'.$table_name.'.dart\' as messages_en;
+import \'../../helpers/LanguageHelper.dart\' as LanguageHelper;
 import \'../../main.dart\';
 import \'../../helpers/SizeConfig.dart\';
 import \'package:flutter/widgets.dart\';
@@ -886,13 +916,14 @@ var language = LanguageHelper.Language;
       else{
         hideLoaderDialogFunction(context);
         ShowToast(\'error\',
-        language =="en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields"));
+        LanguageHelper.trans("app","pleasefillallfields"));
       }
     });
   }
 
   read() async {
-
+    await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
   }
 
 
@@ -927,13 +958,11 @@ var language = LanguageHelper.Language;
 
       contenttopalignmentratio=3;
     }
-
-
-    return Scaffold(
+return Scaffold(
       appBar: AppBar(
         title:Text(
-         language =="en" ? messages_en.getTranslation("'.$Capital_table_name.'") : messages_ar.getTranslation("'.$Capital_table_name.'"),
-          style: Theme.of(context).textTheme.title,
+        LanguageHelper.trans("'.$table_name.'","'.$Capital_table_name.'"),
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         centerTitle: true,
         leading: IconButton(icon:Icon(Icons.arrow_back),
@@ -951,12 +980,12 @@ var language = LanguageHelper.Language;
                             '.$imageDesignCode.'
 
                         SizedBox(
-                          height: SizeConfig.screenWidth / screenHightRatio,
+                          height: 20,
                         ),
                         RaisedButton(
                           color: Theme.of(context).primaryColor ,
                           child:  Text(
-                            language =="en" ? messages_en.getTranslation("create") : messages_ar.getTranslation("create"),
+                          LanguageHelper.trans("app","create"),
                             style: Theme.of(context).textTheme.button,
                           ),
                           onPressed: _onPressedStore,
@@ -970,7 +999,7 @@ var language = LanguageHelper.Language;
 ';
 
         $file = 'store.dart';
-        $destinationPath="developer/Flutter/".$App_Folder_Name."/lib/Views/".$section_flag."/";
+        $destinationPath="flutter_dev/".$App_Folder_Name."/lib/Views/".$section_flag."/";
         if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
         File::put($destinationPath.$file,$page_content);
 
@@ -1001,35 +1030,39 @@ var language = LanguageHelper.Language;
         foreach ($table_fields as $table_field){
             if(isset($input[$table_field.'_mobileAPIActive'])){
 
-
+                $new_line='';
 
                 //get parametes for store function
-                if($input[$table_field.'_datatype'] == 'number' || $input[$table_field.'_datatype'] == 'join_select' ){
-                    $new_line='final TextEditingController _'.$table_field.'Controller = new TextEditingController();';
-                    $Fields_Controller=$Fields_Controller.$new_line;
-                    //get if statments code
-                    $statment_line='_'.$table_field.'Controller.text.trim().isNotEmpty';
-                    $ifStatmentsForFields=$ifStatmentsForFields.$andand.$statment_line;
-                    $newParameterline='int.parse(_'.$table_field.'Controller.text.trim())';
-                    $storeFunctionParametes.=$comma.$newParameterline;
-                    $toStringVar='.toString()';
-                    $updateNewLine='_'.$table_field.'Controller.text=_'.$controller_name.'.data["data"]["'.$table_field.'"]'.$toStringVar.' ?? "";';
-                    //get form text fields
-                    $textFieldNewline = '
+                if($input[$table_field.'_datatype'] == 'number' ||
+                    $input[$table_field.'_datatype'] == 'join_select'||
+                    $input[$table_field.'_datatype'] == 'table_to_select' ){
+                    if($table_field !='user_id') {
+                        $new_line = 'final TextEditingController _' . $table_field . 'Controller = new TextEditingController();';
+                        $Fields_Controller = $Fields_Controller . $new_line;
+                        //get if statments code
+                        $statment_line = '_' . $table_field . 'Controller.text.trim().isNotEmpty';
+                        $ifStatmentsForFields = $ifStatmentsForFields . $andand . $statment_line;
+                        $newParameterline = 'int.parse(_' . $table_field . 'Controller.text.trim())';
+                        $storeFunctionParametes .= $comma . $newParameterline;
+                        $toStringVar = '.toString()';
+                        $updateNewLine = '_' . $table_field . 'Controller.text=_' . $controller_name . '.data["data"]["' . $table_field . '"]' . $toStringVar . ' ;';
+                        //get form text fields
+                        $textFieldNewline = '
                                             TextField(
-                                                      controller: _'.$table_field.'Controller,
-                                                      style: Theme.of(context).textTheme.body1,
+                                                      controller: _' . $table_field . 'Controller,
+                                                      style: Theme.of(context).textTheme.bodyText1,
                                                       keyboardType: TextInputType.text,
                                                       decoration: InputDecoration(
                                                         icon: Icon(Icons.arrow_left),
-                                                        hintText: language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
-                                                        labelText:language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
+                                                        hintText: LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
+                                                        labelText:LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
                                                       ),
                                                     ),
                                             ';
-                    //this to update state and update text fields with ideal data
-                    $UpdateStateStatments.=$updateNewLine;
-                    $formTextFields.=$textFieldNewline;
+                        //this to update state and update text fields with ideal data
+                        $UpdateStateStatments .= $updateNewLine;
+                        $formTextFields .= $textFieldNewline;
+                    }
 
                 }
                 elseif($input[$table_field.'_datatype'] == 'image'){
@@ -1037,31 +1070,33 @@ var language = LanguageHelper.Language;
                     $storeFunctionParametes.=$comma.$newParameterline;
                     $toStringVar='.toString()';
 
-                    $imageDesignFunction.='
-                    File '.$table_field.';
-                      Future getImage() async {
-                      //focusout from keyboard - its important due to error happen when load image thats clear last textfield
+                    $imageDesignFunction='
+                    var '.$table_field.';
+                    Future getImage() async {
                       FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-
-                        var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-                        setState(() {
-                          '.$table_field.' = image;
-                        });
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
                       }
+                      var picked_'.$table_field.' = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+                      setState(() {
+                        '.$table_field.' = File(picked_'.$table_field.'!.path);
+                      });
+                    }
                     ';
+
 
                     $imageDesignCode.='
                     FadeInImage.assetNetwork(
                                     placeholder:"assets/images/noimage.png" ,
-                                    image: data != null ? "http://192.168.1.101/engineer/"+data["data"]["'.$table_field.'"] : "assets/images/noimage.png" ,
+                                    image: data != null ? "http://192.168.1.6/framework1.7/"+data["data"]["'.$table_field.'"] : "assets/images/noimage.png" ,
                                   ),
-                                  '.$table_field.' == null
-                                      ? Text(
-                                     language =="en" ? messages_en.getTranslation("noImageSelected") : messages_ar.getTranslation("noImageSelected"))
-                                      : Image.file('.$table_field.'),
+
+                                  '.$table_field.' != null ?
+                                    Image.file('.$table_field.',width: 150,height: 150,)
+                                    :Text(
+                                        LanguageHelper.trans("app","noImageSelected")
+                                    ),
+
                                   RaisedButton(
                                     onPressed: getImage,
                                     child: Icon(
@@ -1072,36 +1107,39 @@ var language = LanguageHelper.Language;
                     ';
                 }
                 else{
-                    $new_line='final TextEditingController _'.$table_field.'Controller = new TextEditingController();';
-                    $Fields_Controller=$Fields_Controller.$new_line;
-                    //get if statments code
-                    $statment_line='_'.$table_field.'Controller.text.trim().isNotEmpty';
-                    $ifStatmentsForFields=$ifStatmentsForFields.$andand.$statment_line;
-                    $newParameterline='_'.$table_field.'Controller.text.trim()';
-                    $storeFunctionParametes.=$comma.$newParameterline;
-                    $toStringVar='.toString()';
-                    $updateNewLine='_'.$table_field.'Controller.text=_'.$controller_name.'.data["data"]["'.$table_field.'"]'.$toStringVar.' ?? "";';
-                    //get form text fields
-                    $textFieldNewline = 'TextField(
-                                                      controller: _'.$table_field.'Controller,
-                                                      style: Theme.of(context).textTheme.body1,
+                    if($table_field !='user_id') {
+                        $new_line = 'final TextEditingController _' . $table_field . 'Controller = new TextEditingController();';
+                        $Fields_Controller = $Fields_Controller . $new_line;
+                        //get if statments code
+                        $statment_line = '_' . $table_field . 'Controller.text.trim().isNotEmpty';
+                        $ifStatmentsForFields = $ifStatmentsForFields . $andand . $statment_line;
+                        $newParameterline = '_' . $table_field . 'Controller.text.trim()';
+                        $storeFunctionParametes .= $comma . $newParameterline;
+                        $toStringVar = '.toString()';
+                        $updateNewLine = '_' . $table_field . 'Controller.text=_' . $controller_name . '.data["data"]["' . $table_field . '"]' . $toStringVar . ' ;';
+                        //get form text fields
+                        $textFieldNewline = 'TextField(
+                                                      controller: _' . $table_field . 'Controller,
+                                                      style: Theme.of(context).textTheme.bodyText1,
                                                       keyboardType: TextInputType.text,
                                                       decoration: InputDecoration(
                                                         icon: Icon(Icons.arrow_left),
-                                                        hintText:language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
-                                                        labelText:language =="en" ? messages_en.getTranslation("'.$table_field.'") : messages_ar.getTranslation("'.$table_field.'"),
+                                                        hintText:LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
+                                                        labelText:LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
                                                       ),
                                                     ),
                                             ';
-                    //this to update state and update text fields with ideal data
-                    $UpdateStateStatments.=$updateNewLine;
-                    $formTextFields.=$textFieldNewline;
+                        //this to update state and update text fields with ideal data
+                        $UpdateStateStatments .= $updateNewLine;
+                        $formTextFields .= $textFieldNewline;
+                    }
                 }
 
 
-
-                $andand='&&';
-                $comma=',';
+                if($table_field !='user_id') {
+                    $andand = '&&';
+                    $comma = ',';
+                }
 
             }
 
@@ -1111,9 +1149,7 @@ var language = LanguageHelper.Language;
         import \'../../Controllers/'.$controller_name.'.dart\';
 import \'../../helpers/LoaderDialog.dart\';
 import \'../../helpers/ToastHelper.dart\';
-import \'package:framework_01_5/helpers/LanguageHelper.dart\' as LanguageHelper;
-import \'../../lang/ar/'.$table_name.'.dart\' as messages_ar;
-import \'../../lang/en/'.$table_name.'.dart\' as messages_en;
+import \'../../helpers/LanguageHelper.dart\' as LanguageHelper;
 import \'../../main.dart\';
 import \'../../helpers/SizeConfig.dart\';
 import \'package:flutter/widgets.dart\';
@@ -1131,7 +1167,7 @@ import \'../../Views/'.$table_name.'/index.dart\';
 class '.$Capital_table_name.'Update extends StatefulWidget {
 
   final int id;
-  '.$Capital_table_name.'Update(this.id, {Key key}) : super(key: key);
+  '.$Capital_table_name.'Update(this.id);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -1173,13 +1209,17 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
       else{
         hideLoaderDialogFunction(context);
         ShowToast(\'error\',
-        language =="en" ? messages_en.getTranslation("pleasefillallfields") : messages_ar.getTranslation("pleasefillallfields")
+        LanguageHelper.trans("app","pleasefillallfields")
         );
       }
     });
   }
 
   read() async {
+
+  await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
+
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     _'.$controller_name.'.view(widget.id).whenComplete((){
       if(_'.$controller_name.'.status == true){
@@ -1226,13 +1266,11 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
 
       contenttopalignmentratio=3;
     }
-
-
-    return Scaffold(
+return Scaffold(
       appBar: AppBar(
         title:Text(
-         language =="en" ? messages_en.getTranslation("'.$Capital_table_name.'") : messages_ar.getTranslation("'.$Capital_table_name.'"),
-          style: Theme.of(context).textTheme.title,
+        LanguageHelper.trans("'.$table_name.'","'.$Capital_table_name.'"),
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         centerTitle: true,
         leading: IconButton(icon:Icon(Icons.arrow_back),
@@ -1250,12 +1288,12 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
                                   '.$imageDesignCode.'
 
                               SizedBox(
-                                height: SizeConfig.screenWidth / screenHightRatio,
+                                height: 20,
                               ),
                               RaisedButton(
                                 color: Theme.of(context).primaryColor ,
                                 child:  Text(
-                                  language =="en" ? messages_en.getTranslation("update") : messages_ar.getTranslation("update"),
+                                LanguageHelper.trans("app","update"),
                                   style: Theme.of(context).textTheme.button,
                                 ),
                                 onPressed: _onPressedUpdate,
@@ -1269,7 +1307,7 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
 ';
 
         $file = 'update.dart';
-        $destinationPath="developer/Flutter/".$App_Folder_Name."/lib/Views/".$section_flag."/";
+        $destinationPath="flutter_dev/".$App_Folder_Name."/lib/Views/".$section_flag."/";
         if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
         File::put($destinationPath.$file,$page_content);
 
@@ -1437,8 +1475,8 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
         $en_lines .= "};";
 
         $file = $section_flag . '.dart';
-        $ar_destinationPath = "developer/Flutter/" . $App_Folder_Name . "/lib/lang/ar/";
-        $en_destinationPath = "developer/Flutter/" . $App_Folder_Name . "/lib/lang/en/";
+        $ar_destinationPath = "flutter_dev/" . $App_Folder_Name . "/lib/lang/ar/";
+        $en_destinationPath = "flutter_dev/" . $App_Folder_Name . "/lib/lang/en/";
         if (!is_dir($ar_destinationPath)) {
             mkdir($ar_destinationPath, 0777, true);
         }
@@ -1449,8 +1487,43 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
         File::put($en_destinationPath . $file, $en_lines);
 
 
+        //add translation functions to language helper
+        $import_file_lines='
+        import \'../../lang/ar/'.$table_name.'.dart\' as '.$table_name.'_messages_ar;
+        import \'../../lang/en/'.$table_name.'.dart\' as '.$table_name.'_messages_en;
+        ';
+        $lang_helper_file=file('flutter_dev/framework1.7/lib/helpers/LanguageHelper.dart');
+        $lang_helper_des_file = implode($lang_helper_file);
+        $lang_helper_file=str_replace(
+            '/*Import Additional languages files here*/',
+            '
+            '.$import_file_lines.'
+            /*Import Additional languages files here*/',
+            $lang_helper_file
+        );
+
+        $lang_function_lines='
+        if (module == "'.$table_name.'"){
+            Language == "en" ? translate = '.$table_name.'_messages_en.getTranslation(word_text)
+            : translate = '.$table_name.'_messages_ar.getTranslation(word_text);
+          }
+        ';
+        $lang_helper_file=str_replace(
+            '/*Add Additional languages functions here*/',
+            '
+            '.$lang_function_lines.'
+            /*Add Additional languages functions here*/',
+            $lang_helper_file
+        );
+
+        $lang_helper_des_file='flutter_dev/framework1.7/lib/helpers/LanguageHelper.dart';
+        $lang_helper_file = implode("", $lang_helper_file); //Put the array back into one string
+        file_put_contents($lang_helper_des_file, $lang_helper_file);
+
+
+
 //
-//            $message_message_file ="developer/Flutter/".$App_Folder_Name."/lib/l10n/messages_messages.dart";
+//            $message_message_file ="flutter_dev/".$App_Folder_Name."/lib/l10n/messages_messages.dart";
 //            if($table_field != 'id' && $table_field != 'user_id' &&
 //                $table_field != 'created_at' && $table_field != 'updated_at'  ){
 //
@@ -1515,10 +1588,10 @@ class _'.$Capital_table_name.'UpdateState extends State<'.$Capital_table_name.'U
 //        $locatizationLines=$locatizationLines.$locatizationLine_table_name;
 //
 //         //update all messages file
-//         $message_message_file ="developer/Flutter/".$App_Folder_Name."/lib/l10n/messages_messages.dart";
-//         $messages_en_file ="developer/Flutter/".$App_Folder_Name."/lib/l10n/messages_en.dart";
-//         $messages_ar_file ="developer/Flutter/".$App_Folder_Name."/lib/l10n/messages_ar.dart";
-//         $locatizationFile ="developer/Flutter/".$App_Folder_Name."/lib/localizations.dart";
+//         $message_message_file ="flutter_dev/".$App_Folder_Name."/lib/l10n/messages_messages.dart";
+//         $messages_en_file ="flutter_dev/".$App_Folder_Name."/lib/l10n/messages_en.dart";
+//         $messages_ar_file ="flutter_dev/".$App_Folder_Name."/lib/l10n/messages_ar.dart";
+//         $locatizationFile ="flutter_dev/".$App_Folder_Name."/lib/localizations.dart";
 //
 //
 //         //update File 1
