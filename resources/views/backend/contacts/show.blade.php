@@ -1,87 +1,219 @@
 @extends('backend.layouts.app')
+
+
+@section('title',trans('contacts.Admin - contacts'))
+@section('header')
+@endsection
+
 @section('content')
+
+<?php $lang=App::getLocale(); ?>
+
+<!-- [ breadcrumb ] start -->
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <i class="fas fa-headphones-alt bg-c-blue"></i>
+                    <div class="d-inline">
+                        <h5>{{trans('contacts.Admin - contacts')}}</h5>
+                        <span>{{trans('admin.manage and control all system sides')}}
+                             </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{trans('contacts.contacts')}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+<div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <!-- [ page content ] start -->
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+    <div class="card">
+                                <div class="card-header">
+                                    <h5>{{trans('contacts.Admin - contacts')}}</h5>
+                                    <div class="card-header-right">
+                                        <ul class="list-unstyled card-option">
+                                            <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                            <li><i class="feather icon-minus minimize-card"></i></li>
+                                            <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                                            <li><i class="feather icon-trash close-card"></i></li>                                                                 <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+
     <div class="wrapper_cols">
         <div class="col_page_content">
             <div class="row">
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-right">
-                <h2>عرض البيانات  </h2>
-            </div>
-            <div class="pull-left">
-                <a class="btn btn-primary" href="{{ route('contacts.index') }}"> رجوع</a>
+
+    <div class="col-lg-12">
+           <br>
+                <h4>{{trans('admin.viewModule')}}</h4>
+        </div>
+        <div class="col-md-12 ">
+        <div class="align_btn_end">
+                <a class="btn btn-primary" href="{{ route('contacts.index') }}">
+                {{trans('admin.back')}}</a>
             </div>
         </div>
-    </div>
 
 
-    {{--    @if (count($errors) > 0)--}}
-{{--        <div class="alert alert-danger">--}}
-{{--            <strong>خطأ!</strong> خطأ في البيانات.<br><br>--}}
-{{--            <ul>--}}
-{{--                @foreach ($errors->all() as $error)--}}
-{{--                    <li>{{ $error }}</li>--}}
-{{--                @endforeach--}}
-{{--            </ul>--}}
-{{--        </div>--}}
-{{--    @endif--}}
+ </div>
+
+
 
 
     <div class="row">
-         <div class="col-xs-12 col-sm-12 col-md-12">
+        
+            
+                   <div class="col-xs-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <strong>{{trans("contacts.id")}}:</strong>
+                            <div>{{$Contact->id}}</div>
+                        </div>
+                    </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("contacts.flag")}}:</strong>
-                            {!! Form::text('flag', $Contact->flag, array('placeholder' => trans("contacts.flag"),'class' => 'form-control','disabled')) !!}
-                        </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
+<div>{{$Contact->flag}}</div>                        </div>
+                    </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("contacts.name_ar")}}:</strong>
-                            {!! Form::text('name_ar', $Contact->name_ar, array('placeholder' => trans("contacts.name_ar"),'class' => 'form-control','disabled')) !!}
-                        </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
+<div>{{$Contact->name_ar}}</div>                        </div>
+                    </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("contacts.name_en")}}:</strong>
-                            {!! Form::text('name_en', $Contact->name_en, array('placeholder' => trans("contacts.name_en"),'class' => 'form-control','disabled')) !!}
-                        </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
+<div>{{$Contact->name_en}}</div>                        </div>
+                    </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("contacts.icon_text")}}:</strong>
-                            {!! Form::text('icon_text', $Contact->icon_text, array('placeholder' => trans("contacts.icon_text"),'class' => 'form-control','disabled')) !!}
+<div>{{$Contact->icon_text}}</div>                        </div>
+                    </div>
+            
+            
+                       <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <strong>{{trans("contacts.image")}}:</strong>
+                                <div class="col-12">
+                                @if(isset($Contact->image))
+                                    <img class="img-responsive" src="{{url($Contact->image)}}" alt="">
+                                @endif
+                                </div>
+                               </div>
                         </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>{{trans("contacts.image")}}:</strong>
-                            <div class="col-12">
-                                <img class="img-responsive" src="{{url($Contact->image)}}" alt="">
-                            </div>
-                                       </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("contacts.value_ar")}}:</strong>
-                            {!! Form::text('value_ar', $Contact->value_ar, array('placeholder' => trans("contacts.value_ar"),'class' => 'form-control','disabled')) !!}
-                        </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
+<div>{{$Contact->value_ar}}</div>                        </div>
+                    </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("contacts.value_en")}}:</strong>
-                            {!! Form::text('value_en', $Contact->value_en, array('placeholder' => trans("contacts.value_en"),'class' => 'form-control','disabled')) !!}
-                        </div>
+<div>{{$Contact->value_en}}</div>                        </div>
                     </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <strong>{{trans("contacts.active")}}:</strong>
 
-                    <div class="col-xs-12 col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <strong>{{trans("contacts.active")}}:</strong>
-                            {!!Form::select('active', ['غير مفعل','مفعل'], $Contact->active, ['class' => 'form-control','disabled'])!!}
+                                <div>
+                                @if($Contact->active=="1")
+                                {{trans('admin.active')}}
+                                @else
+                                {{trans('admin.inactive')}}
+                                @endif
+                                </div>
+
+                            </div>
                         </div>
-                    </div> <div class="col-xs-12 col-sm-12 col-md-12">
+            
+             <div class="col-md-3">
+                            <div class="form-group">
+                                <strong>{{trans("contacts.sort")}}:</strong>
+                                {!! Form::number('sort',$Contact->sort, array('placeholder' => trans("contacts.sort"),'class' => 'form-control','disabled')) !!}
+                            </div>
+                        </div>
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("contacts.sort")}}:</strong>
-                            {!! Form::number('sort',$Contact->sort, array('placeholder' => trans("contacts.sort"),'class' => 'form-control','disabled')) !!}
+                            <strong>{{trans("contacts.created_at")}}  {{trans("admin.date")}} :</strong>
+                            {!! Form::date('created_at_date',  date('Y-m-d',strtotime($Contact->created_at))  , array('placeholder' => trans("contacts.created_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
+                     <div class="col-xs-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <strong>{{trans("contacts.created_at")}}   {{trans("admin.time")}}  :</strong>
+                            {!! Form::time('created_at_time', date('H:i',strtotime($Contact->created_at)), array('placeholder' => trans("contacts.created_at "),'class' => 'form-control','disabled')) !!}
+                        </div>
+                    </div>
+                    
+            
+             <div class="col-xs-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <strong>{{trans("contacts.updated_at")}}  {{trans("admin.date")}} :</strong>
+                            {!! Form::date('updated_at_date',  date('Y-m-d',strtotime($Contact->updated_at))  , array('placeholder' => trans("contacts.updated_at "),'class' => 'form-control','disabled')) !!}
+                        </div>
+                    </div>
+                     <div class="col-xs-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <strong>{{trans("contacts.updated_at")}}   {{trans("admin.time")}}  :</strong>
+                            {!! Form::time('updated_at_time', date('H:i',strtotime($Contact->updated_at)), array('placeholder' => trans("contacts.updated_at "),'class' => 'form-control','disabled')) !!}
+                        </div>
+                    </div>
+                    
+            
+
+        
 
     </div>
 
             </div>
         </div>
     </div>
+
+
+
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+@endsection
+
+
+@section('footer')
+    
 @endsection

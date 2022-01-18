@@ -10,7 +10,7 @@ import 'package:async/async.dart';
 import 'dart:io';
 
 class ProductController {
-  String serverUrl = "http://192.168.1.6/framework1.7";
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status ;
   var message;
   var data;
@@ -45,7 +45,7 @@ class ProductController {
   }
 
 
-  store(String name_ar,String name_en,File? image,String active) async {
+  store(String name,String selector) async {
     //basic variables
     await _init();
     Uri request_URL = Uri.parse(serverUrl +"/api/products");
@@ -57,18 +57,9 @@ class ProductController {
     var request = new http.MultipartRequest("POST", request_URL,);
 
     
-                    if(image != null){
-                    var imagestream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
-                    var imagelength = await image.length();
-                    var multipartFile = new http.MultipartFile('image', imagestream, imagelength,
-                        filename: basename(image.path));
-                    request.files.add(multipartFile);
-                    }
-                    
     
-                    request.fields["name_ar"] = name_ar;
-                    request.fields["name_en"] = name_en;
-                    request.fields["active"] = active;
+                    request.fields["name"] = name;
+                    request.fields["selector"] = selector;
 
     request.headers["Accept"] = 'application/json';
     request.headers["Authorization"] = 'Bearer $token';
@@ -83,7 +74,7 @@ class ProductController {
 
   }
 
-  update(int id,String name_ar,String name_en,File? image,String active) async {
+  update(int id,String name,String selector) async {
      //basic variables
     await _init();
     Uri request_URL = Uri.parse(serverUrl +"/api/products/$id?_method=PUT");
@@ -95,18 +86,9 @@ class ProductController {
     var request = new http.MultipartRequest("POST", request_URL,);
 
     
-                    if(image != null){
-                    var imagestream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
-                    var imagelength = await image.length();
-                    var multipartFile = new http.MultipartFile('image', imagestream, imagelength,
-                        filename: basename(image.path));
-                    request.files.add(multipartFile);
-                    }
-                    
     
-                    request.fields["name_ar"] = name_ar;
-                    request.fields["name_en"] = name_en;
-                    request.fields["active"] = active;
+                    request.fields["name"] = name;
+                    request.fields["selector"] = selector;
 
     request.headers["Accept"] = 'application/json';
     request.headers["Authorization"] = 'Bearer $token';

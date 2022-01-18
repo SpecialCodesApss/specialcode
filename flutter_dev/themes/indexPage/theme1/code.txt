@@ -69,7 +69,7 @@ return Scaffold(
                                       children: <Widget>[
                                         FadeInImage.assetNetwork(
                                           placeholder:"assets/images/noimage.png" ,
-                                          image:"http://192.168.1.6/framework1.7/"+data[index]["##side_image##"].toString() ,
+                                          image:"http://192.168.1.4/framework1.7/"+data[index]["##side_image##"].toString() ,
                                           width: 40.0 ,
                                           height: 40.0 ,
                                         ),
@@ -147,7 +147,7 @@ return Scaffold(
                                   child:
                                       FadeInImage.assetNetwork(
                                         placeholder:"assets/images/noimage.png" ,
-                                        image: "http://192.168.1.6/framework1.7/"+data[index]["##side_image##"].toString(),
+                                        image: "http://192.168.1.4/framework1.7/"+data[index]["##side_image##"].toString(),
                                         width: 40.0 ,
                                         height: 40.0 ,
                                       )

@@ -22,7 +22,7 @@
                     <i class="fas fa-bell bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('admin_notifications.Admin - admin_notifications')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
 {{--                <div class="col-lg-12 align_btn_end">--}}
 {{--                        <a class="btn btn-primary"--}}
 {{--            href="{{ route('admin_notifications.create') }}">--}}
-{{--  {{trans('admin_messages.Create')}} </a> <br> <br>--}}
+{{--  {{trans('admin.Create')}} </a> <br> <br>--}}
 {{--                </div>--}}
 
                     <div class="col-md-12">
@@ -91,7 +91,7 @@
 {{--                          <th class="is_filter">{{trans("admin_notifications.module_id")}}</th>--}}
                           <th class="is_filter">{{trans("admin_notifications.is_marked_as_readed")}}</th>
 {{--                          <th class="is_filter">{{trans("admin_notifications.is_marked_as_deleted")}}</th>--}}
-                          <th width="100px">{{trans("admin_messages.Control")}}</th>
+                          <th width="100px">{{trans("admin.Control")}}</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -102,7 +102,7 @@
 {{--                          <th class="is_filter">{{trans("admin_notifications.module_id")}}</th>--}}
                           <th class="is_filter">{{trans("admin_notifications.is_marked_as_readed")}}</th>
 {{--                          <th class="is_filter">{{trans("admin_notifications.is_marked_as_deleted")}}</th>--}}
-                          <th width="100px">{{trans("admin_messages.Control")}}</th>
+                          <th width="100px">{{trans("admin.Control")}}</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -128,25 +128,25 @@
                                 dom: 'Bfrtip',
                                 buttons: [
 
-             {extend:'copyHtml5',text:"{{trans("admin_messages.copyHtml5")}}",
+             {extend:'copyHtml5',text:"{{trans("admin.copyHtml5")}}",
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
 
-             {extend:'excelHtml5',text:"{{trans("admin_messages.excelHtml5")}}",
+             {extend:'excelHtml5',text:"{{trans("admin.excelHtml5")}}",
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
 
-            {extend:'csvHtml5',text:"{{trans("admin_messages.csvHtml5")}}",
+            {extend:'csvHtml5',text:"{{trans("admin.csvHtml5")}}",
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
 
-             {extend:'pdfHtml5',text:"{{trans("admin_messages.pdfHtml5")}}" ,
+             {extend:'pdfHtml5',text:"{{trans("admin.pdfHtml5")}}" ,
                                         customize: function (doc) {
                                             doc.defaultStyle =
                                                 {
@@ -158,7 +158,7 @@
 
                                     } ,
 
-             {extend:'print',text:"{{trans("admin_messages.print")}}" ,
+             {extend:'print',text:"{{trans("admin.print")}}" ,
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
@@ -169,19 +169,19 @@
                                 serverSide: true,
                                 responsive: true,
                                 "language": {
-                                    "sProcessing":   "{{trans("admin_messages.sProcessing")}}",
-                                    "sZeroRecords":   "{{trans("admin_messages.sZeroRecords")}}",
-                                    "sInfo":          "{{trans("admin_messages.sInfo")}}",
-                                    "sInfoEmpty":    "{{trans("admin_messages.sInfoEmpty")}}",
-                                    "sInfoFiltered":  "{{trans("admin_messages.sInfoFiltered")}}",
+                                    "sProcessing":   "{{trans("admin.sProcessing")}}",
+                                    "sZeroRecords":   "{{trans("admin.sZeroRecords")}}",
+                                    "sInfo":          "{{trans("admin.sInfo")}}",
+                                    "sInfoEmpty":    "{{trans("admin.sInfoEmpty")}}",
+                                    "sInfoFiltered":  "{{trans("admin.sInfoFiltered")}}",
                                     "sInfoPostFix":  "",
-                                    "sSearch":       "{{trans("admin_messages.sSearch")}}",
+                                    "sSearch":       "{{trans("admin.sSearch")}}",
                                     "sUrl":          "",
                                     "oPaginate": {
-                                        "sFirst":     "{{trans("admin_messages.sFirst")}}",
-                                        "sPrevious":  "{{trans("admin_messages.sPrevious")}}",
-                                        "sNext":      "{{trans("admin_messages.sNext")}}",
-                                        "sLast":     "{{trans("admin_messages.sLast")}}",
+                                        "sFirst":     "{{trans("admin.sFirst")}}",
+                                        "sPrevious":  "{{trans("admin.sPrevious")}}",
+                                        "sNext":      "{{trans("admin.sNext")}}",
+                                        "sLast":     "{{trans("admin.sLast")}}",
                                     }
                                 },
                                 ajax: "{{ route('admin_notifications.index') }}",

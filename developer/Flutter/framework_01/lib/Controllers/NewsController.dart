@@ -9,7 +9,7 @@ import 'package:async/async.dart';
 import 'dart:io';
 
 class NewsController {
-  String serverUrl = "http://192.168.1.6/framework";
+  String serverUrl = "http://192.168.1.4/framework";
   var status ;
   var message;
   var data;

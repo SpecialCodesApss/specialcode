@@ -19,7 +19,7 @@
                     <i class="fab fa-accusoft bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('tests.tests')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -69,12 +69,12 @@
 
         <div class="col-lg-12">
            <br>
-                <h4>{{trans('admin_messages.Create')}}</h4>
+                <h4>{{trans('admin.Create')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ url('tests') }}">
-                {{trans('admin_messages.back')}}</a>
+                {{trans('admin.back')}}</a>
             </div>
         </div>
     </div>
@@ -88,28 +88,28 @@
     <div class="row">
 
 
-    
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("tests.name_ar")}}:</strong>
                             {!! Form::text('name_ar', "", array('placeholder' => trans("tests.name_ar"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("tests.name_en")}}:</strong>
                             {!! Form::text('name_en', "", array('placeholder' => trans("tests.name_en"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("tests.number")}}:</strong>
                             {!! Form::text('number', "", array('placeholder' => trans("tests.number"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
+
                 <div class="col-xs-12 col-sm-12 col-md-12 nopadding">
 
                             <div class="form-group">
@@ -127,22 +127,22 @@
                  <div class="col-md-12  text-center top-marging-15">
                 <button type="button" class="btn btn-outline-primary"
                 onclick="OpenImgUpload('image_input','change_image_btn')">
-                {{trans('admin_messages.Upload')}}
+                {{trans('admin.Upload')}}
                 </button>
                 </div>
 
 
                         </div></div>
-                
+
                 <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group">
                         <div class="box">
                             <strong>{{trans("tests.active")}}:</strong>
                                <select class="wide form-control" id="active" name="active">
                                 <option value="1" @if(old('active')=="1") selected @endif>
-                                    {{trans('admin_messages.active')}}</option>
+                                    {{trans('admin.active')}}</option>
                                 <option value="0" @if(old('active')=="0") selected @endif>
-                                    {{trans('admin_messages.inactive')}}
+                                    {{trans('admin.inactive')}}
                                 </option>
                                 </select>
 
@@ -157,26 +157,26 @@
                         <br><br>
                     </div>
                         </div>
-                
+
                  <div class="col-md-3">
                             <div class="form-group">
                                 <strong>{{trans("tests.sort")}}:</strong>
                                 {!! Form::number('sort',$sort_number, array('placeholder' => trans("tests.sort"),'class' => 'form-control')) !!}
                             </div>
                         </div>
-                
 
 
 
 
-        
+
+
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">{{trans('admin_messages.save')}}</button>
+            <button type="submit" class="btn btn-primary">{{trans('admin.save')}}</button>
             <button type="button"  onclick="
                 $('#save_type').val('save_and_add_new');
                 document.getElementById('form').submit();
                 return false
-            " class="btn btn-primary">{{trans('admin_messages.save_and_addNew')}}</button>
+            " class="btn btn-primary">{{trans('admin.save_and_addNew')}}</button>
         </div>
     </div>
     {!! Form::close() !!}

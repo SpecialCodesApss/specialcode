@@ -117,6 +117,36 @@ import '../../lang/en/app.dart' as app_messages_en;
         import '../../lang/ar/faqs.dart' as faqs_messages_ar;
         import '../../lang/en/faqs.dart' as faqs_messages_en;
 
+            
+            
+        import '../../lang/ar/admin_messages.dart' as admin_messages_messages_ar;
+        import '../../lang/en/admin_messages.dart' as admin_messages_messages_en;
+        
+            
+            
+        import '../../lang/ar/admin_messages.dart' as admin_messages_messages_ar;
+        import '../../lang/en/admin_messages.dart' as admin_messages_messages_en;
+        
+            
+            
+        import '../../lang/ar/admin_messages.dart' as admin_messages_messages_ar;
+        import '../../lang/en/admin_messages.dart' as admin_messages_messages_en;
+        
+            
+            
+        import '../../lang/ar/admin_messages.dart' as admin_messages_messages_ar;
+        import '../../lang/en/admin_messages.dart' as admin_messages_messages_en;
+        
+            
+            
+        import '../../lang/ar/products.dart' as products_messages_ar;
+        import '../../lang/en/products.dart' as products_messages_en;
+        
+            
+            
+        import '../../lang/ar/products.dart' as products_messages_ar;
+        import '../../lang/en/products.dart' as products_messages_en;
+        
             /*Import Additional languages files here*/
 
 String? Language;
@@ -290,6 +320,48 @@ trans(module,word_text){
             : translate = faqs_messages_ar.getTranslation(word_text);
           }
 
+            
+            
+        if (module == "admin_messages"){
+            Language == "en" ? translate = admin_messages_messages_en.getTranslation(word_text)
+            : translate = admin_messages_messages_ar.getTranslation(word_text);
+          }
+        
+            
+            
+        if (module == "admin_messages"){
+            Language == "en" ? translate = admin_messages_messages_en.getTranslation(word_text)
+            : translate = admin_messages_messages_ar.getTranslation(word_text);
+          }
+        
+            
+            
+        if (module == "admin_messages"){
+            Language == "en" ? translate = admin_messages_messages_en.getTranslation(word_text)
+            : translate = admin_messages_messages_ar.getTranslation(word_text);
+          }
+        
+            
+            
+        if (module == "admin_messages"){
+            Language == "en" ? translate = admin_messages_messages_en.getTranslation(word_text)
+            : translate = admin_messages_messages_ar.getTranslation(word_text);
+          }
+        
+            
+            
+        if (module == "products"){
+            Language == "en" ? translate = products_messages_en.getTranslation(word_text)
+            : translate = products_messages_ar.getTranslation(word_text);
+          }
+        
+            
+            
+        if (module == "products"){
+            Language == "en" ? translate = products_messages_en.getTranslation(word_text)
+            : translate = products_messages_ar.getTranslation(word_text);
+          }
+        
             /*Add Additional languages functions here*/
 
   return translate;

@@ -1,3 +1,4 @@
+import 'package:flutter_dev/Controllers/Admin_messageController.dart';
 import 'package:flutter_dev/helpers/InternetHelper.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../Controllers/CustomerServiceMsgController.dart';
@@ -8,11 +9,10 @@ import '../../helpers/LanguageHelper.dart' as LanguageHelper;
 import '../../helpers/SizeConfig.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../helpers/LanguageHelper.dart' as LanguageHelper;
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import '../Home.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 class Contactus extends StatefulWidget {
   @override
@@ -29,15 +29,43 @@ class _ContactusState extends State<Contactus> {
 
   var language = LanguageHelper.Language;
 
-  CustomerServiceMsgController customerServiceMsgController =
-      new CustomerServiceMsgController();
+  var _message_type = "Complaint";
+  final List<Map<String, dynamic>> _items = [
+    {
+      'value': 'Complaint',
+      'label': LanguageHelper.trans("admin_messages", "Complaint"),
+    },
+    {
+      'value': 'Suggestion',
+      'label': LanguageHelper.trans("admin_messages", "Suggestion"),
+    },
+    {
+      'value': 'Technical Support',
+      'label': LanguageHelper.trans("admin_messages", "Technical Support"),
+    },
+    {
+      'value': 'Management',
+      'label': LanguageHelper.trans("admin_messages", "Management"),
+    },
+  ];
 
-  final TextEditingController _usernameController = new TextEditingController();
-  final TextEditingController _emailController = new TextEditingController();
-  final TextEditingController _mobileController = new TextEditingController();
-  final TextEditingController _messageController = new TextEditingController();
+  var image;
+  Future getImage() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+    var picked_image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    setState(() {
+      image = File(picked_image!.path);
+    });
+  }
 
-  PagesController pageController = new PagesController();
+
+
+  Admin_messageController _Admin_messageController = new Admin_messageController();
+  final TextEditingController _fullnameController = new TextEditingController();final TextEditingController _emailController = new TextEditingController();final TextEditingController _mobileController = new TextEditingController();final TextEditingController _message_typeController = new TextEditingController();final TextEditingController _messages_textController = new TextEditingController();final TextEditingController _open_statusController = new TextEditingController();final TextEditingController _marked_as_readedController = new TextEditingController();final TextEditingController _marked_as_deletedController = new TextEditingController();
+
 
   /*Internet and loading*/
   /**************/
@@ -51,33 +79,10 @@ class _ContactusState extends State<Contactus> {
   /**************/
 
 
-  read() async {
-    /*Internet and loading*/
-    /**************/
-    await checkInternetConnection();
-    setState(() {is_loading = false;});
-    /*End Internet and loading*/
-    /**************/
-
-    await LanguageHelper.initialize();
-    language = LanguageHelper.Language;
-
-    Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
-    pageController.view("contactus").whenComplete(() {
-      if (pageController.status == true) {
-        Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
-        setState(() {
-          pageTitle = pageController.data["data"]["title_$language"] ?? " ";
-          pageHtml = pageController.data["data"]["html_page_$language"] ?? " ";
-        });
-      }
-    });
-  }
 
   @override
   initState() {
     super.initState();
-    read();
   }
   @override
   void dispose() {
@@ -85,41 +90,42 @@ class _ContactusState extends State<Contactus> {
     super.dispose();
   }
 
-  _onPressedUpdate() {
-    showLoaderDialogFunction(context);
-    if (_usernameController.text.trim().isNotEmpty &&
-        _emailController.text.trim().isNotEmpty &&
-        _mobileController.text.trim().isNotEmpty &&
-        _messageController.text.trim().isNotEmpty) {
-      customerServiceMsgController
-          .store(_usernameController.text.trim(), _emailController.text.trim(),
-              _mobileController.text.trim(), _messageController.text.trim())
-          .whenComplete(() {
-        if (customerServiceMsgController.status == true) {
-          ShowToast('success', customerServiceMsgController.message);
-
-          setState(() {
-            _usernameController.clear();
-            _emailController.clear();
-            _mobileController.clear();
-            _messageController.clear();
-          });
-
-          Future.delayed(
-              Duration.zero, () => hideLoaderDialogFunction(context));
-        } else {
-          Future.delayed(
-              Duration.zero, () => hideLoaderDialogFunction(context));
-          ShowToast('warning', customerServiceMsgController.message);
-        }
-      });
-    } else {
-      Future.delayed(Duration.zero, () => hideLoaderDialogFunction(context));
-      ShowToast('error',
-          LanguageHelper.trans("app","pleasefillallfields")
-         ,
-          );
-    }
+  _onPressedStore(){
+    setState(() {
+      showLoaderDialogFunction(context);
+      if(_fullnameController.text.trim().isNotEmpty
+          &&_emailController.text.trim().isNotEmpty
+          &&_mobileController.text.trim().isNotEmpty
+          && _message_type != null
+          &&_messages_textController.text.trim().isNotEmpty
+      ){
+        _Admin_messageController.store(
+            _fullnameController.text.trim(),
+            _emailController.text.trim(),
+            _mobileController.text.trim(),
+          _message_type,
+            image,
+            _messages_textController.text.trim(),
+        ).whenComplete((){
+          if(_Admin_messageController.status == true){
+            hideLoaderDialogFunction(context);
+            ShowToast('success',_Admin_messageController.message);
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>Home())
+            );
+          }else{
+            hideLoaderDialogFunction(context);
+            ShowToast('warning',_Admin_messageController.message);
+          }
+        });
+      }
+      else{
+        hideLoaderDialogFunction(context);
+        ShowToast('error',
+            LanguageHelper.trans("app","pleasefillallfields"));
+      }
+    });
   }
 
 
@@ -175,26 +181,6 @@ class _ContactusState extends State<Contactus> {
             children: <Widget>[
 
 
-                  Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child:
-                    SingleChildScrollView(
-                        child: HtmlWidget(pageHtml)
-                    ),
-                  ),
-
-//              TextField(
-//                controller: _usernameController,
-//                textDirection: TextDirection.rtl,
-//                textAlign: TextAlign.right,
-//                style: Theme.of(context).textTheme.bodyText1,
-//                decoration: InputDecoration(
-//                  hintText:
-//                  language == "en" ? messages_en.getTranslation("name") : messages_ar.getTranslation("name"),
-//                ),
-//              ),
-
-
 
     Container(
     child: Card(
@@ -203,7 +189,7 @@ class _ContactusState extends State<Contactus> {
     child:  Column(
                   children: <Widget>[
                     TextField(
-                      controller: _usernameController,
+                      controller: _fullnameController,
                       textAlign: language == "en" ? TextAlign.left : TextAlign.right ,
                       style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(
@@ -223,6 +209,37 @@ class _ContactusState extends State<Contactus> {
                         ,
                       ),
                     ),
+
+
+      Directionality(
+        textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+        child: SelectFormField(
+          type: SelectFormFieldType.dropdown, // or can be dialog
+          initialValue: 'Complaint',
+          labelText: LanguageHelper.trans("admin_messages","message_type"),
+          items: _items,
+          onChanged: (val) {
+            setState(() {
+              _message_type = val;
+            });
+          },
+          onSaved: (val) => print(val),
+          textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+          textAlign: language =="en" ? TextAlign.start : TextAlign.start ,
+        ),
+      ),
+
+                    // TextField(
+                    //   controller: _message_typeController,
+                    //   textAlign: language == "en" ? TextAlign.left : TextAlign.right ,
+                    //   keyboardType: TextInputType.emailAddress,
+                    //   style: Theme.of(context).textTheme.bodyText1,
+                    //   decoration: InputDecoration(
+                    //     hintText:
+                    //     LanguageHelper.trans("admin_messages","message_type")
+                    //     ,
+                    //   ),
+                    // ),
                     TextField(
                       controller: _mobileController,
                       textAlign: language == "en" ? TextAlign.left : TextAlign.right ,
@@ -235,7 +252,7 @@ class _ContactusState extends State<Contactus> {
                       ),
                     ),
                     TextField(
-                      controller: _messageController,
+                      controller: _messages_textController,
                       textAlign: language == "en" ? TextAlign.left : TextAlign.right ,
                       style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(
@@ -248,9 +265,26 @@ class _ContactusState extends State<Contactus> {
 //                expands: true,
 //                minLines: 6,
                     ),
-                    SizedBox(
-                      height: (SizeConfig.screenHeight)! / screenHightRatio,
-                    ),
+
+
+                    image != null ?
+                            Image.file(image,width: 150,height: 150,)
+                            :Text(
+                                LanguageHelper.trans("app","noImageSelected")
+                            ),
+                                  RaisedButton(
+                                    onPressed: getImage,
+                                    child: Icon(
+                                      Icons.add_a_photo,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+
+
+                        SizedBox(
+                          height: 20,
+                        ),
+
                     ButtonTheme(
                       minWidth: double.infinity,
                       child: RaisedButton(
@@ -259,7 +293,7 @@ class _ContactusState extends State<Contactus> {
                             ,
                             style: Theme.of(context).textTheme.button,
                           ),
-                          onPressed: _onPressedUpdate),
+                          onPressed: _onPressedStore),
                       buttonColor: HexColor('232323'),
                     ),
                   ],

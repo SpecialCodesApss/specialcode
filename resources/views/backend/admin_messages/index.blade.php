@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title',trans('products.Admin - products'))
+@section('title',trans('admin_messages.Admin - admin_messages'))
 @section('header')
 
 
@@ -19,10 +19,10 @@
         <div class="row align-items-end">
             <div class="col-lg-8">
                 <div class="page-header-title">
-                    <i class="fab fa-accusoft bg-c-blue"></i>
+                    <i class="far fa-envelope-open bg-c-blue"></i>
                     <div class="d-inline">
-                        <h5>{{trans('products.Admin - products')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <h5>{{trans('admin_messages.Admin - admin_messages')}}</h5>
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                             <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">{{trans('products.products')}}</a>
+                            <a href="#">{{trans('admin_messages.admin_messages')}}</a>
                         </li>
                     </ul>
                 </div>
@@ -53,7 +53,7 @@
 
     <div class="card">
                                 <div class="card-header">
-                                    <h5>{{trans('products.Admin - products')}}</h5>
+                                    <h5>{{trans('admin_messages.Admin - admin_messages')}}</h5>
                                     <div class="card-header-right">
                                         <ul class="list-unstyled card-option">
                                             <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
@@ -76,8 +76,8 @@
             <div class="row">
                 <div class="col-lg-12 align_btn_end">
                         <a class="btn btn-primary"
-            href="{{ route('products.create') }}">
-  {{trans('admin_messages.Create')}} </a> <br> <br>
+            href="{{ route('admin_messages.create') }}">
+  {{trans('admin.Create')}} </a> <br> <br>
                 </div>
 
                     <div class="col-md-12">
@@ -86,19 +86,33 @@
                                 <table  id="example" class="table table-striped table-bordered display nowrap dataTable " style="width:100%">
                                     <thead>
                                     <tr>
-                                        <th class="is_filter">{{trans("products.id")}}</th>
-                          <th class="is_filter">{{trans("products.name_ar")}}</th>
-                          <th class="is_filter">{{trans("products.name_en")}}</th>
-                          <th width="100px">{{trans("admin_messages.Control")}}</th>
+                                        <th class="is_filter">{{trans("admin_messages.id")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.user_id")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.fullname")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.email")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.mobile")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.message_type")}}</th>
+{{--                          <th class="is_filter">{{trans("admin_messages.image")}}</th>--}}
+                          <th class="is_filter">{{trans("admin_messages.open_status")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.marked_as_readed")}}</th>
+{{--                          <th class="is_filter">{{trans("admin_messages.marked_as_deleted")}}</th>--}}
+                          <th width="100px">{{trans("admin.Control")}}</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                     <tr>
-                                        <th class="is_filter">{{trans("products.id")}}</th>
-                          <th class="is_filter">{{trans("products.name_ar")}}</th>
-                          <th class="is_filter">{{trans("products.name_en")}}</th>
-                          <th width="100px">{{trans("admin_messages.Control")}}</th>
+                                        <th class="is_filter">{{trans("admin_messages.id")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.user_id")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.fullname")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.email")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.mobile")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.message_type")}}</th>
+{{--                          <th class="is_filter">{{trans("admin_messages.image")}}</th>--}}
+                          <th class="is_filter">{{trans("admin_messages.open_status")}}</th>
+                          <th class="is_filter">{{trans("admin_messages.marked_as_readed")}}</th>
+{{--                          <th class="is_filter">{{trans("admin_messages.marked_as_deleted")}}</th>--}}
+                          <th width="100px">{{trans("admin.Control")}}</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -123,26 +137,26 @@
                                 "order": [[ 0, "desc" ]],
                                 dom: 'Bfrtip',
                                 buttons: [
-                                
-             {extend:'copyHtml5',text:"{{trans("admin_messages.copyHtml5")}}",
+
+             {extend:'copyHtml5',text:"{{trans("admin.copyHtml5")}}",
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
-            
-             {extend:'excelHtml5',text:"{{trans("admin_messages.excelHtml5")}}",
+
+             {extend:'excelHtml5',text:"{{trans("admin.excelHtml5")}}",
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
-            
-            {extend:'csvHtml5',text:"{{trans("admin_messages.csvHtml5")}}",
+
+            {extend:'csvHtml5',text:"{{trans("admin.csvHtml5")}}",
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
-            
-             {extend:'pdfHtml5',text:"{{trans("admin_messages.pdfHtml5")}}" ,
+
+             {extend:'pdfHtml5',text:"{{trans("admin.pdfHtml5")}}" ,
                                         customize: function (doc) {
                                             doc.defaultStyle =
                                                 {
@@ -153,38 +167,49 @@
                                         },
 
                                     } ,
-            
-             {extend:'print',text:"{{trans("admin_messages.print")}}" ,
+
+             {extend:'print',text:"{{trans("admin.print")}}" ,
                                         exportOptions: {
                                             columns: ':not(:last-child)',
                                         },
                                     },
-            
+
                                 ],
                                 processing: true,
                                 serverSide: true,
                                 responsive: true,
                                 "language": {
-                                    "sProcessing":   "{{trans("admin_messages.sProcessing")}}",
-                                    "sZeroRecords":   "{{trans("admin_messages.sZeroRecords")}}",
-                                    "sInfo":          "{{trans("admin_messages.sInfo")}}",
-                                    "sInfoEmpty":    "{{trans("admin_messages.sInfoEmpty")}}",
-                                    "sInfoFiltered":  "{{trans("admin_messages.sInfoFiltered")}}",
+                                    "sProcessing":   "{{trans("admin.sProcessing")}}",
+                                    "sZeroRecords":   "{{trans("admin.sZeroRecords")}}",
+                                    "sInfo":          "{{trans("admin.sInfo")}}",
+                                    "sInfoEmpty":    "{{trans("admin.sInfoEmpty")}}",
+                                    "sInfoFiltered":  "{{trans("admin.sInfoFiltered")}}",
                                     "sInfoPostFix":  "",
-                                    "sSearch":       "{{trans("admin_messages.sSearch")}}",
+                                    "sSearch":       "{{trans("admin.sSearch")}}",
                                     "sUrl":          "",
                                     "oPaginate": {
-                                        "sFirst":     "{{trans("admin_messages.sFirst")}}",
-                                        "sPrevious":  "{{trans("admin_messages.sPrevious")}}",
-                                        "sNext":      "{{trans("admin_messages.sNext")}}",
-                                        "sLast":     "{{trans("admin_messages.sLast")}}",
+                                        "sFirst":     "{{trans("admin.sFirst")}}",
+                                        "sPrevious":  "{{trans("admin.sPrevious")}}",
+                                        "sNext":      "{{trans("admin.sNext")}}",
+                                        "sLast":     "{{trans("admin.sLast")}}",
                                     }
                                 },
-                                ajax: "{{ route('products.index') }}",
+                                ajax: "{{ route('admin_messages.index') }}",
                                 aoColumns: [
                                     {data: 'id', name: 'id'},
-                    {data: 'name_ar', name: 'name_ar'},
-                    {data: 'name_en', name: 'name_en'},
+                    {data: 'user_id', name: 'user_id'},
+                    {data: 'fullname', name: 'fullname'},
+                    {data: 'email', name: 'email'},
+                    {data: 'mobile', name: 'mobile'},
+                    {data: 'message_type', name: 'message_type'},
+                    {{--{data: 'image', name: 'image',--}}
+                    {{--                    render: function(data,type,row){--}}
+                    {{--                        return '<img src="' + '{{url('/')}}' +'/'+ data + '",width=60px, height=60px />'},--}}
+                    {{--                    orderable: false--}}
+                    {{--                },--}}
+                                    {data: 'open_status', name: 'open_status'},
+                    {data: 'marked_as_readed', name: 'marked_as_readed'},
+                    // {data: 'marked_as_deleted', name: 'marked_as_deleted'},
                      {data: 'action', name: 'action', orderable: false,
                                         paging:false,
                                         searchable: false,
@@ -228,7 +253,7 @@
 
 
 @section('footer')
-    
+
 
 
             <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/jquery.dataTables.min.js')}}"></script>

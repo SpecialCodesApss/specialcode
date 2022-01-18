@@ -10,7 +10,7 @@ import 'package:async/async.dart';
 import 'dart:io';
 
 class FaqController {
-  String serverUrl = "http://192.168.1.6/framework1.7";
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status ;
   var message;
   var data;
@@ -56,8 +56,8 @@ class FaqController {
 
     var request = new http.MultipartRequest("POST", request_URL,);
 
-    
-    
+
+
                     request.fields["question_ar"] = question_ar;
                     request.fields["question_en"] = question_en;
                     request.fields["answer_ar"] = answer_ar;
@@ -88,8 +88,8 @@ class FaqController {
 
     var request = new http.MultipartRequest("POST", request_URL,);
 
-    
-    
+
+
                     request.fields["question_ar"] = question_ar;
                     request.fields["question_en"] = question_en;
                     request.fields["answer_ar"] = answer_ar;

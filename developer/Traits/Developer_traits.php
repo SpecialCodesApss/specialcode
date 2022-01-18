@@ -623,8 +623,10 @@ class '.$controller_name.' extends BaseController
                             $'.$table_field.'_data =\'\';
                             $data_'.$table_field.' =json_decode($data->'.$table_field.');
                             foreach ($data_'.$table_field.' as $info){
+                                if($info != null){
                                 $'.$table_module_name.' = '.$table_module_name.'::find($info);
                                 $'.$table_field.'_data.= $'.$table_module_name.'->'.$joined_table_field_name.' .\' - \';
+                                }
                             }
                                 return $'.$table_field.'_data;
                         })
@@ -646,8 +648,10 @@ class '.$controller_name.' extends BaseController
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             $'.$table_field.'_data =\'\';
                             $info =$data->'.$table_field.';
+                            if($info != null){
                                 $'.$table_module_name.' = '.$table_module_name.'::find($info);
                                 $'.$table_field.'_data.= $'.$table_module_name.'->'.$joined_table_field_name.' ;
+                                }
                                 return $'.$table_field.'_data;
                         })
                     ';
@@ -733,10 +737,10 @@ class '.$controller_name.' extends BaseController
                     $AutoCode_for_showing_EditColumn_for_checkbox.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             if($data->'.$table_field.' != null){
-                              return trans("admin_messages.yes");
+                              return trans("admin.yes");
                             }
                             else{
-                                return trans("admin_messages.no");;
+                                return trans("admin.no");;
                             }
                         })
                     ';
@@ -755,10 +759,10 @@ class '.$controller_name.' extends BaseController
                     $AutoCode_for_showing_EditColumn_for_checkbox.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             if($data->'.$table_field.' != null){
-                              return trans("admin_messages.yes");
+                              return trans("admin.yes");
                             }
                             else{
-                                return trans("admin_messages.no");
+                                return trans("admin.no");
                             }
                         })
                     ';
@@ -773,10 +777,10 @@ class '.$controller_name.' extends BaseController
                     $AutoCode_for_showing_activeType_value.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             if($data->'.$table_field.' == "1"){
-                              return trans("admin_messages.active");
+                              return trans("admin.active");
                             }
                             else{
-                                return trans("admin_messages.inactive");
+                                return trans("admin.inactive");
                             }
                         })
                     ';
@@ -1523,11 +1527,11 @@ class '.$controller_name.' extends Controller
 
                 if($request->save_type=="save_and_add_new"){
                     return redirect()->route(\''.$table_name.'.create\')
-                        ->with(\'success\',trans(\'admin_messages.info_added\'));
+                        ->with(\'success\',trans(\'admin.info_added\'));
                 }
                 else{
                     return redirect()->route(\''.$table_name.'.index\')
-                        ->with(\'success\',trans(\'admin_messages.info_added\'));
+                        ->with(\'success\',trans(\'admin.info_added\'));
                 }
 
             }
@@ -1608,7 +1612,7 @@ class '.$controller_name.' extends Controller
                 '.$Multiple_files_store_statements.'
 
                 return redirect()->route(\''.$table_name.'.index\')
-                    ->with(\'success\',trans(\'admin_messages.info_edited\'));
+                    ->with(\'success\',trans(\'admin.info_edited\'));
             }
 
             /**
@@ -1625,7 +1629,7 @@ class '.$controller_name.' extends Controller
 
                 '.$module_name.'::find($id)->delete();
                 return redirect()->route(\''.$table_name.'.index\')
-                    ->with(\'success\',trans(\'admin_messages.info_deleted\'));
+                    ->with(\'success\',trans(\'admin.info_deleted\'));
             }
 
             //additional Functions
@@ -1928,7 +1932,7 @@ class '.$controller_name.' extends Controller
                     {data: \''.$table_field.'\', name: \''.$table_field.'\',
                         "render": function(data, type, row, meta) {
                             if (type === \'display\') {
-                                data = \'<a target="_blank" href="\' + \'{{url(\'/\')}}\' +\'/\'+ data + \'">{{trans("admin_messages.openFile")}} </a>\';
+                                data = \'<a target="_blank" href="\' + \'{{url(\'/\')}}\' +\'/\'+ data + \'">{{trans("admin.openFile")}} </a>\';
                             }
                             return data;
                         }
@@ -1972,7 +1976,7 @@ class '.$controller_name.' extends Controller
 
             }
         }
-        $page_table_header=$page_table_header.'<th width="100px">{{trans("admin_messages.Control")}}</th>';
+        $page_table_header=$page_table_header.'<th width="100px">{{trans("admin.Control")}}</th>';
         $datatables_fields=$datatables_fields.' {data: \'action\', name: \'action\', orderable: false,
                                         paging:false,
                                         searchable: false,
@@ -1982,14 +1986,14 @@ class '.$controller_name.' extends Controller
         if(isset($input['Admin_Create'])){
             $addNewbtn=' <a class="btn btn-primary"
             href="{{ route(\''.$section_flag.'.create\') }}">
-  {{trans(\'admin_messages.Create\')}} </a> <br> <br>';
+  {{trans(\'admin.Create\')}} </a> <br> <br>';
 
         }
 
         $Export_options='';
         if(isset($input['Admin_Export_Copy'])){
             $Export_options=$Export_options.'
-             {extend:\'copyHtml5\',text:"{{trans("admin_messages.copyHtml5")}}",
+             {extend:\'copyHtml5\',text:"{{trans("admin.copyHtml5")}}",
                                         exportOptions: {
                                             columns: \':not(:last-child)\',
                                         },
@@ -1998,7 +2002,7 @@ class '.$controller_name.' extends Controller
         }
         if(isset($input['Admin_Export_Excel'])){
             $Export_options=$Export_options.'
-             {extend:\'excelHtml5\',text:"{{trans("admin_messages.excelHtml5")}}",
+             {extend:\'excelHtml5\',text:"{{trans("admin.excelHtml5")}}",
                                         exportOptions: {
                                             columns: \':not(:last-child)\',
                                         },
@@ -2007,7 +2011,7 @@ class '.$controller_name.' extends Controller
         }
         if(isset($input['Admin_Export_CSV'])){
             $Export_options=$Export_options.'
-            {extend:\'csvHtml5\',text:"{{trans("admin_messages.csvHtml5")}}",
+            {extend:\'csvHtml5\',text:"{{trans("admin.csvHtml5")}}",
                                         exportOptions: {
                                             columns: \':not(:last-child)\',
                                         },
@@ -2016,7 +2020,7 @@ class '.$controller_name.' extends Controller
         }
         if(isset($input['Admin_Export_PDF'])){
             $Export_options=$Export_options.'
-             {extend:\'pdfHtml5\',text:"{{trans("admin_messages.pdfHtml5")}}" ,
+             {extend:\'pdfHtml5\',text:"{{trans("admin.pdfHtml5")}}" ,
                                         customize: function (doc) {
                                             doc.defaultStyle =
                                                 {
@@ -2031,7 +2035,7 @@ class '.$controller_name.' extends Controller
         }
         if(isset($input['Admin_Export_Print'])){
             $Export_options=$Export_options.'
-             {extend:\'print\',text:"{{trans("admin_messages.print")}}" ,
+             {extend:\'print\',text:"{{trans("admin.print")}}" ,
                                         exportOptions: {
                                             columns: \':not(:last-child)\',
                                         },
@@ -2064,7 +2068,7 @@ class '.$controller_name.' extends Controller
                     <i class="'.$input['section_icon'].' bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans(\''.$section_flag.'.Admin - '.$section_flag.'\')}}</h5>
-                        <span>{{trans(\'admin_messages.manage and control all system sides\')}}
+                        <span>{{trans(\'admin.manage and control all system sides\')}}
                              </span>
                     </div>
                 </div>
@@ -2163,19 +2167,19 @@ class '.$controller_name.' extends Controller
                                 serverSide: true,
                                 responsive: true,
                                 "language": {
-                                    "sProcessing":   "{{trans("admin_messages.sProcessing")}}",
-                                    "sZeroRecords":   "{{trans("admin_messages.sZeroRecords")}}",
-                                    "sInfo":          "{{trans("admin_messages.sInfo")}}",
-                                    "sInfoEmpty":    "{{trans("admin_messages.sInfoEmpty")}}",
-                                    "sInfoFiltered":  "{{trans("admin_messages.sInfoFiltered")}}",
+                                    "sProcessing":   "{{trans("admin.sProcessing")}}",
+                                    "sZeroRecords":   "{{trans("admin.sZeroRecords")}}",
+                                    "sInfo":          "{{trans("admin.sInfo")}}",
+                                    "sInfoEmpty":    "{{trans("admin.sInfoEmpty")}}",
+                                    "sInfoFiltered":  "{{trans("admin.sInfoFiltered")}}",
                                     "sInfoPostFix":  "",
-                                    "sSearch":       "{{trans("admin_messages.sSearch")}}",
+                                    "sSearch":       "{{trans("admin.sSearch")}}",
                                     "sUrl":          "",
                                     "oPaginate": {
-                                        "sFirst":     "{{trans("admin_messages.sFirst")}}",
-                                        "sPrevious":  "{{trans("admin_messages.sPrevious")}}",
-                                        "sNext":      "{{trans("admin_messages.sNext")}}",
-                                        "sLast":     "{{trans("admin_messages.sLast")}}",
+                                        "sFirst":     "{{trans("admin.sFirst")}}",
+                                        "sPrevious":  "{{trans("admin.sPrevious")}}",
+                                        "sNext":      "{{trans("admin.sNext")}}",
+                                        "sLast":     "{{trans("admin.sLast")}}",
                                     }
                                 },
                                 ajax: "{{ route(\''.$section_flag.'.index\') }}",
@@ -2344,13 +2348,13 @@ class '.$controller_name.' extends Controller
             elseif($input[$table_field.'_datatype'] == 'datetime'){
                 $new_line = ' <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("' . $section_flag . '.' . $table_field . '")}}  {{trans("admin_messages.date")}} :</strong>
+                            <strong>{{trans("' . $section_flag . '.' . $table_field . '")}}  {{trans("admin.date")}} :</strong>
                             {!! Form::date(\'' .  $table_field . '_date\',  date(\'Y-m-d\',strtotime($' . $module_name . '->' . $table_field . '))  , array(\'placeholder\' => trans("' . $section_flag . '.' . $table_field .  ' "),\'class\' => \'form-control\',\'disabled\')) !!}
                         </div>
                     </div>
                      <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("' . $section_flag . '.' . $table_field . '")}}   {{trans("admin_messages.time")}}  :</strong>
+                            <strong>{{trans("' . $section_flag . '.' . $table_field . '")}}   {{trans("admin.time")}}  :</strong>
                             {!! Form::time(\'' . $table_field . '_time\', date(\'H:i\',strtotime($' . $module_name . '->' . $table_field . ')), array(\'placeholder\' => trans("' . $section_flag . '.' . $table_field .  ' "),\'class\' => \'form-control\',\'disabled\')) !!}
                         </div>
                     </div>
@@ -2376,7 +2380,7 @@ class '.$controller_name.' extends Controller
                                 <strong>{{trans("' . $section_flag . '.' . $table_field . '")}}:</strong><br>
                                 <div class="col-12">
                                 <a href="{{url($'.$module_name.'->' . $table_field . ')}}">
-                                <u>{{trans(\'admin_messages.Download\')}}</u></a>
+                                <u>{{trans(\'admin.Download\')}}</u></a>
                                 </div>
                                </div>
                         </div>';
@@ -2839,9 +2843,9 @@ class '.$controller_name.' extends Controller
 
                                 <div>
                                 @if($' . $module_name . '->' . $table_field . '=="1")
-                                {{trans(\'admin_messages.active\')}}
+                                {{trans(\'admin.active\')}}
                                 @else
-                                {{trans(\'admin_messages.inactive\')}}
+                                {{trans(\'admin.inactive\')}}
                                 @endif
                                 </div>
 
@@ -2911,24 +2915,24 @@ class '.$controller_name.' extends Controller
                 initialPreviewAsData: true,
                 initialPreviewConfig: initialPreviewConfig,
                 showBrowse:false,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
             });
              </script>';
         }
@@ -2971,24 +2975,24 @@ class '.$controller_name.' extends Controller
                 initialPreviewAsData: true,
                 initialPreviewConfig: initialPreviewConfig,
                 showBrowse:false,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
             });
 
              </script>';
@@ -2996,7 +3000,7 @@ class '.$controller_name.' extends Controller
 
             $html_Mfiles_script=$html_Mfiles_script.'
             <div class="form-group col-md-12">
-            <label for="images">{{trans(\'admin_messages.images\')}}</label>
+            <label for="images">{{trans(\'admin.images\')}}</label>
             <div class="file-loading">
                 <input id="images" name="images[]" type="file" multiple class="file" data-overwrite-initial="false"
                        >
@@ -3031,24 +3035,24 @@ class '.$controller_name.' extends Controller
                 initialPreviewAsData: true,
                 initialPreviewConfig: initialPreviewConfig_files,
                 showBrowse:false,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
             });
 
 
@@ -3056,7 +3060,7 @@ class '.$controller_name.' extends Controller
 
             $html_Mfiles_script=$html_Mfiles_script.'
             <div class="form-group col-md-12">
-            <label for="images">{{trans(\'admin_messages.files\')}}</label>
+            <label for="images">{{trans(\'admin.files\')}}</label>
             <div class="file-loading">
                 <input id="files" name="files[]" type="file" multiple class="file" data-overwrite-initial="false"
                        >
@@ -3088,7 +3092,7 @@ class '.$controller_name.' extends Controller
                     <i class="'.$input['section_icon'].' bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans(\''.$section_flag.'.Admin - '.$section_flag.'\')}}</h5>
-                        <span>{{trans(\'admin_messages.manage and control all system sides\')}}
+                        <span>{{trans(\'admin.manage and control all system sides\')}}
                              </span>
                     </div>
                 </div>
@@ -3138,12 +3142,12 @@ class '.$controller_name.' extends Controller
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans(\'admin_messages.viewModule\')}}</h4>
+                <h4>{{trans(\'admin.viewModule\')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ route(\''.$section_flag.'.index\') }}">
-                {{trans(\'admin_messages.back\')}}</a>
+                {{trans(\'admin.back\')}}</a>
             </div>
         </div>
 
@@ -3323,7 +3327,7 @@ class '.$controller_name.' extends Controller
                  <div class="col-md-12  text-center top-marging-15">
                 <button type="button" class="btn btn-outline-primary"
                 onclick="OpenImgUpload(\'' . $table_field . '_input\',\'change_' . $table_field . '_btn\')">
-                {{trans(\'admin_messages.Upload\')}}
+                {{trans(\'admin.Upload\')}}
                 </button>
                 </div>
 
@@ -3352,24 +3356,24 @@ class '.$controller_name.' extends Controller
                 showDownload: true,
                 showRemove: true,
                 allowedFileTypes:["image", "text", "video", "audio","pdf"],
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
 
             }
         );
@@ -3689,9 +3693,9 @@ class '.$controller_name.' extends Controller
                             <strong>{{trans("'.$section_flag.'.'.$table_field.'")}}:</strong>
                                <select class="wide form-control" id="' . $table_field . '" name="' . $table_field . '">
                                 <option value="1" @if(old(\''.$table_field.'\')=="1") selected @endif>
-                                    {{trans(\'admin_messages.active\')}}</option>
+                                    {{trans(\'admin.active\')}}</option>
                                 <option value="0" @if(old(\''.$table_field.'\')=="0") selected @endif>
-                                    {{trans(\'admin_messages.inactive\')}}
+                                    {{trans(\'admin.inactive\')}}
                                 </option>
                                 </select>
 
@@ -3755,24 +3759,24 @@ class '.$controller_name.' extends Controller
                 maxFileCount:20,
                 showDownload: true,
                 showRemove: true,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
 
             });
             $(\'.file-preview-frame\').click(function () {
@@ -3786,7 +3790,7 @@ class '.$controller_name.' extends Controller
 
             $html_Mfiles_script=$html_Mfiles_script.'
             <div class="form-group col-md-12">
-            <label for="images">{{trans(\'admin_messages.images\')}}</label>
+            <label for="images">{{trans(\'admin.images\')}}</label>
             <div class="file-loading">
                 <input id="images" name="images[]" type="file" multiple class="file" data-overwrite-initial="false"
                        >
@@ -3803,24 +3807,24 @@ class '.$controller_name.' extends Controller
                 maxFileCount:20,
                 showDownload: true,
                 showRemove: true,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
 
             });
             $(\'.file-preview-frame\').click(function () {
@@ -3833,7 +3837,7 @@ class '.$controller_name.' extends Controller
 
             $html_Mfiles_script=$html_Mfiles_script.'
             <div class="form-group col-md-12">
-            <label for="images">{{trans(\'admin_messages.files\')}}</label>
+            <label for="images">{{trans(\'admin.files\')}}</label>
             <div class="file-loading">
                 <input id="files" name="files[]" type="file" multiple class="file" data-overwrite-initial="false"
                        >
@@ -3864,7 +3868,7 @@ class '.$controller_name.' extends Controller
                     <i class="'.$input['section_icon'].' bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans(\''.$section_flag.'.Admin - '.$section_flag.'\')}}</h5>
-                        <span>{{trans(\'admin_messages.manage and control all system sides\')}}
+                        <span>{{trans(\'admin.manage and control all system sides\')}}
                              </span>
                     </div>
                 </div>
@@ -3914,12 +3918,12 @@ class '.$controller_name.' extends Controller
 
         <div class="col-lg-12">
            <br>
-                <h4>{{trans(\'admin_messages.Create\')}}</h4>
+                <h4>{{trans(\'admin.Create\')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ route(\''.$section_flag.'.index\') }}">
-                {{trans(\'admin_messages.back\')}}</a>
+                {{trans(\'admin.back\')}}</a>
             </div>
         </div>
     </div>
@@ -3942,12 +3946,12 @@ class '.$controller_name.' extends Controller
 
         '.$html_Mfiles_script.'
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">{{trans(\'admin_messages.save\')}}</button>
+            <button type="submit" class="btn btn-primary">{{trans(\'admin.save\')}}</button>
             <button type="button"  onclick="
             $(\'#save_type\').val(\'save_and_add_new\');
                 document.getElementById(\'form\').submit();
                 return false
-            " class="btn btn-primary">{{trans(\'admin_messages.save_and_addNew\')}}</button>
+            " class="btn btn-primary">{{trans(\'admin.save_and_addNew\')}}</button>
         </div>
     </div>
     {!! Form::close() !!}
@@ -4137,7 +4141,7 @@ class '.$controller_name.' extends Controller
                  <div class="col-md-12  text-center top-marging-15">
                 <button type="button" class="btn btn-outline-primary"
                 onclick="OpenImgUpload(\'' . $table_field . '_input\',\'change_' . $table_field . '_btn\')">
-                {{trans(\'admin_messages.Upload\')}}
+                {{trans(\'admin.Upload\')}}
                 </button>
                 </div>
                         </div></div>';
@@ -4195,24 +4199,24 @@ class '.$controller_name.' extends Controller
                 initialPreview: url,
                 initialPreviewAsData: true,
                 initialPreviewConfig: initialPreviewConfig,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
             }
         );
     </script> ';
@@ -4480,9 +4484,9 @@ class '.$controller_name.' extends Controller
                             <strong>{{trans("'.$section_flag.'.'.$table_field.'")}}:</strong>
                             <select class="wide form-control" id="' . $table_field . '" name="' . $table_field . '">
                                 <option value="1" @if($' . $module_name . '->' . $table_field . '=="1") selected @endif>
-                                    {{trans(\'admin_messages.active\')}}</option>
+                                    {{trans(\'admin.active\')}}</option>
                                 <option value="0" @if($' . $module_name . '->' . $table_field . ' !="1") selected @endif>
-                                    {{trans(\'admin_messages.inactive\')}}
+                                    {{trans(\'admin.inactive\')}}
                                 </option>
                                 </select>
                         </div>
@@ -4557,24 +4561,24 @@ class '.$controller_name.' extends Controller
                 initialPreview: url,
                 initialPreviewAsData: true,
                 initialPreviewConfig: initialPreviewConfig,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
 
             });
             $(\'.file-preview-frame\').click(function () {
@@ -4588,7 +4592,7 @@ class '.$controller_name.' extends Controller
 
             $html_Mfiles_script=$html_Mfiles_script.'
             <div class="form-group col-md-12">
-            <label for="images">{{trans(\'admin_messages.images\')}}</label>
+            <label for="images">{{trans(\'admin.images\')}}</label>
             <div class="file-loading">
                 <input id="images" name="images[]" type="file" multiple class="file" data-overwrite-initial="false"
                        >
@@ -4624,24 +4628,24 @@ class '.$controller_name.' extends Controller
                 initialPreview: url,
                 initialPreviewAsData: true,
                 initialPreviewConfig: initialPreviewConfig,
-                msgPlaceholder : "{{trans(\'admin_messages.Select file..\')}}",
-                msgSelected : "{{trans(\'admin_messages.msgSelected\')}}",
-                msgProcessing : "{{trans(\'admin_messages.msgProcessing\')}}",
-                removeTitle : "{{trans(\'admin_messages.removeTitle\')}}",
-                uploadTitle : "{{trans(\'admin_messages.uploadTitle\')}}",
-                downloadTitle : "{{trans(\'admin_messages.downloadTitle\')}}",
-                zoomTitle : "{{trans(\'admin_messages.zoomTitle\')}}",
-                dragTitle : "{{trans(\'admin_messages.dragTitle\')}}",
-                msgNo : "{{trans(\'admin_messages.msgNo\')}}",
-                msgNoFilesSelected : "{{trans(\'admin_messages.msgNoFilesSelected\')}}",
-                msgCancelled : "{{trans(\'admin_messages.msgCancelled\')}}",
-                msgPaused : "{{trans(\'admin_messages.msgPaused\')}}",
-                msgZoomTitle : "{{trans(\'admin_messages.msgZoomTitle\')}}",
-                msgZoomModalHeading : "{{trans(\'admin_messages.msgZoomModalHeading\')}}",
-                msgFileRequired : "{{trans(\'admin_messages.msgFileRequired\')}}",
-                browseLabel : "{{trans(\'admin_messages.browseLabel\')}}",
-                removeLabel : "{{trans(\'admin_messages.removeLabel\')}}",
-                dropZoneTitle : "{{trans(\'admin_messages.dropZoneTitle\')}}",
+                msgPlaceholder : "{{trans(\'admin.Select file..\')}}",
+                msgSelected : "{{trans(\'admin.msgSelected\')}}",
+                msgProcessing : "{{trans(\'admin.msgProcessing\')}}",
+                removeTitle : "{{trans(\'admin.removeTitle\')}}",
+                uploadTitle : "{{trans(\'admin.uploadTitle\')}}",
+                downloadTitle : "{{trans(\'admin.downloadTitle\')}}",
+                zoomTitle : "{{trans(\'admin.zoomTitle\')}}",
+                dragTitle : "{{trans(\'admin.dragTitle\')}}",
+                msgNo : "{{trans(\'admin.msgNo\')}}",
+                msgNoFilesSelected : "{{trans(\'admin.msgNoFilesSelected\')}}",
+                msgCancelled : "{{trans(\'admin.msgCancelled\')}}",
+                msgPaused : "{{trans(\'admin.msgPaused\')}}",
+                msgZoomTitle : "{{trans(\'admin.msgZoomTitle\')}}",
+                msgZoomModalHeading : "{{trans(\'admin.msgZoomModalHeading\')}}",
+                msgFileRequired : "{{trans(\'admin.msgFileRequired\')}}",
+                browseLabel : "{{trans(\'admin.browseLabel\')}}",
+                removeLabel : "{{trans(\'admin.removeLabel\')}}",
+                dropZoneTitle : "{{trans(\'admin.dropZoneTitle\')}}",
 
             });
             $(\'.file-preview-frame\').click(function () {
@@ -4654,7 +4658,7 @@ class '.$controller_name.' extends Controller
 
             $html_Mfiles_script=$html_Mfiles_script.'
             <div class="form-group col-md-12">
-            <label for="images">{{trans(\'admin_messages.files\')}}</label>
+            <label for="images">{{trans(\'admin.files\')}}</label>
             <div class="file-loading">
                 <input id="files" name="files[]" type="file" multiple class="file" data-overwrite-initial="false"
                        >
@@ -4682,7 +4686,7 @@ class '.$controller_name.' extends Controller
                     <i class="'.$input['section_icon'].' bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans(\''.$section_flag.'.Admin - '.$section_flag.'\')}}</h5>
-                        <span>{{trans(\'admin_messages.manage and control all system sides\')}}
+                        <span>{{trans(\'admin.manage and control all system sides\')}}
                              </span>
                     </div>
                 </div>
@@ -4732,12 +4736,12 @@ class '.$controller_name.' extends Controller
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans(\'admin_messages.EditModule\')}}</h4>
+                <h4>{{trans(\'admin.EditModule\')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ route(\''.$section_flag.'.index\') }}">
-                {{trans(\'admin_messages.back\')}}</a>
+                {{trans(\'admin.back\')}}</a>
             </div>
         </div>
 
@@ -4754,7 +4758,7 @@ class '.$controller_name.' extends Controller
 
         '.$html_Mfiles_script.'
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">{{trans(\'admin_messages.Save\')}}</button>
+            <button type="submit" class="btn btn-primary">{{trans(\'admin.Save\')}}</button>
         </div>
     </div>
     {!! Form::close() !!}

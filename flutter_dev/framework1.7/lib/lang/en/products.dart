@@ -11,13 +11,11 @@
 
             var messages = {
         "id": "id",
-            "user_id": "user id",
-            "name_ar": "arabic name",
-            "name_en": "english name",
-            "image": "image",
-            "active": "active",
-            "sort": "sort",
-            "created_at": "created at",
+            "name": "name",
+            "selector": "selector",
+            'active':'active',
+'in active':'in active',
+"created_at": "created at",
             "updated_at": "updated at",
             "products": "products",
             "Product": "Product",

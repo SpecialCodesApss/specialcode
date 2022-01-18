@@ -85,7 +85,7 @@ class PageController extends BaseController
         if(isset($Page)){
         }
         if (is_null($Page)) {
-            return $this->sendError(trans('admin_messages.Page not found.'));
+            return $this->sendError(trans('admin.Page not found.'));
         }
         return $this->sendResponse(trans("pages.Page_read"),$Page->toArray());
     }

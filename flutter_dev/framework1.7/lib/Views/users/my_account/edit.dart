@@ -81,7 +81,7 @@ class _EditMyAccountState extends State<EditMyAccount> {
   var email = "";
   UserController userProfileController = new UserController();
 
-  String serverUrl = "http://192.168.1.6/framework1.7/";
+  String serverUrl = "http://192.168.1.4/framework1.7/";
 
   /*Internet and loading*/
   /**************/

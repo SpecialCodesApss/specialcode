@@ -93,11 +93,11 @@ class PageController extends Controller
 //
 //                if($request->save_type=="save_and_add_new"){
 //                    return redirect('pages/create')
-//                        ->with('success',trans('admin_messages.info_added'));
+//                        ->with('success',trans('admin.info_added'));
 //                }
 //                else{
 //                    return redirect('pages')
-//                        ->with('success',trans('admin_messages.info_added'));
+//                        ->with('success',trans('admin.info_added'));
 //                }
 //
 //            }
@@ -124,7 +124,7 @@ class PageController extends Controller
 
         if (is_null($Page)) {
             return view('errors.404');
-//            return back()->with('error',trans('admin_messages.Page not found.'));
+//            return back()->with('error',trans('admin.Page not found.'));
 //            return $this->sendError('Page not found.');
         }
 
@@ -207,7 +207,7 @@ class PageController extends Controller
 //        $Page = Page::where(['id'=>$id , 'user_id' => $user_id ])->get();
 //
 //                return redirect('pages')
-//                    ->with('success',trans('admin_messages.info_edited'));
+//                    ->with('success',trans('admin.info_edited'));
 //            }
 //
 //            /**
@@ -229,7 +229,7 @@ class PageController extends Controller
 //        Page::where(['id'=>$id])->delete();
 //
 //                return redirect('pages')
-//                    ->with('success',trans('admin_messages.info_deleted'));
+//                    ->with('success',trans('admin.info_deleted'));
 //            }
 //
 //            //additional Functions

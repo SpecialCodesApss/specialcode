@@ -17,7 +17,7 @@
                     <i class="fas fa-bell bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('admin_notifications.Admin - admin_notifications')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -67,12 +67,12 @@
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans('admin_messages.viewModule')}}</h4>
+                <h4>{{trans('admin.viewModule')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ route('admin_notifications.index') }}">
-                {{trans('admin_messages.back')}}</a>
+                {{trans('admin.back')}}</a>
             </div>
         </div>
 
@@ -83,29 +83,29 @@
 
 
     <div class="row">
-        
-            
+
+
                    <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("admin_notifications.id")}}:</strong>
                             <div>{{$Admin_notification->id}}</div>
                         </div>
                     </div>
-            
+
              <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group">
                                 <strong>{{trans("admin_notifications.notification_id")}}:</strong>
                                 {!!Form::select('notification_id', $notifications_texts,  $Admin_notification->notification_id, ['class' => 'form-control  chosen-select','disabled'])!!}
                             </div>
                         </div>
-            
+
              <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group">
                                 <strong>{{trans("admin_notifications.model_id")}}:</strong>
                                 {!!Form::select('model_id', $users,  $Admin_notification->model_id, ['class' => 'form-control  chosen-select','disabled'])!!}
                             </div>
                         </div>
-            
+
             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("admin_notifications.is_marked_as_readed")}}:</strong>
@@ -122,7 +122,7 @@
                              >
                         </div>
                     </div>
-            
+
             <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("admin_notifications.is_marked_as_deleted")}}:</strong>
@@ -139,37 +139,37 @@
                              >
                         </div>
                     </div>
-            
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("admin_notifications.created_at")}}  {{trans("admin_messages.date")}} :</strong>
+                            <strong>{{trans("admin_notifications.created_at")}}  {{trans("admin.date")}} :</strong>
                             {!! Form::date('created_at_date',  date('Y-m-d',strtotime($Admin_notification->created_at))  , array('placeholder' => trans("admin_notifications.created_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
                      <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("admin_notifications.created_at")}}   {{trans("admin_messages.time")}}  :</strong>
+                            <strong>{{trans("admin_notifications.created_at")}}   {{trans("admin.time")}}  :</strong>
                             {!! Form::time('created_at_time', date('H:i',strtotime($Admin_notification->created_at)), array('placeholder' => trans("admin_notifications.created_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
-                    
-            
+
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("admin_notifications.updated_at")}}  {{trans("admin_messages.date")}} :</strong>
+                            <strong>{{trans("admin_notifications.updated_at")}}  {{trans("admin.date")}} :</strong>
                             {!! Form::date('updated_at_date',  date('Y-m-d',strtotime($Admin_notification->updated_at))  , array('placeholder' => trans("admin_notifications.updated_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
                      <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("admin_notifications.updated_at")}}   {{trans("admin_messages.time")}}  :</strong>
+                            <strong>{{trans("admin_notifications.updated_at")}}   {{trans("admin.time")}}  :</strong>
                             {!! Form::time('updated_at_time', date('H:i',strtotime($Admin_notification->updated_at)), array('placeholder' => trans("admin_notifications.updated_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
-                    
-            
 
-        
+
+
+
 
     </div>
 
@@ -193,5 +193,5 @@
 
 
 @section('footer')
-    
+
 @endsection

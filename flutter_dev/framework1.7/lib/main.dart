@@ -5,6 +5,7 @@ import 'package:flutter_dev/Views/Home.dart';
 import 'package:flutter_dev/Views/Splash.dart';
 import 'package:flutter_dev/Views/faqs/index.dart';
 import 'package:flutter_dev/Views/main/LangaugePage.dart';
+import 'package:flutter_dev/Views/pages/Contactus.dart';
 import 'package:flutter_dev/Views/products/index.dart';
 import 'package:flutter_dev/Views/products/store.dart';
 import 'package:flutter_dev/Views/products/update.dart';
@@ -35,6 +36,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:framework_01_6/Views/sponsers/index.dart';
 // import 'Views/Splash.dart';
 // import 'Views/pages/Aboutus.dart';
+import 'Views/admin_messages/store.dart';
 import 'helpers/InternetHelper.dart';
 import 'helpers/LanguageHelper.dart' as LanguageHelper;
 import 'package:flutter_app_restart/flutter_app_restart.dart';
@@ -119,7 +121,8 @@ class _MyAppState extends State<MyApp> {
                     buttonColor: HexColor('#0a0a0a'), //  <-- dark color
                   ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(secondary: HexColor('#f8f80a'))),
               // home: Splash(),
-              home: Home(),
+              home: ProductsStore(),
+              // home: Home(),
               // home: ProductsUpdate(7),
               // home: ProductsView(1),
               // home: LoginPage(),

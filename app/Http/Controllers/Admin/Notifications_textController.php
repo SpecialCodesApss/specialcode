@@ -24,12 +24,12 @@ class Notifications_textController extends Controller
      */
     function __construct()
     {
-        
+
         $this->middleware('permission:Notifications_text_Create', ['only' => ['create','store']]);
         $this->middleware('permission:Notifications_text_Read', ['only' => ['index','show']]);
         $this->middleware('permission:Notifications_text_Update', ['only' => ['update','edit']]);
         $this->middleware('permission:Notifications_text_Delete', ['only' => ['delete','destroy']]);
-        
+
     }
 
             /**
@@ -44,18 +44,18 @@ class Notifications_textController extends Controller
                     $data = Notifications_text::query();
 
 
-                    
 
-                    
+
+
 
 
 
                     return Datatables::eloquent($data)
 
-                        
-                        
-                        
-                        
+
+
+
+
 
                         ->addColumn('action', function($row){
                             $row_id=$row->id;
@@ -92,7 +92,7 @@ class Notifications_textController extends Controller
                 $lang = App::getLocale();
                 $sort_number = Notifications_text::all()->count()+1;
 
-            
+
                 return view('backend.notifications_texts.create',compact('sort_number'));
             }
 
@@ -106,27 +106,27 @@ class Notifications_textController extends Controller
             {
 
                 $lang = App::getLocale();
-                
+
             $this->validate($request, [
             'description_text_en'=>'required',
                     'description_text_ar'=>'required',
                     'trarget_url'=>'required',
                     'icon'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["description_text_en"]=$request->description_text_en;
                 $input["description_text_ar"]=$request->description_text_ar;
                 $input["trarget_url"]=$request->trarget_url;
                 $input["icon"]=$request->icon;
 
-                
 
-                
 
-                
+
+
+
 
 
                 $Notifications_text = Notifications_text::create($input);
@@ -137,11 +137,11 @@ class Notifications_textController extends Controller
 
                 if($request->save_type=="save_and_add_new"){
                     return redirect()->route('notifications_texts.create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect()->route('notifications_texts.index')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -157,11 +157,11 @@ class Notifications_textController extends Controller
             {
             $lang = App::getLocale();
                 $Notifications_text = Notifications_text::find($id);
-                
-                
 
-                
-                 
+
+
+
+
 
 
                 return view('backend.notifications_texts.show',compact('Notifications_text'   ));
@@ -180,13 +180,13 @@ class Notifications_textController extends Controller
 
             $lang = App::getLocale();
                 $Notifications_text = Notifications_text::find($id);
-                
-                
 
-                
-                
 
-                
+
+
+
+
+
 
 
                 return view('backend.notifications_texts.edit',compact('Notifications_text'
@@ -205,27 +205,27 @@ class Notifications_textController extends Controller
             {
 
             $Notifications_text = Notifications_text::find($id);
-                 
+
             $this->validate($request, [
             'description_text_en'=>'required',
                     'description_text_ar'=>'required',
                     'trarget_url'=>'required',
                     'icon'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["description_text_en"]=$request->description_text_en;
                 $input["description_text_ar"]=$request->description_text_ar;
                 $input["trarget_url"]=$request->trarget_url;
                 $input["icon"]=$request->icon;
 
-                
 
-                
 
-                
+
+
+
 
 
                 $Notifications_text->update($input);
@@ -234,7 +234,7 @@ class Notifications_textController extends Controller
                 //store files if found
 
                 return redirect()->route('notifications_texts.index')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -246,22 +246,22 @@ class Notifications_textController extends Controller
             public function destroy($id)
             {
                  // delete files and images
-        
+
 
                  // delete files and images in sub tables if this module has mutiple files or images
-        
+
 
                 Notifications_text::find($id)->delete();
                 return redirect()->route('notifications_texts.index')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions
-            
-            
 
 
-            
+
+
+
 
 
 

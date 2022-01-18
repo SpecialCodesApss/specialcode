@@ -101,6 +101,11 @@ class _ProductsIndexState extends State<ProductsIndex>{
         }
 
   read() async {
+
+    await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
+
+
     //get list data
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     _ProductController.index(1,searchText).whenComplete((){
@@ -177,85 +182,7 @@ class _ProductsIndexState extends State<ProductsIndex>{
           ),
         ),
       )
-    : viewType=="GridView" ?
-      Column(
-          children: <Widget>[
-
-      Expanded(
-    child: AnimationLimiter(
-        child: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropHeader(),
-
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            child: GridView.count(
-              padding: EdgeInsets.only(top: 10.0),
-              crossAxisCount: 2,
-              children: new List<Widget>.generate(data == null ? 0 : data.length, (index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child:InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => ProductsView(data[index]["id"]))
-                          );
-                        },
-                        child: GridTile(
-                          child: new Card(
-                              margin: EdgeInsets.all(5.0),
-                              color: Colors.white70,
-                              child : Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0)
-                                      ),
-                                      border: Border.all(color: Colors.black12)
-                                  ),
-                                  child: Center(
-                                    child:  Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        FadeInImage.assetNetwork(
-                                          placeholder:"assets/images/noimage.png" ,
-                                          image:"http://192.168.1.6/framework1.7/"+data[index]["image"].toString() ,
-                                          width: 40.0 ,
-                                          height: 40.0 ,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 10.0 , left: 10.0 , top: 30.0) ,
-                                          child: Text(
-                                            data[index]["name_ar"].toString(),
-                                            style: Theme.of(context).textTheme.bodyText1,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                              )
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            )
-        )
-    )
-        ),
-    ]
-    )
-
-          :
-          Column(
+    : Column(
             children: <Widget>[
 
               Expanded(child:
@@ -264,7 +191,6 @@ class _ProductsIndexState extends State<ProductsIndex>{
                   enablePullDown: true,
                   enablePullUp: true,
                   header: WaterDropMaterialHeader(),
-
                   controller: _refreshController,
                   onRefresh: _onRefresh,
                   onLoading: _onLoading,
@@ -285,7 +211,7 @@ class _ProductsIndexState extends State<ProductsIndex>{
                               },
                               child: Container(
                                   margin: const EdgeInsets.all(5.0),
-                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 30.0,bottom: 30.0),
+                                  padding: const EdgeInsets.only(left: 5.0,right: 5.0,top: 10.0,bottom: 10.0),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.0)
@@ -294,26 +220,33 @@ class _ProductsIndexState extends State<ProductsIndex>{
                                   ),
                                   alignment: language == "en" ? Alignment.centerLeft : Alignment.centerRight  ,
                                   child:
-                                  Row(
-                                    textDirection: TextDirection.rtl ,
+                                  Column(
                                     children: <Widget>[
-                                  ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  child:
-                                      FadeInImage.assetNetwork(
-                                        placeholder:"assets/images/noimage.png" ,
-                                        image: "http://192.168.1.6/framework1.7/"+data[index]["image"].toString(),
-                                        width: 40.0 ,
-                                        height: 40.0 ,
-                                      )
+                                      Row(
+                                        textDirection: TextDirection.rtl ,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 10.0 , left: 10.0 , top: 0.0) ,
+                                            child: Text(
+                                              data[index]["id"],
+                                              style: Theme.of(context).textTheme.subtitle1,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 30.0 , left: 10.0 , top: 0.0) ,
-                                        child: Text(
-                                          data[index]["name_ar"].toString(),
-                                          style: Theme.of(context).textTheme.bodyText1,
-                                        ),
-                                      )
+
+                                      Row(
+                                        textDirection: TextDirection.rtl ,
+                                        children: <Widget>[Padding(
+                                            padding: EdgeInsets.only(right: 10.0 , left: 10.0 , top: 0.0) ,
+                                            child: Text(
+                                               data[index]["id"].toString() ,
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
                                     ],
                                   )
                               ),

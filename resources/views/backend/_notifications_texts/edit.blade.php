@@ -17,7 +17,7 @@
                     <i class="fab fa-accusoft bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('notifications_texts.Admin - notifications_texts')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -67,12 +67,12 @@
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans('admin_messages.EditModule')}}</h4>
+                <h4>{{trans('admin.EditModule')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ route('notifications_texts.index') }}">
-                {{trans('admin_messages.back')}}</a>
+                {{trans('admin.back')}}</a>
             </div>
         </div>
 
@@ -85,41 +85,41 @@
     <div class="row">
 
 
-        
-                
+
+
                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.description_text_en")}}:</strong>
                             {!! Form::textarea('description_text_en',$Notifications_text->description_text_en, array('placeholder' => trans("notifications_texts.description_text_en"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
-                
+
+
                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.description_text_ar")}}:</strong>
                             {!! Form::textarea('description_text_ar',$Notifications_text->description_text_ar, array('placeholder' => trans("notifications_texts.description_text_ar"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.trarget_url")}}:</strong>
                             {!! Form::text('trarget_url', $Notifications_text->trarget_url, array('placeholder' => trans("notifications_texts.trarget_url"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.icon")}}:</strong>
                             {!! Form::text('icon', $Notifications_text->icon, array('placeholder' => trans("notifications_texts.icon"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
 
-        
+
+
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">{{trans('admin_messages.Save')}}</button>
+            <button type="submit" class="btn btn-primary">{{trans('admin.Save')}}</button>
         </div>
     </div>
     {!! Form::close() !!}
@@ -155,5 +155,5 @@
 
 
 @section('footer')
-    
+
 @endsection

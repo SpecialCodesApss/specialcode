@@ -25,7 +25,7 @@ trait Flutter_traits{
         $controller_name=$module_name.'Controller';
 
         $base_url = $_SERVER['SERVER_NAME'];
-        $base_url=str_replace('localhost','192.168.1.6',$base_url); // if its link is local host replace it by local
+        $base_url=str_replace('localhost','192.168.1.4',$base_url); // if its link is local host replace it by local
 
         //get Store/Update Functions Parametes and its body
         $API_body='';
@@ -816,6 +816,66 @@ var language = LanguageHelper.Language;
                                   ),
                     ';
                 }
+
+                elseif($input[$table_field.'_datatype'] == 'enum_selector'){
+
+
+                    $selector_array= $input[$table_field.'_selector_items'];
+                    $selector_array=explode(',', $selector_array);
+
+                    $items_options='';
+                    foreach ($selector_array as $select_option){
+                        $items_options.='
+                            {
+                              \'value\': \'' . $select_option . '\',
+                              \'label\': LanguageHelper.trans("' . $table_name . '", "' . $select_option . '"),
+                            },';
+                    }
+
+                    $selector_items='
+                    final List<Map<String, dynamic>> _' . $table_field . '_items = [
+                    '.$items_options.'
+                        ];
+                    ';
+
+                        $new_line = '
+                        var _' . $table_field . ' = "";
+
+                        ';
+                        $Fields_Controller = $Fields_Controller . $new_line.$selector_items;
+                        //get if statments code
+                        $statment_line = '_' . $table_field . ' != null';
+                        $ifStatmentsForFields = $ifStatmentsForFields . $andand . $statment_line;
+                        $newParameterline = '_' . $table_field;
+                        $storeFunctionParametes .= $comma . $newParameterline;
+                        $toStringVar = '';
+                        $updateNewLine = '_' . $table_field . '=_' . $controller_name . '.data["data"]["' . $table_field . '"]' . $toStringVar . ' ;';
+                        //get form text fields
+                        $textFieldNewline = '
+                        Directionality(
+        textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+        child: SelectFormField(
+          type: SelectFormFieldType.dropdown, // or can be dialog
+          initialValue: "",
+          labelText: LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
+          items: _' . $table_field . '_items,
+          onChanged: (val) {
+            setState(() {
+              _' . $table_field . ' = val;
+            });
+          },
+          onSaved: (val) => print(val),
+          textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+          textAlign: language =="en" ? TextAlign.start : TextAlign.start ,
+        ),
+      ),
+                                            ';
+                        $formTextFields .= $textFieldNewline;
+                        //this to update state and update text fields with ideal data
+                        $UpdateStateStatments .= $updateNewLine;
+
+                }
+
                 else{
 
                     if($table_field !='user_id') {
@@ -871,7 +931,7 @@ import \'dart:io\';
 import \'package:flutter/cupertino.dart\';
 import \'package:flutter/src/widgets/basic.dart\';
 import \'package:image_picker/image_picker.dart\';
-
+import \'package:select_form_field/select_form_field.dart\';
 import \'../../Views/'.$table_name.'/index.dart\';
 
 class '.$Capital_table_name.'Store extends StatefulWidget {
@@ -1088,7 +1148,7 @@ return Scaffold(
                     $imageDesignCode.='
                     FadeInImage.assetNetwork(
                                     placeholder:"assets/images/noimage.png" ,
-                                    image: data != null ? "http://192.168.1.6/framework1.7/"+data["data"]["'.$table_field.'"] : "assets/images/noimage.png" ,
+                                    image: data != null ? "http://192.168.1.4/framework1.7/"+data["data"]["'.$table_field.'"] : "assets/images/noimage.png" ,
                                   ),
 
                                   '.$table_field.' != null ?
@@ -1106,6 +1166,66 @@ return Scaffold(
                                   ),
                     ';
                 }
+
+                elseif($input[$table_field.'_datatype'] == 'enum_selector'){
+
+
+                    $selector_array= $input[$table_field.'_selector_items'];
+                    $selector_array=explode(',', $selector_array);
+
+                    $items_options='';
+                    foreach ($selector_array as $select_option){
+                        $items_options.='
+                            {
+                              \'value\': \'' . $select_option . '\',
+                              \'label\': LanguageHelper.trans("' . $table_name . '", "' . $select_option . '"),
+                            },';
+                    }
+
+                    $selector_items='
+                    final List<Map<String, dynamic>> _' . $table_field . '_items = [
+                    '.$items_options.'
+                        ];
+                    ';
+
+                    $new_line = '
+                        var _' . $table_field . ' = "";
+
+                        ';
+                    $Fields_Controller = $Fields_Controller . $new_line.$selector_items;
+                    //get if statments code
+                    $statment_line = '_' . $table_field . ' != null';
+                    $ifStatmentsForFields = $ifStatmentsForFields . $andand . $statment_line;
+                    $newParameterline = '_' . $table_field;
+                    $storeFunctionParametes .= $comma . $newParameterline;
+                    $toStringVar = '';
+                    $updateNewLine = '_' . $table_field . '=_' . $controller_name . '.data["data"]["' . $table_field . '"]' . $toStringVar . ' ;';
+                    //get form text fields
+                    $textFieldNewline = '
+                        Directionality(
+        textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+        child: SelectFormField(
+          type: SelectFormFieldType.dropdown, // or can be dialog
+          initialValue: "",
+          labelText: LanguageHelper.trans("' . $table_name . '","' . $table_field . '"),
+          items: _' . $table_field . '_items,
+          onChanged: (val) {
+            setState(() {
+              _' . $table_field . ' = val;
+            });
+          },
+          onSaved: (val) => print(val),
+          textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+          textAlign: language =="en" ? TextAlign.start : TextAlign.start ,
+        ),
+      ),
+                                            ';
+                    $formTextFields .= $textFieldNewline;
+                    //this to update state and update text fields with ideal data
+                    $UpdateStateStatments .= $updateNewLine;
+
+                }
+
                 else{
                     if($table_field !='user_id') {
                         $new_line = 'final TextEditingController _' . $table_field . 'Controller = new TextEditingController();';
@@ -1160,7 +1280,7 @@ import \'dart:io\';
 import \'package:flutter/cupertino.dart\';
 import \'package:flutter/src/widgets/basic.dart\';
 import \'package:image_picker/image_picker.dart\';
-
+import \'package:select_form_field/select_form_field.dart\';
 import \'../../Views/'.$table_name.'/index.dart\';
 
 
@@ -1353,6 +1473,21 @@ return Scaffold(
             ';
             $en_lines .= '"' . $table_field . '": "' . $input[$table_field . "_en"] . '",
             ';
+
+            if($input[$table_field.'_datatype']=='enum_selector'){
+                $selector_array= $input[$table_field.'_selector_items'];
+                $selector_array=explode(',', $selector_array);
+                $selector_options='';
+                foreach ($selector_array as $selector_en){
+                    //translate select //for google translate object
+                    $trans = new GoogleTranslate(); $source = 'en'; $target = 'ar';
+                    $selector_ar = $trans->translate($source, $target, $selector_en);
+                    $ar_new_line="'".$selector_en."':'".$selector_ar."',\n";
+                    $en_new_line="'".$selector_en."':'".$selector_en."',\n";
+                    $ar_lines=$ar_lines.$ar_new_line;
+                    $en_lines=$en_lines.$en_new_line;
+                }
+            }
         }
 
         //add translation for tanle name and module name

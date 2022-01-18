@@ -43,7 +43,7 @@ class TestController extends Controller
                 $lang = App::getLocale();
                 $sort_number = Test::all()->count()+1;
 
-            
+
                 return view('frontend.tests.create',compact('sort_number'));
             }
 
@@ -57,7 +57,7 @@ class TestController extends Controller
             {
 
                 $lang = App::getLocale();
-                
+
             $this->validate($request, [
             'name_ar'=>'required',
                     'name_en'=>'required',
@@ -65,11 +65,11 @@ class TestController extends Controller
                     'image'=>'required',
                     'active'=>'required',
                     'sort'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
                 $input["number"]=$request->number;
@@ -80,13 +80,13 @@ class TestController extends Controller
 
                  $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
-            
 
-                
 
-                
 
-                
+
+
+
+
                 if ($request->hasFile('image')) {
                     $document = $request->file('image');
                     $ext = $document->getClientOriginalExtension();
@@ -97,7 +97,7 @@ class TestController extends Controller
                         $input['image'] = $path.$imageName;
                     }
                 }
-                
+
 
 
                 $Test = Test::create($input);
@@ -108,11 +108,11 @@ class TestController extends Controller
 
                 if($input['save_type']=="save_and_add_new"){
                     return redirect('tests/create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect('tests')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -129,21 +129,21 @@ class TestController extends Controller
             $lang = App::getLocale();
 
             $user_id=Auth::user()->id;
-            
+
 
                $Test = Test::where('id', $id)->where(['user_id' => $user_id ])->first();
 
         if(isset($Test)){
-        
-        
+
+
         }
 
         if (is_null($Test)) {
             return $this->sendError('Test not found.');
         }
 
-                
-                 
+
+
 
 
                 return view('frontend.tests.show',compact('Test'   ));
@@ -162,13 +162,13 @@ class TestController extends Controller
 
             $lang = App::getLocale();
                 $Test = Test::find($id);
-                
-                
 
-                
-                
 
-                
+
+
+
+
+
 
 
                 return view('frontend.tests.edit',compact('Test'
@@ -186,7 +186,7 @@ class TestController extends Controller
             public function update(Request $request, $id)
             {
 
-            
+
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
                 $input["number"]=$request->number;
@@ -194,21 +194,21 @@ class TestController extends Controller
                 $input["sort"]=$request->sort;
             $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
-            
 
 
-              
+
+
             $this->validate($request, [
             'name_ar'=>'required',
                     'name_en'=>'required',
                     'number'=>'required',
                     'active'=>'required',
                     'sort'=>'required',
-                    
+
         ]);
-        
 
- 
+
+
                 $old_image=Test::find($id)->image;
                 if ($request->hasFile('image')) {
                     $document = $request->file('image');
@@ -224,13 +224,13 @@ class TestController extends Controller
                     $input['image'] =$old_image;
                     }
                 }
-                
 
-                
 
-                
 
-                
+
+
+
+
                 $old_image=Test::find($id)->image;
                 if ($request->hasFile('image')) {
                     $document = $request->file('image');
@@ -246,7 +246,7 @@ class TestController extends Controller
                     $input['image'] =$old_image;
                     }
                 }
-                
+
 
                  $Test=Test::where(['id'=>$id ])->where(['user_id' => $user_id ])->update($input);
 
@@ -256,7 +256,7 @@ class TestController extends Controller
         $Test = Test::where(['id'=>$id , 'user_id' => $user_id ])->get();
 
                 return redirect('tests')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -270,25 +270,25 @@ class TestController extends Controller
 
         //delete files
          // delete files and images
-        
+
                 $old_image=Test::find($id)->image;
                  File::delete($old_image);
-                
+
         $user_id=Auth::user()->id;
-            
+
          // delete files and images in sub tables if this module has mutiple files or images
-        
+
 
         Test::where(['id'=>$Test_id ])->where(['user_id' => $user_id ])->delete();
 
                 return redirect('tests')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions
-            
-            
 
 
-            
+
+
+
 }

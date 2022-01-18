@@ -13,7 +13,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/basic.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:select_form_field/select_form_field.dart';
 import '../../Views/products/index.dart';
 
 class ProductsStore extends StatefulWidget {
@@ -31,29 +31,32 @@ var language = LanguageHelper.Language;
   var data;
 
   
-                    var image;
-                    Future getImage() async {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
-                      var picked_image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-                      setState(() {
-                        image = File(picked_image!.path);
-                      });
-                    }
-                    
 
 
   ProductController _ProductController = new ProductController();
 
-  final TextEditingController _name_arController = new TextEditingController();final TextEditingController _name_enController = new TextEditingController();final TextEditingController _activeController = new TextEditingController();
+  final TextEditingController _nameController = new TextEditingController();
+                        var _selector = "";
+
+                        
+                    final List<Map<String, dynamic>> _selector_items = [
+                    
+                            {
+                              'value': 'active',
+                              'label': LanguageHelper.trans("products", "active"),
+                            },
+                            {
+                              'value': 'in active',
+                              'label': LanguageHelper.trans("products", "in active"),
+                            },
+                        ];
+                    
 
   _onPressedStore(){
     setState(() {
       showLoaderDialogFunction(context);
-      if(_name_arController.text.trim().isNotEmpty&&_name_enController.text.trim().isNotEmpty&&_activeController.text.trim().isNotEmpty){
-        _ProductController.store(_name_arController.text.trim(),_name_enController.text.trim(),image,_activeController.text.trim()).whenComplete((){
+      if(_nameController.text.trim().isNotEmpty&&_selector != null){
+        _ProductController.store(_nameController.text.trim(),_selector).whenComplete((){
           if(_ProductController.status == true){
             hideLoaderDialogFunction(context);
             ShowToast('success',_ProductController.message);
@@ -76,7 +79,8 @@ var language = LanguageHelper.Language;
   }
 
   read() async {
-
+    await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
   }
 
 
@@ -130,53 +134,36 @@ return Scaffold(
         padding: EdgeInsets.all(10.0),
                           children: <Widget>[
                             TextField(
-                                                      controller: _name_arController,
+                                                      controller: _nameController,
                                                       style: Theme.of(context).textTheme.bodyText1,
                                                       keyboardType: TextInputType.text,
                                                       decoration: InputDecoration(
                                                         icon: Icon(Icons.arrow_left),
                                                         hintText:
-                                                        LanguageHelper.trans("products","name_ar"),
-                                                        labelText:LanguageHelper.trans("products","name_ar"),
-                                                      ),
-                                                    ),
-                                            TextField(
-                                                      controller: _name_enController,
-                                                      style: Theme.of(context).textTheme.bodyText1,
-                                                      keyboardType: TextInputType.text,
-                                                      decoration: InputDecoration(
-                                                        icon: Icon(Icons.arrow_left),
-                                                        hintText:
-                                                        LanguageHelper.trans("products","name_en"),
-                                                        labelText:LanguageHelper.trans("products","name_en"),
-                                                      ),
-                                                    ),
-                                            TextField(
-                                                      controller: _activeController,
-                                                      style: Theme.of(context).textTheme.bodyText1,
-                                                      keyboardType: TextInputType.text,
-                                                      decoration: InputDecoration(
-                                                        icon: Icon(Icons.arrow_left),
-                                                        hintText:
-                                                        LanguageHelper.trans("products","active"),
-                                                        labelText:LanguageHelper.trans("products","active"),
+                                                        LanguageHelper.trans("products","name"),
+                                                        labelText:LanguageHelper.trans("products","name"),
                                                       ),
                                                     ),
                                             
+                        Directionality(
+        textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+        child: SelectFormField(
+          type: SelectFormFieldType.dropdown, // or can be dialog
+          initialValue: "",
+          labelText: LanguageHelper.trans("products","selector"),
+          items: _selector_items,
+          onChanged: (val) {
+            setState(() {
+              _selector = val;
+            });
+          },
+          onSaved: (val) => print(val),
+          textDirection: language =="en" ? TextDirection.ltr : TextDirection.rtl ,
+          textAlign: language =="en" ? TextAlign.start : TextAlign.start ,
+        ),
+      ),
+                                            
                             
-                    image != null ?
-                            Image.file(image,width: 150,height: 150,)
-                            :Text(
-                                LanguageHelper.trans("app","noImageSelected")
-                            ),
-                                  RaisedButton(
-                                    onPressed: getImage,
-                                    child: Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                    
 
                         SizedBox(
                           height: 20,

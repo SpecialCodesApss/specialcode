@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:async/async.dart';
 
 class UserController {
-  String serverUrl = "http://192.168.1.6/framework1.7";
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status;
   var message;
   var data;

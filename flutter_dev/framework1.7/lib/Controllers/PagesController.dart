@@ -10,7 +10,7 @@ import 'package:async/async.dart';
 import 'dart:io';
 
 class PagesController {
-  String serverUrl = "http://192.168.1.6/framework1.7";
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status ;
   var message;
   var data;

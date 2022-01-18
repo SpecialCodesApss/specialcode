@@ -288,7 +288,7 @@ class _NewsIndexState extends State<NewsIndex>{
                                       children: <Widget>[
                                         FadeInImage.assetNetwork(
                                           placeholder:"assets/images/noimage.png" ,
-                                          image:"http://192.168.1.6/framework/"+data[index]["image"] ,
+                                          image:"http://192.168.1.4/framework/"+data[index]["image"] ,
                                           width: 40.0 ,
                                           height: 40.0 ,
                                         ),

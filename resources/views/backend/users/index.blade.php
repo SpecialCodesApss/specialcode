@@ -16,7 +16,7 @@
                     <i class="feather icon-user bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('users.Admin - Users')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="card-block">
                                     <p>
-{{--                                        {{trans('admin_messages.Welcome to Admin Dashboard')}}--}}
+{{--                                        {{trans('admin.Welcome to Admin Dashboard')}}--}}
                                     </p>
 
 

@@ -4,7 +4,7 @@ import '../helpers/sharedPreferencesHelper.dart' as sharedPreferencesHelper;
 import '../helpers/LanguageHelper.dart' as LanguageHelper;
 
 class NotificationController {
-  String serverUrl = "http://192.168.1.6/framework1.7";
+  String serverUrl = "http://192.168.1.4/framework1.7";
   var status;
   var message;
   var data;

@@ -130,7 +130,7 @@
                                         <img src="{{url('themes/admin/admindek/assets/images/ksa.png')}}" class="img-radius flagimg" alt="User-Profile-Image">
 
                                     @endif
-                                    <span>{{ trans('admin_messages.'.Config::get('languages')[App::getLocale()]) }}</span>
+                                    <span>{{ trans('admin.'.Config::get('languages')[App::getLocale()]) }}</span>
 
                                     <i class="feather icon-chevron-down"></i>
 
@@ -144,7 +144,7 @@
                                             <li>
                                                 <a  class="dropdown-item" href="{{ route('lang.switch', $lang) }}">
                                                     <i class="feather icon-settings"></i>
-                                                    {{ trans('admin_messages.'.$language) }}
+                                                    {{ trans('admin.'.$language) }}
 
                                                 </a>
                                             </li>

@@ -14,8 +14,8 @@
                 <div class="page-header-title">
                     <i class="feather icon-watch bg-c-blue"></i>
                     <div class="d-inline">
-                        <h5>{{trans('admin_messages.Admin - Dashboard')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <h5>{{trans('admin.Admin - Dashboard')}}</h5>
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                             <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">{{trans('admin_messages.Dashboard')}}</a>
+                            <a href="#">{{trans('admin.Dashboard')}}</a>
                         </li>
                     </ul>
                 </div>
@@ -44,7 +44,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>{{trans('admin_messages.Admin - Dashboard')}}</h5>
+                                    <h5>{{trans('admin.Admin - Dashboard')}}</h5>
                                     <div class="card-header-right">
                                         <ul class="list-unstyled card-option">
                                             <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="card-block">
                                     <p>
-                                        {{trans('admin_messages.Welcome to Admin Dashboard')}}
+                                        {{trans('admin.Welcome to Admin Dashboard')}}
                                     </p>
                                 </div>
                             </div>

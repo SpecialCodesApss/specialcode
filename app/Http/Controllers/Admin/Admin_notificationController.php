@@ -70,19 +70,19 @@ class Admin_notificationController extends Controller
 
                      ->editColumn('is_marked_as_readed', function(Admin_notification $data) {
                             if($data->is_marked_as_readed != null){
-                              return trans("admin_messages.yes");
+                              return trans("admin.yes");
                             }
                             else{
-                                return trans("admin_messages.no");
+                                return trans("admin.no");
                             }
                         })
 
                      ->editColumn('is_marked_as_deleted', function(Admin_notification $data) {
                             if($data->is_marked_as_deleted != null){
-                              return trans("admin_messages.yes");
+                              return trans("admin.yes");
                             }
                             else{
-                                return trans("admin_messages.no");
+                                return trans("admin.no");
                             }
                         })
 
@@ -172,11 +172,11 @@ class Admin_notificationController extends Controller
 
                 if($request->save_type=="save_and_add_new"){
                     return redirect()->route('admin_notifications.create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect()->route('admin_notifications.index')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -312,7 +312,7 @@ class Admin_notificationController extends Controller
                 //store files if found
 
                 return redirect()->route('admin_notifications.index')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -327,7 +327,7 @@ class Admin_notificationController extends Controller
 //                Admin_notification::find($id)->delete();
                 Admin_notification::find($id)->update($input);
                 return redirect()->route('admin_notifications.index')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions

@@ -3,7 +3,7 @@ return Scaffold(
       AppBar(
         title:Text(
         LanguageHelper.trans("##section_name##","##Capital_table_name##"),
-          style: Theme.of(context).textTheme.subtitle11,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         centerTitle: true,
         leading: IconButton(icon:Icon(Icons.arrow_back),

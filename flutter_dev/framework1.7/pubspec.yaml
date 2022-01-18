@@ -55,6 +55,7 @@ dependencies:
   connectivity: ^3.0.6
   upgrader: ^3.11.1
   carousel_slider: ^4.0.0
+  select_form_field: "^2.2.0"
 
 
 #  flutter_widget_from_html: ^0.4.3

@@ -31,11 +31,15 @@ class _ProductsViewState extends State<ProductsView>{
 var language = LanguageHelper.Language;
     final List<String> imgList = [];
     bool ViewImage = true;
-    String ViewedImageType = "static";
+    String ViewedImageType = "slider";
   var data;
 
   ProductController _ProductController = new ProductController();
   read() async {
+
+  await LanguageHelper.initialize();
+    language = LanguageHelper.Language;
+
     //get  data
     Future.delayed(Duration.zero, () => showLoaderDialogFunction(context));
     _ProductController.view(widget.id).whenComplete((){
@@ -200,7 +204,7 @@ var language = LanguageHelper.Language;
                   ),
                   Text(
 
-                      data["data"]["name_ar"].toString()+
+                      data["data"]["id"].toString()+
                        LanguageHelper.trans("app","SARcurrency"),
                   ),
 
@@ -209,33 +213,33 @@ var language = LanguageHelper.Language;
                         TableRow(
                             children: [
                               Text(
-                               LanguageHelper.trans("products","name_en"),
+                               LanguageHelper.trans("products","id"),
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                  data["data"]["name_en"].toString()
+                                  data["data"]["id"].toString()
                               ),
                             ]
                         ),
                         TableRow(
                             children: [
                               Text(
-                              LanguageHelper.trans("products","active"),
+                              LanguageHelper.trans("products","id"),
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                  data["data"]["active"].toString()
+                                  data["data"]["id"].toString()
                               ),
                             ]
                         ),
                         TableRow(
                             children: [
                               Text(
-                              LanguageHelper.trans("products","sort"),
+                              LanguageHelper.trans("products","id"),
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                  data["data"]["sort"].toString()
+                                  data["data"]["id"].toString()
                               ),
                             ]
                         ),
@@ -244,6 +248,18 @@ var language = LanguageHelper.Language;
                   ),
 
             
+            Padding(
+                      padding: EdgeInsets.only(top:50.0,left: 30.0,right: 30.0),
+                      child: RaisedButton(
+                          color: Theme.of(context).primaryColor ,
+                          child:  Text(
+                          LanguageHelper.trans("app","order"),
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                          onPressed: null
+                      ),
+                  ),
+        
 
             Padding(
                     padding: EdgeInsets.only(top:50.0,left: 30.0,right: 30.0),

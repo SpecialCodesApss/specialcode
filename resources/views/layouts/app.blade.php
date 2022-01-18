@@ -5,7 +5,7 @@
 
 <script>
     function deleteItem(form_id){
-        if (confirm("{{trans('admin_messages.deleteConfirm')}}")) {
+        if (confirm("{{trans('admin.deleteConfirm')}}")) {
             document.getElementById(form_id).submit();
         }
         return false;

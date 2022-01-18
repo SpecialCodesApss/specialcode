@@ -28,7 +28,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $searchText=$request->searchText;
         $products = Product::paginate(20);
         return view("frontend.products.index",compact('products'));
@@ -46,7 +46,7 @@ class ProductController extends Controller
                 $lang = App::getLocale();
                 $sort_number = Product::all()->count()+1;
 
-            
+
                 return view('frontend.products.create',compact('sort_number'));
             }
 
@@ -60,39 +60,39 @@ class ProductController extends Controller
             {
 
                 $lang = App::getLocale();
-                
+
             $this->validate($request, [
             'name_ar'=>'required',
                     'name_en'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
 
 
                  $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
-            
 
-                
 
-                
 
-                
+
+
+
+
 
 
                 $Product = Product::create($input);
 
-                
+
          //create admin notification
         $notification_input=[];
         $notification_input["notification_id"]=5;
         $notification_input["module_id"]=$Product->id;
         $this->createNotification($notification_input);
-        
+
 
 
                 //store images if found
@@ -103,11 +103,11 @@ class ProductController extends Controller
 
                 if($request->save_type=="save_and_add_new"){
                     return redirect('products/create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect('products')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -123,21 +123,21 @@ class ProductController extends Controller
             {
             $lang = App::getLocale();
 
-            
+
 
                $Product = Product::where('id', $id)->first();
 
         if(isset($Product)){
-        
-        
+
+
         }
 
         if (is_null($Product)) {
-            return back()->with('error',trans('admin_messages.Page not found.'));
+            return back()->with('error',trans('admin.Page not found.'));
         }
 
-                
-                 
+
+
 
 
                 return view('frontend.products.show',compact('Product'   ));
@@ -156,13 +156,13 @@ class ProductController extends Controller
 
             $lang = App::getLocale();
                 $Product = Product::find($id);
-                
-                
 
-                
-                
 
-                
+
+
+
+
+
 
 
                 return view('frontend.products.edit',compact('Product'
@@ -180,29 +180,29 @@ class ProductController extends Controller
             public function update(Request $request, $id)
             {
 
-            
+
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
             $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
-            
 
 
-              
+
+
             $this->validate($request, [
             'name_ar'=>'required',
                     'name_en'=>'required',
-                    
+
         ]);
-        
 
- 
 
-                
 
-                
 
-                
+
+
+
+
+
 
                  $Product=Product::where(['id'=>$id ])->where(['user_id' => $user_id ])->update($input);
 
@@ -212,7 +212,7 @@ class ProductController extends Controller
         $Product = Product::where(['id'=>$id , 'user_id' => $user_id ])->get();
 
                 return redirect('products')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -226,22 +226,22 @@ class ProductController extends Controller
 
         //delete files
          // delete files and images
-        
+
         $user_id=Auth::user()->id;
-            
+
          // delete files and images in sub tables if this module has mutiple files or images
-        
+
 
         Product::where(['id'=>$id])->where(['user_id' => $user_id ])->delete();
 
                 return redirect('products')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions
-            
-            
 
 
-            
+
+
+
 }

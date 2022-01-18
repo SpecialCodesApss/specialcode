@@ -17,7 +17,7 @@
                     <i class="fab fa-accusoft bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('notifications_texts.Admin - notifications_texts')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -67,12 +67,12 @@
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans('admin_messages.viewModule')}}</h4>
+                <h4>{{trans('admin.viewModule')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ route('notifications_texts.index') }}">
-                {{trans('admin_messages.back')}}</a>
+                {{trans('admin.back')}}</a>
             </div>
         </div>
 
@@ -83,31 +83,31 @@
 
 
     <div class="row">
-        
-            
+
+
                    <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.id")}}:</strong>
                             <div>{{$Notifications_text->id}}</div>
                         </div>
                     </div>
-            
-            
+
+
                    <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.description_text_en")}}:</strong>
 <div>{{$Notifications_text->description_text_en}}</div>
                         </div>
                     </div>
-            
-            
+
+
                    <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.description_text_ar")}}:</strong>
 <div>{{$Notifications_text->description_text_ar}}</div>
                         </div>
                     </div>
-            
+
             <div class="col-xs-3 col-sm-3 col-md-3">
                             <div class="form-group">
                                 <strong>{{trans("notifications_texts.trarget_url")}}:</strong>
@@ -116,43 +116,43 @@
                                 </div>
                                </div>
                         </div>
-            
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("notifications_texts.icon")}}:</strong>
 <div>{{$Notifications_text->icon}}</div>                        </div>
                     </div>
-            
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("notifications_texts.created_at")}}  {{trans("admin_messages.date")}} :</strong>
+                            <strong>{{trans("notifications_texts.created_at")}}  {{trans("admin.date")}} :</strong>
                             {!! Form::date('created_at_date',  date('Y-m-d',strtotime($Notifications_text->created_at))  , array('placeholder' => trans("notifications_texts.created_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
                      <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("notifications_texts.created_at")}}   {{trans("admin_messages.time")}}  :</strong>
+                            <strong>{{trans("notifications_texts.created_at")}}   {{trans("admin.time")}}  :</strong>
                             {!! Form::time('created_at_time', date('H:i',strtotime($Notifications_text->created_at)), array('placeholder' => trans("notifications_texts.created_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
-                    
-            
+
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("notifications_texts.updated_at")}}  {{trans("admin_messages.date")}} :</strong>
+                            <strong>{{trans("notifications_texts.updated_at")}}  {{trans("admin.date")}} :</strong>
                             {!! Form::date('updated_at_date',  date('Y-m-d',strtotime($Notifications_text->updated_at))  , array('placeholder' => trans("notifications_texts.updated_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
                      <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
-                            <strong>{{trans("notifications_texts.updated_at")}}   {{trans("admin_messages.time")}}  :</strong>
+                            <strong>{{trans("notifications_texts.updated_at")}}   {{trans("admin.time")}}  :</strong>
                             {!! Form::time('updated_at_time', date('H:i',strtotime($Notifications_text->updated_at)), array('placeholder' => trans("notifications_texts.updated_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
-                    
-            
 
-        
+
+
+
 
     </div>
 
@@ -176,5 +176,5 @@
 
 
 @section('footer')
-    
+
 @endsection

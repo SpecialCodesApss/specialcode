@@ -43,13 +43,13 @@ class AbtestController extends Controller
                 $lang = App::getLocale();
                 $sort_number = Abtest::all()->count()+1;
 
-            
+
                 $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
                 $users=[];
                 foreach ($user_ids as $info){
                     $users[$info->id]=$info->email;
                 }
-                
+
                 return view('frontend.abtests.create',compact('sort_number','users'));
             }
 
@@ -63,7 +63,7 @@ class AbtestController extends Controller
             {
 
                 $lang = App::getLocale();
-                
+
             $this->validate($request, [
             'name_ar'=>'required',
                     'name_en'=>'required',
@@ -71,11 +71,11 @@ class AbtestController extends Controller
                     'image'=>'required',
                     'active'=>'required',
                     'sort'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
                 $input["number"]=$request->number;
@@ -86,13 +86,13 @@ class AbtestController extends Controller
 
                  $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
-            
 
-                
 
-                
 
-                
+
+
+
+
                 if ($request->hasFile('image')) {
                     $document = $request->file('image');
                     $ext = $document->getClientOriginalExtension();
@@ -103,7 +103,7 @@ class AbtestController extends Controller
                         $input['image'] = $path.$imageName;
                     }
                 }
-                
+
 
 
                 $Abtest = Abtest::create($input);
@@ -114,11 +114,11 @@ class AbtestController extends Controller
 
                 if($input['save_type']=="save_and_add_new"){
                     return redirect('abtests/create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect('abtests')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -135,27 +135,27 @@ class AbtestController extends Controller
             $lang = App::getLocale();
 
             $user_id=Auth::user()->id;
-            
+
 
                $Abtest = Abtest::where('id', $id)->where(['user_id' => $user_id ])->first();
 
         if(isset($Abtest)){
-        
-        
+
+
         }
 
         if (is_null($Abtest)) {
             return $this->sendError('Abtest not found.');
         }
 
-                
+
                 $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
                 $users=[];
                 foreach ($user_ids as $info){
                     $users[$info->id]=$info->email;
                 }
-                
-                 
+
+
 
 
                 return view('frontend.abtests.show',compact('Abtest'  ,'users' ));
@@ -174,19 +174,19 @@ class AbtestController extends Controller
 
             $lang = App::getLocale();
                 $Abtest = Abtest::find($id);
-                
-                
 
-                
+
+
+
                 $user_ids=DB::table("users")->orderBy('id', 'asc')->get();
                 $users=[];
                 foreach ($user_ids as $info){
                     $users[$info->id]=$info->email;
                 }
-                
-                
 
-                
+
+
+
 
 
                 return view('frontend.abtests.edit',compact('Abtest'
@@ -204,7 +204,7 @@ class AbtestController extends Controller
             public function update(Request $request, $id)
             {
 
-            
+
                 $input["name_ar"]=$request->name_ar;
                 $input["name_en"]=$request->name_en;
                 $input["number"]=$request->number;
@@ -212,21 +212,21 @@ class AbtestController extends Controller
                 $input["sort"]=$request->sort;
             $user_id=Auth::user()->id;
              $input['user_id']=$user_id;
-            
 
 
-              
+
+
             $this->validate($request, [
             'name_ar'=>'required',
                     'name_en'=>'required',
                     'number'=>'required',
                     'active'=>'required',
                     'sort'=>'required',
-                    
+
         ]);
-        
 
- 
+
+
                 $old_image=Abtest::find($id)->image;
                 if ($request->hasFile('image')) {
                     $document = $request->file('image');
@@ -242,13 +242,13 @@ class AbtestController extends Controller
                     $input['image'] =$old_image;
                     }
                 }
-                
 
-                
 
-                
 
-                
+
+
+
+
                 $old_image=Abtest::find($id)->image;
                 if ($request->hasFile('image')) {
                     $document = $request->file('image');
@@ -264,7 +264,7 @@ class AbtestController extends Controller
                     $input['image'] =$old_image;
                     }
                 }
-                
+
 
                  $Abtest=Abtest::where(['id'=>$id ])->where(['user_id' => $user_id ])->update($input);
 
@@ -274,7 +274,7 @@ class AbtestController extends Controller
         $Abtest = Abtest::where(['id'=>$id , 'user_id' => $user_id ])->get();
 
                 return redirect('abtests')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -288,25 +288,25 @@ class AbtestController extends Controller
 
         //delete files
          // delete files and images
-        
+
                 $old_image=Abtest::find($id)->image;
                  File::delete($old_image);
-                
+
         $user_id=Auth::user()->id;
-            
+
          // delete files and images in sub tables if this module has mutiple files or images
-        
+
 
         Abtest::where(['id'=>$id ])->where(['user_id' => $user_id ])->delete();
 
                 return redirect('abtests')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions
-            
-            
 
 
-            
+
+
+
 }

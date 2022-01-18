@@ -9,7 +9,7 @@
                      *
                      * @var array
                      */
-                    protected $fillable = ["name_ar","name_en"];
+                    protected $fillable = ["name","selector"];
 
 
                     /**

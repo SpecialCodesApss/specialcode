@@ -120,6 +120,7 @@
 <?php
 $lang = \Illuminate\Support\Facades\App::getLocale();
 $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreadedNotifications();
+$admin_messages=App\Http\Traits\admin_messages_traits::getLatestUnreadedMessages();
 ?>
 
 
@@ -153,7 +154,7 @@ $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreade
 											<span class="input-group-prepend search-close">
 												<i class="feather icon-x input-group-text"></i>
 											</span>
-                                    <input type="text" class="form-control" placeholder="{{trans('admin_messages.Enter Keyword')}}">
+                                    <input type="text" class="form-control" placeholder="{{trans('admin.Enter Keyword')}}">
                                     <span class="input-group-append search-btn">
 												<i class="feather icon-search input-group-text"></i>
 											</span>
@@ -177,8 +178,8 @@ $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreade
                                 </div>
                                 <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                                     <li>
-                                        <h6>{{trans('admin_messages.Notifications')}}</h6>
-                                        <label class="label label-danger">{{trans('admin_messages.New')}}</label>
+                                        <h6>{{trans('admin.Notifications')}}</h6>
+                                        <label class="label label-danger">{{trans('admin.New')}}</label>
                                     </li>
 
 
@@ -209,27 +210,34 @@ $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreade
 
                                         <li class="notify_all">
                                             <hr>
-                                            <h6><a href="{{url('admin/admin_notifications/')}}">{{trans('admin_messages.view_all')}}</a></h6>
-                                            <label><a href="{{url('admin/notifications/mark_all_read')}}">{{trans('admin_messages.Mark_all_readed')}}</a></label>
+                                            <h6><a href="{{url('admin/admin_notifications/')}}">{{trans('admin.view_all')}}</a></h6>
+                                            <label><a href="{{url('admin/notifications/mark_all_read')}}">{{trans('admin.Mark_all_readed')}}</a></label>
                                         </li>
 
 
                                     @else
 
                                         <li class="no_notification">
-                                            {{trans('admin_messages.there are no notifications')}}
+                                            {{trans('admin.there are no notifications')}}
                                         </li>
                                     @endif
                                 </ul>
                             </div>
                         </li>
+
+
                         <li class="header-notification">
+                            <a href="{{route('admin_messages.index')}}">
                             <div class="dropdown-primary dropdown">
-                                <div class="displayChatbox dropdown-toggle" data-toggle="dropdown">
-                                    <i class="feather icon-message-square"></i>
-                                    <span class="badge bg-c-green">3</span>
+                                <div class="displayChatbox dropdown-toggle" >
+                                        <i class="feather icon-message-square"></i>
+                                    @if($admin_messages->count() >0)
+                                    <span class="badge bg-c-green">{{$admin_messages->count()}}</span>
+                                    @endif
+
                                 </div>
                             </div>
+                            </a>
                         </li>
 
                         <li class="user-profile header-notification">
@@ -247,36 +255,37 @@ $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreade
                                     <i class="feather icon-chevron-down"></i>
                                 </div>
                                 <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                                    <li>
-                                        <a href="#!">
-                                            <i class="feather icon-settings"></i> Settings
+{{--                                    <li>--}}
+{{--                                        <a href="#!">--}}
+{{--                                            <i class="feather icon-settings"></i> Settings--}}
 
-                                        </a>
-                                    </li>
+{{--                                        </a>--}}
+{{--                                    </li>--}}
                                     <li>
                                         <a href="{{url('admin/my_profile')}}">
-                                            <i class="feather icon-user"></i> Profile
+                                            <i class="feather icon-user"></i> {{trans('admin.Profile')}}
 
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="email-inbox.html">
-                                            <i class="feather icon-mail"></i> My Messages
+                                        <a href="{{route('admin_messages.index')}}">
+                                            <i class="feather icon-mail"></i> {{trans('admin.My Messages')}}
 
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="auth-lock-screen.html">
-                                            <i class="feather icon-lock"></i> Lock Screen
+{{--                                    <li>--}}
+{{--                                        <a href="auth-lock-screen.html">--}}
+{{--                                            <i class="feather icon-lock"></i> Lock Screen--}}
 
-                                        </a>
-                                    </li>
+{{--                                        </a>--}}
+{{--                                    </li>--}}
                                     <li>
 
                                         <a href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            <i class="feather icon-log-out"></i>Logout
+                                            <i class="feather icon-log-out"></i>
+                                            {{trans('admin.Logout')}}
                                         </a>
 
 
@@ -305,7 +314,7 @@ $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreade
                                         <img src="{{url('themes/admin/admindek/assets/images/ksa.png')}}" class="img-radius flagimg" alt="User-Profile-Image">
 
                                     @endif
-                                    <span>{{ trans('admin_messages.'.Config::get('languages')[App::getLocale()]) }}</span>
+                                    <span>{{ trans('admin.'.Config::get('languages')[App::getLocale()]) }}</span>
 
                                     <i class="feather icon-chevron-down"></i>
                                 </div>
@@ -318,7 +327,7 @@ $admin_notifications=App\Http\Traits\admin_notification_traits::getLatestUnreade
                                             <li>
                                                 <a href="{{ route('lang.switch', $lang) }}">
                                                     <i class="feather icon-settings"></i>
-                                                    {{ trans('admin_messages.'.$language) }}
+                                                    {{ trans('admin.'.$language) }}
 
                                                 </a>
                                             </li>

@@ -17,7 +17,7 @@
                     <i class="fab fa-accusoft bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('products.products')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -67,12 +67,12 @@
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans('admin_messages.EditModule')}}</h4>
+                <h4>{{trans('admin.EditModule')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ url('products') }}">
-                {{trans('admin_messages.back')}}</a>
+                {{trans('admin.back')}}</a>
             </div>
         </div>
 
@@ -85,25 +85,25 @@
     <div class="row">
 
 
-        
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("products.name_ar")}}:</strong>
                             {!! Form::text('name_ar', $Product->name_ar, array('placeholder' => trans("products.name_ar"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
+
                  <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
                             <strong>{{trans("products.name_en")}}:</strong>
                             {!! Form::text('name_en', $Product->name_en, array('placeholder' => trans("products.name_en"),'class' => 'form-control')) !!}
                         </div>
                     </div>
-                
 
-        
+
+
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">{{trans('admin_messages.Save')}}</button>
+            <button type="submit" class="btn btn-primary">{{trans('admin.Save')}}</button>
         </div>
     </div>
     {!! Form::close() !!}
@@ -139,5 +139,5 @@
 
 
 @section('footer')
-    
+
 @endsection

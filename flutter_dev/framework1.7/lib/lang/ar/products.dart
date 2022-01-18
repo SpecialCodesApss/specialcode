@@ -11,13 +11,11 @@
 
             var messages = {
         "id": "كود التعريف",
-            "user_id": "معرف المستخدم",
-            "name_ar": "الاسم بالعربية",
-            "name_en": "الاسم بالانجليزية",
-            "image": "الصورة",
-            "active": "التفعيل",
-            "sort": "الترتيب",
-            "created_at": "أنشئت في",
+            "name": "اسم",
+            "selector": "محدد",
+            'active':'نشيط',
+'in active':'غير نشط',
+"created_at": "أنشئت في",
             "updated_at": "تم التحديث في",
             "products": "منتجات",
             "Product": "منتج",

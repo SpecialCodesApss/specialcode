@@ -24,12 +24,12 @@ class FaqController extends Controller
      */
     function __construct()
     {
-        
+
         $this->middleware('permission:Faq_Create', ['only' => ['create','store']]);
         $this->middleware('permission:Faq_Read', ['only' => ['index','show']]);
         $this->middleware('permission:Faq_Update', ['only' => ['update','edit']]);
         $this->middleware('permission:Faq_Delete', ['only' => ['delete','destroy']]);
-        
+
     }
 
             /**
@@ -44,27 +44,27 @@ class FaqController extends Controller
                     $data = Faq::query();
 
 
-                    
 
-                    
+
+
 
 
 
                     return Datatables::eloquent($data)
 
-                        
-                        
-                        
-                        
+
+
+
+
                      ->editColumn('active', function(Faq $data) {
                             if($data->active == "1"){
-                              return trans("admin_messages.active");
+                              return trans("admin.active");
                             }
                             else{
-                                return trans("admin_messages.inactive");
+                                return trans("admin.inactive");
                             }
                         })
-                    
+
 
                         ->addColumn('action', function($row){
                             $row_id=$row->id;
@@ -101,7 +101,7 @@ class FaqController extends Controller
                 $lang = App::getLocale();
                 $sort_number = Faq::all()->count()+1;
 
-            
+
                 return view('backend.faqs.create',compact('sort_number'));
             }
 
@@ -115,7 +115,7 @@ class FaqController extends Controller
             {
 
                 $lang = App::getLocale();
-                
+
             $this->validate($request, [
             'question_ar'=>'required',
                     'question_en'=>'required',
@@ -123,11 +123,11 @@ class FaqController extends Controller
                     'answer_en'=>'required',
                     'active'=>'required',
                     'sort'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["question_ar"]=$request->question_ar;
                 $input["question_en"]=$request->question_en;
                 $input["answer_ar"]=$request->answer_ar;
@@ -135,11 +135,11 @@ class FaqController extends Controller
                 $input["active"]=$request->active;
                 $input["sort"]=$request->sort;
 
-                
 
-                
 
-                
+
+
+
 
 
                 $Faq = Faq::create($input);
@@ -150,11 +150,11 @@ class FaqController extends Controller
 
                 if($request->save_type=="save_and_add_new"){
                     return redirect()->route('faqs.create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect()->route('faqs.index')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -170,11 +170,11 @@ class FaqController extends Controller
             {
             $lang = App::getLocale();
                 $Faq = Faq::find($id);
-                
-                
 
-                
-                 
+
+
+
+
 
 
                 return view('backend.faqs.show',compact('Faq'   ));
@@ -193,13 +193,13 @@ class FaqController extends Controller
 
             $lang = App::getLocale();
                 $Faq = Faq::find($id);
-                
-                
 
-                
-                
 
-                
+
+
+
+
+
 
 
                 return view('backend.faqs.edit',compact('Faq'
@@ -218,7 +218,7 @@ class FaqController extends Controller
             {
 
             $Faq = Faq::find($id);
-                 
+
             $this->validate($request, [
             'question_ar'=>'required',
                     'question_en'=>'required',
@@ -226,11 +226,11 @@ class FaqController extends Controller
                     'answer_en'=>'required',
                     'active'=>'required',
                     'sort'=>'required',
-                    
-        ]);
-        
 
-                
+        ]);
+
+
+
                 $input["question_ar"]=$request->question_ar;
                 $input["question_en"]=$request->question_en;
                 $input["answer_ar"]=$request->answer_ar;
@@ -238,11 +238,11 @@ class FaqController extends Controller
                 $input["active"]=$request->active;
                 $input["sort"]=$request->sort;
 
-                
 
-                
 
-                
+
+
+
 
 
                 $Faq->update($input);
@@ -251,7 +251,7 @@ class FaqController extends Controller
                 //store files if found
 
                 return redirect()->route('faqs.index')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -263,22 +263,22 @@ class FaqController extends Controller
             public function destroy($id)
             {
                  // delete files and images
-        
+
 
                  // delete files and images in sub tables if this module has mutiple files or images
-        
+
 
                 Faq::find($id)->delete();
                 return redirect()->route('faqs.index')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions
-            
-            
 
 
-            
+
+
+
 
 
 

@@ -134,11 +134,11 @@ class PageController extends Controller
 
                 if($input['save_type']=="save_and_add_new"){
                     return redirect()->route('pages.create')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
                 else{
                     return redirect()->route('pages.index')
-                        ->with('success',trans('admin_messages.info_added'));
+                        ->with('success',trans('admin.info_added'));
                 }
 
             }
@@ -227,7 +227,7 @@ class PageController extends Controller
                 //store files if found
 
                 return redirect()->route('pages.index')
-                    ->with('success',trans('admin_messages.info_edited'));
+                    ->with('success',trans('admin.info_edited'));
             }
 
             /**
@@ -246,11 +246,11 @@ class PageController extends Controller
                 $page=Page::find($id);
                 if(in_array($page->page_key,$dont_delete_pages)){
                     return redirect()->back()
-                        ->with('error',trans('admin_messages.cant_delete_this_page'));
+                        ->with('error',trans('admin.cant_delete_this_page'));
                 }
                 $page=Page::find($id)->delete();
                 return redirect()->route('pages.index')
-                    ->with('success',trans('admin_messages.info_deleted'));
+                    ->with('success',trans('admin.info_deleted'));
             }
 
             //additional Functions

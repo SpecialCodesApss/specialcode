@@ -17,7 +17,7 @@
                     <i class="fas fa-bookmark bg-c-blue"></i>
                     <div class="d-inline">
                         <h5>{{trans('pages.pages')}}</h5>
-                        <span>{{trans('admin_messages.manage and control all system sides')}}
+                        <span>{{trans('admin.manage and control all system sides')}}
                              </span>
                     </div>
                 </div>
@@ -67,12 +67,12 @@
 
     <div class="col-lg-12">
            <br>
-                <h4>{{trans('admin_messages.viewModule')}}</h4>
+                <h4>{{trans('admin.viewModule')}}</h4>
         </div>
         <div class="col-md-12 ">
         <div class="align_btn_end">
                 <a class="btn btn-primary" href="{{ url('pages') }}">
-                {{trans('admin_messages.back')}}</a>
+                {{trans('admin.back')}}</a>
             </div>
         </div>
 
@@ -83,34 +83,34 @@
 
 
     <div class="row">
-        
-            
+
+
                    <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("pages.id")}}:</strong>
                             <div>{{$Page->id}}</div>
                         </div>
                     </div>
-            
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("pages.page_key")}}:</strong>
 <div>{{$Page->page_key}}</div>                        </div>
                     </div>
-            
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("pages.title_ar")}}:</strong>
 <div>{{$Page->title_ar}}</div>                        </div>
                     </div>
-            
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("pages.title_en")}}:</strong>
 <div>{{$Page->title_en}}</div>                        </div>
                     </div>
-            
-            
+
+
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>{{trans("pages.html_page_ar")}}:</strong>
@@ -126,9 +126,9 @@
                      <script>
                         $('#html_page_ar').richText({});
                     </script>
-                    
-            
-            
+
+
+
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <strong>{{trans("pages.html_page_en")}}:</strong>
@@ -144,8 +144,8 @@
                      <script>
                         $('#html_page_en').richText({});
                     </script>
-                    
-            
+
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("pages.created_at")}}  {{trans("admin_messages.date")}} :</strong>
@@ -158,8 +158,8 @@
                             {!! Form::time('created_at_time', date('H:i',strtotime($Page->created_at)), array('placeholder' => trans("pages.created_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
-                    
-            
+
+
              <div class="col-xs-3 col-sm-3 col-md-3">
                         <div class="form-group">
                             <strong>{{trans("pages.updated_at")}}  {{trans("admin_messages.date")}} :</strong>
@@ -172,10 +172,10 @@
                             {!! Form::time('updated_at_time', date('H:i',strtotime($Page->updated_at)), array('placeholder' => trans("pages.updated_at "),'class' => 'form-control','disabled')) !!}
                         </div>
                     </div>
-                    
-            
 
-        
+
+
+
 
     </div>
 
@@ -199,5 +199,5 @@
 
 
 @section('footer')
-    
+
 @endsection

@@ -47,7 +47,7 @@
                 <div class="col-lg-12 align_btn_end">
                         <a class="btn btn-primary"
             href="{{ url('pages/create') }}">
-  {{trans('admin_messages.Create')}} </a> <br> <br>
+  {{trans('admin.Create')}} </a> <br> <br>
                 </div>
 
                 <div class="col-lg-12">
@@ -104,7 +104,7 @@
 
 
 @section('footer')
-    
+
 
 
             <script type="text/javascript" src="{{url('themes/admin/admindek/assets/js/jquery.dataTables.min.js')}}"></script>
