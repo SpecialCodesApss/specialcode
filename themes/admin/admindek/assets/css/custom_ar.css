@@ -30,7 +30,7 @@ body{
 }
 
 .pcoded .pcoded-navbar .pcoded-item{
-    float: right;
+    /*float: right;*/
 }
 
 .header-navbar .navbar-wrapper .navbar-logo{
@@ -126,4 +126,27 @@ body{
 .no_notification{
     float: right;
     text-align: end;
+}
+.pcoded[theme-layout="vertical"] .pcoded-navbar .pcoded-item>li>a{
+    text-align: right;
+}
+.pcoded[theme-layout="vertical"] .pcoded-navbar .pcoded-item .pcoded-hasmenu .pcoded-submenu li>a{
+    text-align: right;
+}
+
+.pcoded .pcoded-navbar .pcoded-item .pcoded-hasmenu .pcoded-submenu li>a .pcoded-mtext:before{
+    font-size: 0px;
+}
+.pcoded .pcoded-navbar .pcoded-item .pcoded-hasmenu .pcoded-submenu li>a .pcoded-mtext:after{
+    font-style: normal;
+    padding-right: 4px;
+    font-size: 10px;
+    position: relative;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    visibility: visible;
+    font-family: 'feather';
+    font-size: 12px;
+    padding-right: 5px;
 }

@@ -1,57 +1,125 @@
 @extends('backend.layouts.app')
+
+@section('title',trans('contents.Admin - contents'))
+@section('header')
+@endsection
+
 @section('content')
-    <div class="wrapper_cols">
-        <div class="col_page_content">
-            <div class="row">
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-right">
-                <h2> تعديل البيانات</h2>
+
+
+<?php $lang=App::getLocale(); ?>
+
+<!-- [ breadcrumb ] start -->
+    <div class="page-header card">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <i class="far fa-copy bg-c-blue"></i>
+                    <div class="d-inline">
+                        <h5>{{trans('contents.Admin - contents')}}</h5>
+                        <span>{{trans('admin.manage and control all system sides')}}
+                             </span>
+                    </div>
+                </div>
             </div>
-            <div class="pull-left">
-                <a class="btn btn-primary" href="{{ route('contents.index') }}"> رجوع</a>
+            <div class="col-lg-4">
+                <div class="page-header-breadcrumb">
+                    <ul class=" breadcrumb breadcrumb-title">
+                        <li class="breadcrumb-item">
+                            <a href="{{url('admin/dashboard')}}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{trans('contents.contents')}}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+    <!-- [ breadcrumb ] end -->
+<div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <!-- [ page content ] start -->
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+    <div class="card">
+                                <div class="card-header">
+                                    <h5>{{trans('contents.Admin - contents')}}</h5>
+                                    <div class="card-header-right">
+                                        <ul class="list-unstyled card-option">
+                                            <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
+                                            <li><i class="feather icon-maximize full-card"></i></li>
+                                            <li><i class="feather icon-minus minimize-card"></i></li>
+                                            <li><i class="feather icon-refresh-cw reload-card"></i></li>
+                                            <li><i class="feather icon-trash close-card"></i></li>                                                                 <li><i class="feather icon-chevron-left open-card-option"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+
+    <div class="wrapper_cols">
+        <div class="col_page_content">
+            <div class="row">
+
+    <div class="col-lg-12">
+           <br>
+                <h4>{{trans('admin.EditModule')}}</h4>
+        </div>
+        <div class="col-md-12 ">
+        <div class="align_btn_end">
+                <a class="btn btn-primary" href="{{ route('contents.index') }}">
+                {{trans('admin.back')}}</a>
+            </div>
+        </div>
+
+
+ </div>
 
 
 
-
-    {{--    @if (count($errors) > 0)--}}
-{{--        <div class="alert alert-danger">--}}
-{{--            <strong>خطأ!</strong> خطأ في البيانات.<br><br>--}}
-{{--            <ul>--}}
-{{--                @foreach ($errors->all() as $error)--}}
-{{--                    <li>{{ $error }}</li>--}}
-{{--                @endforeach--}}
-{{--            </ul>--}}
-{{--        </div>--}}
-{{--    @endif--}}
     {!! Form::model($Content, ['method' => 'PATCH','enctype'=>'multipart/form-data','route' => ['contents.update', $Content->id]]) !!}
     <div class="row">
-         <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>{{trans("contents.content_key")}}:</strong>
-                        {!! Form::text('content_key',  $Content->content_key, array('placeholder' => trans("contents.content_key"),'class' => 'form-control', 'disabled')) !!}
+
+
+        
+                 <div class="col-xs-6 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <strong>{{trans("contents.content_key")}}:</strong>
+                            {!! Form::text('content_key', $Content->content_key, array('placeholder' => trans("contents.content_key"),'class' => 'form-control')) !!}
+                        </div>
                     </div>
-                </div> <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>{{trans("contents.cp_name")}}:</strong>
-                        {!! Form::textarea('cp_name',  $Content->cp_name, array('placeholder' => trans("contents.cp_name"),'class' => 'form-control')) !!}
+                
+                 <div class="col-xs-6 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <strong>{{trans("contents.cp_name")}}:</strong>
+                            {!! Form::text('cp_name', $Content->cp_name, array('placeholder' => trans("contents.cp_name"),'class' => 'form-control')) !!}
+                        </div>
                     </div>
-        </div> <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>{{trans("contents.content_ar")}}:</strong>
-                        <textarea name="content_ar" id="content_ar" name="editordata">{{$Content->content_ar}}</textarea>
+                
+                
+                   <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>{{trans("contents.content_ar")}}:</strong>
+                            {!! Form::textarea('content_ar',$Content->content_ar, array('placeholder' => trans("contents.content_ar"),'class' => 'form-control')) !!}
+                        </div>
                     </div>
-                </div> <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>{{trans("contents.content_en")}}:</strong>
-                        <textarea name="content_en" id="content_en" name="editordata">{{$Content->content_en}}</textarea>
+                
+                
+                   <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <strong>{{trans("contents.content_en")}}:</strong>
+                            {!! Form::textarea('content_en',$Content->content_en, array('placeholder' => trans("contents.content_en"),'class' => 'form-control')) !!}
+                        </div>
                     </div>
-                </div>
+                
+
+        
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">حفظ</button>
+            <button type="submit" class="btn btn-primary">{{trans('admin.Save')}}</button>
         </div>
     </div>
     {!! Form::close() !!}
@@ -59,14 +127,33 @@
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#content_ar').summernote({
-                height: 300,
-            });
-            $('#content_en').summernote({
-                height: 300,
-            });
-        });
-    </script>
+
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+     <script>
+                                $(document).ready(function() {
+                                    $("input").keydown(function(event){
+                                        if(event.keyCode == 13) {
+                                            event.preventDefault();
+                                            $("form").submit();
+                                            // return false;
+                                        }
+                                    });
+                                });
+                            </script>
+
+
+@endsection
+
+
+@section('footer')
+    
 @endsection

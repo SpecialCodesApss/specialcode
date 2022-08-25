@@ -102,7 +102,7 @@ trait Web_traits{
                 $joined_table_name = $input[$table_field.'_joinedTable'];
                 $table_module_name=ucfirst($joined_table_name);
                 $table_module_name=rtrim($table_module_name, "s");
-                $index_header_code.= 'use App\\'.$table_module_name.';';
+                $index_header_code.= 'use App\\Models\\'.$table_module_name.';';
 
                 $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
 
@@ -129,7 +129,7 @@ trait Web_traits{
                 $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
                 $table_module_name=ucfirst($joined_table_name);
                 $table_module_name=rtrim($table_module_name, "s");
-                $index_header_code.= 'use App\\'.$table_module_name.';';
+                $index_header_code.= 'use App\\Models\\'.$table_module_name.';';
 
                 $AutoCode_for_showing_selectbox_names.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
@@ -151,7 +151,7 @@ trait Web_traits{
                 $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
                 $table_module_name=ucfirst($joined_table_name);
                 $table_module_name=rtrim($table_module_name, "s");
-                $index_header_code.= 'use App\\'.$table_module_name.';';
+                $index_header_code.= 'use App\\Models\\'.$table_module_name.';';
             }
             elseif($input[$table_field.'_datatype'] == 'time'){
                 if( isset($input[$table_field.'_adminRequiredStore'])) {
@@ -1041,7 +1041,7 @@ class '.$controller_name.' extends Controller
 
                 $lang = App::getLocale();
                 $sort_number = '.$module_name
-        .'::all()->count()+1;
+            .'::all()->count()+1;
 
             '.$join_selected_resultsCode.'
                 return view(\'frontend.'.$table_name.'.create\',compact(\'sort_number\''.$join_selected_compact_vars.'));
@@ -1215,17 +1215,17 @@ class '.$controller_name.' extends Controller
 }
 ';
 
-    //Step 2 :: make Controller for Table
-    $file = $controller_name.'.php';
-    $destinationPath="app/Http/Controllers/Frontend/";
-    if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
-    File::put($destinationPath.$file,$web_controller_content);
+        //Step 2 :: make Controller for Table
+        $file = $controller_name.'.php';
+        $destinationPath="app/Http/Controllers/Frontend/";
+        if (!is_dir($destinationPath)) {  mkdir($destinationPath,0777,true);  }
+        File::put($destinationPath.$file,$web_controller_content);
 
-    /******************************/
-    /******End Controller Content******/
-    /******************************/
+        /******************************/
+        /******End Controller Content******/
+        /******************************/
 
-}
+    }
 
 
 

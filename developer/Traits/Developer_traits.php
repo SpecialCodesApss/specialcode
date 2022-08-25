@@ -583,42 +583,42 @@ class '.$controller_name.' extends BaseController
 
             $new_line ='';
 
-                if(isset($input[$table_field.'_is_Unique'])){
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required|unique:' . $table_name . '\',
+            if(isset($input[$table_field.'_is_Unique'])){
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required|unique:' . $table_name . '\',
                     ';
-                    }
-
                 }
-                elseif($input[$table_field.'_datatype'] == 'datetime') {
-                    if (isset($input[$table_field . '_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '_date\'=>\'required\',
+
+            }
+            elseif($input[$table_field.'_datatype'] == 'datetime') {
+                if (isset($input[$table_field . '_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '_date\'=>\'required\',
                     ' . '\'' . $table_field . '_time\'=>\'required\',
                     ';
-                    }
-
-                    if ($table_field != "created_at" && $table_field != "updated_at") {
-                        $input_operations .= '$input[\'' . $table_field . '\']=$input[\'' . $table_field . '_date\'].\' \'.$input[\'' . $table_field . '_time\'];';
-                    }
                 }
-                elseif($input[$table_field.'_datatype'] == 'table_to_checkbox'){
-                    if( isset($input[$table_field.'_adminRequiredUpdate'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+
+                if ($table_field != "created_at" && $table_field != "updated_at") {
+                    $input_operations .= '$input[\'' . $table_field . '\']=$input[\'' . $table_field . '_date\'].\' \'.$input[\'' . $table_field . '_time\'];';
+                }
+            }
+            elseif($input[$table_field.'_datatype'] == 'table_to_checkbox'){
+                if( isset($input[$table_field.'_adminRequiredUpdate'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
-                    $input_operations.='$input[\''.$table_field.'\']=json_encode($input[\''.$table_field.'\']);
+                }
+                $input_operations.='$input[\''.$table_field.'\']=json_encode($input[\''.$table_field.'\']);
                     ';
 
-                    //get table data code
-                    $joined_table_name = $input[$table_field.'_joinedTable'];
-                    $table_module_name=ucfirst($joined_table_name);
-                    $table_module_name=rtrim($table_module_name, "s");
-                    $index_header_code.= 'use App\Models\\'.$table_module_name.';';
+                //get table data code
+                $joined_table_name = $input[$table_field.'_joinedTable'];
+                $table_module_name=ucfirst($joined_table_name);
+                $table_module_name=rtrim($table_module_name, "s");
+                $index_header_code.= 'use App\Models\\'.$table_module_name.';';
 
-                    $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
+                $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
 
 
-                    $AutoCode_for_showing_checkbox_names.='
+                $AutoCode_for_showing_checkbox_names.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             $'.$table_field.'_data =\'\';
                             $data_'.$table_field.' =json_decode($data->'.$table_field.');
@@ -631,20 +631,20 @@ class '.$controller_name.' extends BaseController
                                 return $'.$table_field.'_data;
                         })
                     ';
-                }
-                elseif($input[$table_field.'_datatype'] == 'table_to_select'){
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+            }
+            elseif($input[$table_field.'_datatype'] == 'table_to_select'){
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
-                    //get table data code
-                    $joined_table_name = $input[$table_field.'_joinedTable'];
-                    $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
-                    $table_module_name=ucfirst($joined_table_name);
-                    $table_module_name=rtrim($table_module_name, "s");
-                    $index_header_code.= 'use App\Models\\'.$table_module_name.';';
+                }
+                //get table data code
+                $joined_table_name = $input[$table_field.'_joinedTable'];
+                $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
+                $table_module_name=ucfirst($joined_table_name);
+                $table_module_name=rtrim($table_module_name, "s");
+                $index_header_code.= 'use App\Models\\'.$table_module_name.';';
 
-                    $AutoCode_for_showing_selectbox_names.='
+                $AutoCode_for_showing_selectbox_names.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             $'.$table_field.'_data =\'\';
                             $info =$data->'.$table_field.';
@@ -655,78 +655,78 @@ class '.$controller_name.' extends BaseController
                                 return $'.$table_field.'_data;
                         })
                     ';
-                }
-                elseif($input[$table_field.'_datatype'] == 'table_to_tagInput' || $input[$table_field.'_datatype'] == 'table_to_table'){
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+            }
+            elseif($input[$table_field.'_datatype'] == 'table_to_tagInput' || $input[$table_field.'_datatype'] == 'table_to_table'){
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
-                    //get table data code
-                    $joined_table_name = $input[$table_field.'_joinedTable'];
-                    $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
-                    $table_module_name=ucfirst($joined_table_name);
-                    $table_module_name=rtrim($table_module_name, "s");
-                    $index_header_code.= 'use App\Models\\'.$table_module_name.';';
                 }
-                elseif($input[$table_field.'_datatype'] == 'time'){
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+                //get table data code
+                $joined_table_name = $input[$table_field.'_joinedTable'];
+                $joined_table_field_name=$input[$table_field.'_joinedTable_field'];
+                $table_module_name=ucfirst($joined_table_name);
+                $table_module_name=rtrim($table_module_name, "s");
+                $index_header_code.= 'use App\Models\\'.$table_module_name.';';
+            }
+            elseif($input[$table_field.'_datatype'] == 'time'){
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
-                    //get table data code
-                    $index_inside_loop_code.= '
+                }
+                //get table data code
+                $index_inside_loop_code.= '
                               $info->'.$table_field.'=date("h:i a",strtotime($info->'.$table_field.'));
                               $info->'.$table_field.'=str_replace("am","صباحا",$info->'.$table_field.');
                               $info->'.$table_field.'=str_replace("pm","مساءاً",$info->'.$table_field.');
                               ';
-                }
-                elseif($input[$table_field.'_datatype'] == 'enum_selector'){
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+            }
+            elseif($input[$table_field.'_datatype'] == 'enum_selector'){
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
+                }
 
-                    $selector_array= $input[$table_field.'_selector_items'];
-                    $selector_array=explode(',', $selector_array);
+                $selector_array= $input[$table_field.'_selector_items'];
+                $selector_array=explode(',', $selector_array);
 
 
-                    $if_else_options='';
-                    foreach ($selector_array as $selector_en){
-                        //translate select //for google translate object
-                        $trans = new GoogleTranslate(); $source = 'en'; $target = 'ar';
-                        $selector_ar = $trans->translate($source, $target, $selector_en);
-                        $if_else_options.='
+                $if_else_options='';
+                foreach ($selector_array as $selector_en){
+                    //translate select //for google translate object
+                    $trans = new GoogleTranslate(); $source = 'en'; $target = 'ar';
+                    $selector_ar = $trans->translate($source, $target, $selector_en);
+                    $if_else_options.='
                             if($data->'.$table_field.'=="'.$selector_en.'"){
                             return trans(\''.$section_flag.'.'.$selector_en.'\');
                             }';
-                    }
+                }
 
 
-                    $AutoCode_for_showing_checkbox_names.='
+                $AutoCode_for_showing_checkbox_names.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                                 '.$if_else_options.'
                         })
                     ';
-                }
+            }
 
-                elseif($input[$table_field.'_datatype'] == 'file' || $input[$table_field.'_datatype'] == 'image'){
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+            elseif($input[$table_field.'_datatype'] == 'file' || $input[$table_field.'_datatype'] == 'image'){
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
-                    //get table data code
-                    $index_inside_loop_code.= '
+                }
+                //get table data code
+                $index_inside_loop_code.= '
                               $info->'.$table_field.'=url($info->'.$table_field.');
                               ';
-                }
+            }
 
-                elseif($input[$table_field.'_datatype'] == 'is_checkbox'){
+            elseif($input[$table_field.'_datatype'] == 'is_checkbox'){
 //                    if( isset($input[$table_field.'_adminRequiredStore'])) {
 //                        $new_line = '\'' . $table_field . '\'=>\'required\',
 //                    ';
 //                    }
 
-                    $AutoCode_for_showing_checkbox_value.='
+                $AutoCode_for_showing_checkbox_value.='
                         if(isset($input[\''.$table_field.'\'])){
                         $input[\''.$table_field.'\']= 1;
                         }else{
@@ -734,7 +734,7 @@ class '.$controller_name.' extends BaseController
                         }
                     ';
 
-                    $AutoCode_for_showing_EditColumn_for_checkbox.='
+                $AutoCode_for_showing_EditColumn_for_checkbox.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             if($data->'.$table_field.' != null){
                               return trans("admin.yes");
@@ -744,11 +744,11 @@ class '.$controller_name.' extends BaseController
                             }
                         })
                     ';
-                }
-                elseif($input[$table_field.'_datatype'] == 'is_switch'){
+            }
+            elseif($input[$table_field.'_datatype'] == 'is_switch'){
 
 
-                    $AutoCode_for_showing_checkbox_value.='
+                $AutoCode_for_showing_checkbox_value.='
                         if(isset($input[\''.$table_field.'\'])){
                         $input[\''.$table_field.'\']= 1;
                         }else{
@@ -756,7 +756,7 @@ class '.$controller_name.' extends BaseController
                         }
                     ';
 
-                    $AutoCode_for_showing_EditColumn_for_checkbox.='
+                $AutoCode_for_showing_EditColumn_for_checkbox.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             if($data->'.$table_field.' != null){
                               return trans("admin.yes");
@@ -766,15 +766,15 @@ class '.$controller_name.' extends BaseController
                             }
                         })
                     ';
-                }
-                elseif($input[$table_field.'_datatype'] == 'active'){
+            }
+            elseif($input[$table_field.'_datatype'] == 'active'){
 
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
+                }
 
-                    $AutoCode_for_showing_activeType_value.='
+                $AutoCode_for_showing_activeType_value.='
                      ->editColumn(\''.$table_field.'\', function('.$module_name.' $data) {
                             if($data->'.$table_field.' == "1"){
                               return trans("admin.active");
@@ -784,30 +784,30 @@ class '.$controller_name.' extends BaseController
                             }
                         })
                     ';
-                }
+            }
 
-                else{
+            else{
 
-                    if( isset($input[$table_field.'_adminRequiredStore'])) {
-                        $new_line = '\'' . $table_field . '\'=>\'required\',
+                if( isset($input[$table_field.'_adminRequiredStore'])) {
+                    $new_line = '\'' . $table_field . '\'=>\'required\',
                     ';
-                    }
                 }
+            }
 
-                $validations=$validations.$new_line;
+            $validations=$validations.$new_line;
 
 
 
-                if($input[$table_field.'_datatype'] == 'file' || $input[$table_field.'_datatype'] == 'image'){
+            if($input[$table_field.'_datatype'] == 'file' || $input[$table_field.'_datatype'] == 'image'){
 //                    $new_line='\''.$table_field.'\'=>\'required\',
 //                    ';
-                    //get table data code
-                    $index_inside_loop_code.= '
+                //get table data code
+                $index_inside_loop_code.= '
                 if(isset($info->image)){
                             $info->'.$table_field.'=url($info->'.$table_field.');
                         }
                               ';
-                }
+            }
 
 
             //additionals autocreated function or commands
@@ -819,7 +819,7 @@ class '.$controller_name.' extends BaseController
             }
 
             //input variable define
-            if($table_field != "id" && $table_field != "user_id" && $table_field != "created_at" &&
+            if($table_field != "id" && $table_field != "created_at" &&
                 $table_field != "updated_at" && $input[$table_field.'_datatype'] != 'file'
                 && $input[$table_field.'_datatype'] != 'image'){
                 $new_input_variable = '
@@ -1012,7 +1012,7 @@ class '.$controller_name.' extends BaseController
         ';
         $join_selected_resultsCode='';
         $join_selected_compact_vars='';
-        $comma='';
+        $comma=',';
         $order_status_replacement_code ='';
         foreach ($table_fields as $table_field){
             if($input[$table_field.'_datatype'] == 'image' || $input[$table_field.'_datatype'] == 'file'){
@@ -1026,6 +1026,7 @@ class '.$controller_name.' extends BaseController
                 $new_resultLine='
                 $'.$table_field.'s=DB::table("'.$joined_table.'")->orderBy(\'id\', \'asc\')->get(\'id\');
                 $'.$joined_table.'=[];
+                $'.$joined_table.'[]="";
                 foreach ($'.$table_field.'s as $info){
                     $'.$joined_table.'[$info->id]=$info->id;
                 }
@@ -1048,6 +1049,7 @@ class '.$controller_name.' extends BaseController
                 $new_resultLine='
                 $'.$table_field.'s=DB::table("'.$joined_table.'")->orderBy(\'id\', \'asc\')->get();
                 $'.$joined_table.'=[];
+                $'.$joined_table.'[]="";
                 foreach ($'.$table_field.'s as $info){
                     $'.$joined_table.'[$info->id]=$info->'.$joined_table_field_name.';
                 }
@@ -1318,7 +1320,7 @@ class '.$controller_name.' extends BaseController
                 }
             }
 
-if($input[''.$table_field.'_datatype']=="table_to_tagInput" || $input[$table_field.'_datatype'] == 'table_to_table'){
+            if($input[''.$table_field.'_datatype']=="table_to_tagInput" || $input[$table_field.'_datatype'] == 'table_to_table'){
 
                 $custom_field_table_name = $input[''.$table_field.'_joinedTable'];
                 $custom_field_name = $input[''.$table_field.'_joinedTable_field'];
@@ -2650,22 +2652,22 @@ class '.$controller_name.' extends Controller
                 /*****************************************************************************/
                 $custom_functions_Script_in_view_page = '';
 
-                    if($input[''.$table_field.'_datatype']=="table_to_table") {
+                if($input[''.$table_field.'_datatype']=="table_to_table") {
 
-                        $custom_field_table_name = $input['' . $table_field . '_joinedTable'];
-                        $custom_table_module_name = ucfirst($custom_field_table_name);
-                        $custom_table_module_name = rtrim($custom_table_module_name, "s");
-                        $custom_table_fields = DB::getSchemaBuilder()->getColumnListing($custom_field_table_name);
-                        //make function to get all data for this table
+                    $custom_field_table_name = $input['' . $table_field . '_joinedTable'];
+                    $custom_table_module_name = ucfirst($custom_field_table_name);
+                    $custom_table_module_name = rtrim($custom_table_module_name, "s");
+                    $custom_table_fields = DB::getSchemaBuilder()->getColumnListing($custom_field_table_name);
+                    //make function to get all data for this table
 
-                        //declare headers in table and //declare field in datatables js
-                        $page_table_header = '';
-                        $datatables_fields = '';
-                        foreach ($custom_table_fields as $custom_table_field) {
+                    //declare headers in table and //declare field in datatables js
+                    $page_table_header = '';
+                    $datatables_fields = '';
+                    foreach ($custom_table_fields as $custom_table_field) {
 
-                            if ( !in_array($custom_table_field, array('email_verify_code','mobile_verify_code',
-                                'email_verified_at','mobile_verified_at','password','remember_token','created_at'
-                            ,'updated_at'), true ) ) {
+                        if ( !in_array($custom_table_field, array('email_verify_code','mobile_verify_code',
+                            'email_verified_at','mobile_verified_at','password','remember_token','created_at'
+                        ,'updated_at'), true ) ) {
                             //declare header
                             $new_line = '<th class="is_filter">{{trans("' . $custom_field_table_name . '.' . $custom_table_field . '")}}</th>
                           ';
@@ -2702,8 +2704,8 @@ class '.$controller_name.' extends Controller
 
                         }
                     }
-                        $page_table_header=$page_table_header.'<th width="100px">تحكم</th>';
-                        $datatables_fields=$datatables_fields.' {data: \'action\', name: \'action\', orderable: false,
+                    $page_table_header=$page_table_header.'<th width="100px">تحكم</th>';
+                    $datatables_fields=$datatables_fields.' {data: \'action\', name: \'action\', orderable: false,
                                         paging:false,
                                         searchable: false,
                                         bSearchable:false,
@@ -2711,7 +2713,7 @@ class '.$controller_name.' extends Controller
 
 
 
-                        $custom_functions_Script_in_view_page = '
+                    $custom_functions_Script_in_view_page = '
  <div class="col-md-12">
  <strong>{{trans("'.$table_name.'.'.$table_field.'")}}:</strong>
                                     <div class="blog_tablesearch">
@@ -2829,7 +2831,7 @@ class '.$controller_name.' extends Controller
                                 </script>';
 
 
-                    }
+                }
 
                 //**** End of Create Custom Functions Needed for tables**********************//
                 /*****************************************************************************/
@@ -4818,14 +4820,15 @@ class '.$controller_name.' extends Controller
             foreach ($admin_routes as $admin_route){
                 $expected_routes=$expected_routes.'\'admin/'.$admin_route['router_name'].'\',';
             }
-            $comma=',';
+//            $comma=',';
         }
 
         $web_routes=\App\Models\Route::where(
             ['type'=>'web_routes','middleware' => 'user','expect_from_CSRF'=>1])->get();
         if(isset($web_routes)){
             foreach ($web_routes as $web_route){
-                $expected_routes=$expected_routes.$comma.$web_route['router_name'].'\',';
+//                $expected_routes=$expected_routes.$web_route['router_name'].'\',';
+                $expected_routes=$expected_routes.'\''.$web_route['router_name'].'\',';
             }
         }
 

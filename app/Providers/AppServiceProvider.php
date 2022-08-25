@@ -6,6 +6,7 @@ use App\Http\Traits\Admin_sections_traits;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use App\Models\Contact;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,5 +43,16 @@ class AppServiceProvider extends ServiceProvider
 //        view()->share('lang', $lang);
 
         view()->addNamespace('themes', app_path('../themes'));
+
+
+        $lang = app()->getLocale();
+        view()->share('lang', $lang);
+
+        $contacts = [];
+        $contacts["email"] = Contact::where('flag','email')->first();
+        $contacts["mobile"]= Contact::where('flag','mobile')->first();
+        view()->share('contacts', $contacts);
+
+
     }
 }

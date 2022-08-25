@@ -30,7 +30,7 @@ class DeveloperController extends Controller
     }
 
     public function create_extension_table(){
-        $hostname = env("DB_DATABASE","framework1.7");
+        $hostname = env("DB_DATABASE","bosla");
         $db = "Tables_in_".$hostname;
         $tables = DB::select('SHOW TABLES');// returns an array of stdObjects
         $table_fields= DB::getSchemaBuilder()->getColumnListing('users');
@@ -38,7 +38,7 @@ class DeveloperController extends Controller
     }
 
     public function create_module(){
-        $hostname = env("DB_DATABASE","framework1.7");
+        $hostname = env("DB_DATABASE","bosla");
         $db = "Tables_in_".$hostname;
         $tables = DB::select('SHOW TABLES');// returns an array of stdObjects
         $table_fields= DB::getSchemaBuilder()->getColumnListing('users');
@@ -48,7 +48,7 @@ class DeveloperController extends Controller
 
     public function send_table_fields(Request $request){
         //get database table to use it inside join functions between tables
-        $hostname = env("DB_DATABASE","framework1.7");
+        $hostname = env("DB_DATABASE","bosla");
         $db = "Tables_in_".$hostname;
         $tables = DB::select('SHOW TABLES'); // returns an array of stdObjects
         //get tables selector
@@ -217,12 +217,12 @@ class DeveloperController extends Controller
             elseif(strpos($table_field, 'duration') !== false){
                 $datatype='number';
             }
-            elseif(strpos($table_field, 'order_status') !== false){
-                $datatype='order_status';
-            }
-            elseif(strpos($table_field, 'status') !== false){
-                $datatype='select';
-            }
+//            elseif(strpos($table_field, 'order_status') !== false){
+//                $datatype='order_status';
+//            }
+//            elseif(strpos($table_field, 'status') !== false){
+//                $datatype='select';
+//            }
 
 
             else{
@@ -420,7 +420,7 @@ class DeveloperController extends Controller
 
 //    public function get_table_fields(Request $request){
 //        //get database table to use it inside join functions between tables
-//        $hostname = env("DB_DATABASE","framework1.7");
+//        $hostname = env("DB_DATABASE","bosla");
 //        $db = "Tables_in_".$hostname;
 //        $tables = DB::select('SHOW TABLES'); // returns an array of stdObjects
 //        //get tables selector
@@ -984,26 +984,26 @@ class DeveloperController extends Controller
         //check if mobile API controller is active
         if(isset($input['Mobile_Coding'])){
             //Step 14 : Create Controller File
-            $this->CreateFlutterAPIControllerFile($module_name,$table_name,$table_fields,$input,'framework1.7');
+            $this->CreateFlutterAPIControllerFile($module_name,$table_name,$table_fields,$input,'bosla');
             if(isset($input['Mobile_List'])){
                 //Step 15 : Create Flutter index Screen File
-                $this->CreateFlutterIndexPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7');
+                $this->CreateFlutterIndexPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'bosla');
             }
             if(isset($input['Mobile_View'])){
                 //Step 16 : Create Flutter View Screen File
-                $this->CreateFlutterViewPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7',$Small_module_name);
+                $this->CreateFlutterViewPage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'bosla',$Small_module_name);
             }
             if(isset($input['Mobile_Create'])){
                 //Step 17 : Create Flutter Store Screen File
-                $this->CreateFlutterStorePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7');
+                $this->CreateFlutterStorePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'bosla');
             }
             if(isset($input['Mobile_Update'])){
                 //Step 18 : Create Flutter Update Screen File
-                $this->CreateFlutterUpdatePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'framework1.7');
+                $this->CreateFlutterUpdatePage($controller_name,$Capital_table_name,$table_fields,$table_name,$input,$section_flag,'bosla');
             }
 
             //Step 20 : update Flutter Languages Files by new translations
-           $this->UpdateFlutterLanguageFiles($table_fields,$section_flag,$table_name,$Capital_table_name,$input,'framework1.7');
+           $this->UpdateFlutterLanguageFiles($table_fields,$section_flag,$table_name,$Capital_table_name,$input,'bosla');
         }
 
 

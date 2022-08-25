@@ -147,6 +147,11 @@ import '../../lang/en/app.dart' as app_messages_en;
         import '../../lang/ar/products.dart' as products_messages_ar;
         import '../../lang/en/products.dart' as products_messages_en;
         
+            
+            
+        import '../../lang/ar/contents.dart' as contents_messages_ar;
+        import '../../lang/en/contents.dart' as contents_messages_en;
+        
             /*Import Additional languages files here*/
 
 String? Language;
@@ -360,6 +365,13 @@ trans(module,word_text){
         if (module == "products"){
             Language == "en" ? translate = products_messages_en.getTranslation(word_text)
             : translate = products_messages_ar.getTranslation(word_text);
+          }
+        
+            
+            
+        if (module == "contents"){
+            Language == "en" ? translate = contents_messages_en.getTranslation(word_text)
+            : translate = contents_messages_ar.getTranslation(word_text);
           }
         
             /*Add Additional languages functions here*/

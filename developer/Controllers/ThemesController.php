@@ -30,14 +30,19 @@ class ThemesController extends Controller
         foreach ($files as $file) {
             $file_path = $pathes[$i];
             $content = file($file);
-            $content = str_replace("\"../files/assets","\"{{url('themes/admin/admindek/assets",$content);
-            $content = str_replace("\"../files/bower_components","\"{{url('themes/admin/admindek/assets/bower_components",$content);
-            $content = str_replace("\"../files/extra-pages","\"{{url('themes/admin/admindek/assets/extra-pages",$content);
+            $content = str_replace("\"../files/assets","\"{{url('themes/web/default/assets",$content);
+            $content = str_replace("\"../files/bower_components","\"{{url('themes/web/default/assets/bower_components",$content);
+            $content = str_replace("\"../files/extra-pages","\"{{url('themes/web/default/assets/extra-pages",$content);
             $content = str_replace(".ico\"",".ico')}}\"",$content);
+            $content = str_replace(".svg\"",".svg')}}\"",$content);
             $content = str_replace(".css\"",".css')}}\"",$content);
             $content = str_replace(".js\"",".js')}}\"",$content);
             $content = str_replace(".png\"",".png')}}\"",$content);
             $content = str_replace(".jpg\"",".jpg')}}\"",$content);
+
+
+            $content = str_replace("\"assets","\"{{url('themes/web/default/assets",$content);
+
             file_put_contents($file_path, $content);
             $i++;
         }
