@@ -33,6 +33,7 @@ class ThemesController extends Controller
             $content = str_replace("\"../files/assets","\"{{url('themes/web/default/assets",$content);
             $content = str_replace("\"../files/bower_components","\"{{url('themes/web/default/assets/bower_components",$content);
             $content = str_replace("\"../files/extra-pages","\"{{url('themes/web/default/assets/extra-pages",$content);
+            $content = str_replace("\"../files/extra-pages","\"{{url('themes/web/default/assets/extra-pages",$content);
             $content = str_replace(".ico\"",".ico')}}\"",$content);
             $content = str_replace(".svg\"",".svg')}}\"",$content);
             $content = str_replace(".css\"",".css')}}\"",$content);
@@ -42,6 +43,11 @@ class ThemesController extends Controller
 
 
             $content = str_replace("\"assets","\"{{url('themes/web/default/assets",$content);
+            $content = str_replace("\"lib","\"{{url('themes/web/default/assets/lib",$content);
+            $content = str_replace("\"img","\"{{url('themes/web/default/assets/img",$content);
+            $content = str_replace("\"css","\"{{url('themes/web/default/assets/css",$content);
+            $content = str_replace("\"js","\"{{url('themes/web/default/assets/js",$content);
+            $content = str_replace("\"contactform","\"{{url('themes/web/default/assets/contactform",$content);
 
             file_put_contents($file_path, $content);
             $i++;
